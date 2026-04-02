@@ -47,3 +47,7 @@ Thumbs.db
 *.sqlite3
 memoria_data/
 AGENTS.copilot-cli.MD
+
+# Dashboard (React dev artifacts – build output goes to src/memoria/dashboard/static/)
+dashboard/node_modules/
+dashboard/.vite/
