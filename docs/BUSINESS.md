@@ -1,6 +1,6 @@
 # MEMORIA — Product Overview
 
-> **Proactive Memory Framework for AI Agents** · v2.0.0
+> **Proactive Memory Framework for AI Agents** · v3.0.0
 
 ## What Is MEMORIA?
 
@@ -17,8 +17,8 @@ graph TB
     end
 
     subgraph "MEMORIA Server"
-        MCP["MCP Protocol Layer<br/>59 tools · 6 resources · 5 prompts"]
-        subgraph "20 Subsystems"
+        MCP["MCP Protocol Layer<br/>97 tools · 7 resources · 5 prompts"]
+        subgraph "28 Subsystems"
             S1["Core Memory"]
             S2["Hybrid Recall"]
             S3["Proactive Intelligence"]
@@ -56,7 +56,7 @@ AI agents today are **amnesic by design**:
 
 ## The Solution
 
-MEMORIA provides **8 layers of intelligence** over a hybrid storage backbone:
+MEMORIA provides **9 layers of intelligence** over a hybrid storage backbone:
 
 | Layer | Capability | Business Value |
 |-------|-----------|----------------|
@@ -75,7 +75,7 @@ MEMORIA provides **8 layers of intelligence** over a hybrid storage backbone:
 
 | Segment | Use Case | Value Proposition |
 |---------|----------|-------------------|
-| **AI Platform Builders** | Integrate persistent memory into their AI products | Plug-and-play MCP server with 59 tools |
+| **AI Platform Builders** | Integrate persistent memory into their AI products | Plug-and-play MCP server with 97 tools |
 | **Enterprise AI Teams** | Multi-agent orchestration with shared context | Team memory sharing + coherence checking |
 | **SaaS Companies** | Understand user behavior across products | Cross-product behavioral fusion + churn prediction |
 | **Individual Developers** | Personal coding assistant with memory | Zero-config install, works with Claude/Cursor/VS Code |
@@ -108,7 +108,7 @@ MEMORIA provides **8 layers of intelligence** over a hybrid storage backbone:
 
 3. **Proactive, Not Reactive** — Doesn't wait for queries. Surfaces relevant context, predicts next actions, detects fatigue, and suggests workflow optimizations.
 
-4. **20 Subsystems, One Protocol** — All capabilities exposed through a single MCP interface. No API fragmentation.
+4. **28 Subsystems, One Protocol** — All capabilities exposed through a single MCP interface. No API fragmentation.
 
 5. **Adversarial-Hardened** — Built-in poison detection, hallucination guards, consistency verification, and tamper-proofing. Enterprise-grade memory integrity.
 
@@ -456,7 +456,7 @@ python -m pytest tests/ -q
 
 ---
 
-**MEMORIA v2.0.0** — *Give your AI agents the memory they deserve.*
+**MEMORIA v3.0.0** — *Give your AI agents the memory they deserve.*
 
 © 2024-2026 Daniel Nicusor Naicu. All rights reserved.
 Business Source License 1.1 — see [LICENSE](../LICENSE).

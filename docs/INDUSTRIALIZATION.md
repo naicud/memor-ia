@@ -2,7 +2,7 @@
 
 > **Enterprise-grade deployment architectures for AWS, Azure, and Google Cloud**
 >
-> v2.0.0 | BSL 1.1
+> v3.0.0 | BSL 1.1
 
 ---
 
@@ -119,7 +119,7 @@ metadata:
   namespace: memoria
   labels:
     app: memoria-mcp
-    version: v2.0.0
+    version: v3.0.0
 spec:
   replicas: 3
   selector:
@@ -134,7 +134,7 @@ spec:
     metadata:
       labels:
         app: memoria-mcp
-        version: v2.0.0
+        version: v3.0.0
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
@@ -142,7 +142,7 @@ spec:
       serviceAccountName: memoria-sa
       containers:
         - name: memoria-mcp
-          image: <account-id>.dkr.ecr.<region>.amazonaws.com/memoria:2.0.0
+          image: <account-id>.dkr.ecr.<region>.amazonaws.com/memoria:3.0.0
           ports:
             - containerPort: 8080
               name: mcp
@@ -542,7 +542,7 @@ spec:
     spec:
       containers:
         - name: memoria-mcp
-          image: us-docker.pkg.dev/<project>/memoria/mcp:2.0.0
+          image: us-docker.pkg.dev/<project>/memoria/mcp:3.0.0
           resources:
             requests:
               cpu: "1"
@@ -659,7 +659,7 @@ replicaCount: 3
 
 image:
   repository: memoria
-  tag: "2.0.0"
+  tag: "3.0.0"
   pullPolicy: IfNotPresent
 
 service:
@@ -818,7 +818,7 @@ graph LR
     end
 
     subgraph "Build"
-        TEST["pytest<br/>4181 tests"]
+        TEST["pytest<br/>4700+ tests"]
         LINT["ruff<br/>0 errors"]
         BUILD["Docker Build<br/>Multi-stage"]
         SCAN["Trivy<br/>CVE scan"]
@@ -1025,9 +1025,9 @@ spec:
 
 ```bash
 # Step 1: Build and push image
-docker build -t memoria:2.0.0 .
-docker tag memoria:2.0.0 <registry>/memoria:2.0.0
-docker push <registry>/memoria:2.0.0
+docker build -t memoria:3.0.0 .
+docker tag memoria:3.0.0 <registry>/memoria:3.0.0
+docker push <registry>/memoria:3.0.0
 
 # Step 2: Create namespace
 kubectl create namespace memoria
@@ -1036,7 +1036,7 @@ kubectl create namespace memoria
 helm install memoria ./memoria-helm \
   --namespace memoria \
   --set image.repository=<registry>/memoria \
-  --set image.tag=2.0.0
+  --set image.tag=3.0.0
 
 # Step 4: Verify
 kubectl -n memoria get pods
@@ -1050,7 +1050,7 @@ python scripts/production_verify.py --endpoint http://localhost:8080/mcp
 
 ---
 
-**MEMORIA v2.0.0** — Enterprise-ready AI memory at any scale.
+**MEMORIA v3.0.0** — Enterprise-ready AI memory at any scale.
 
 © 2024-2026 Daniel Nicusor Naicu. All rights reserved.
 Business Source License 1.1 — see [LICENSE](../LICENSE).

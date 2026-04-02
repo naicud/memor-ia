@@ -1,6 +1,6 @@
 # Architecture
 
-Deep dive into MEMORIA's 8-layer architecture, 20+ subsystems, and data flow.
+Deep dive into MEMORIA's 9-layer architecture, 28 subsystems, and data flow.
 
 ---
 
@@ -25,7 +25,7 @@ Deep dive into MEMORIA's 8-layer architecture, 20+ subsystems, and data flow.
 
 ## Overview
 
-MEMORIA is organized as 8 stacked layers, each building on the layers below. The bottom layers provide fundamental storage and retrieval; the top layers provide advanced intelligence and cross-product analytics.
+MEMORIA is organized as 9 stacked layers, each building on the layers below. The bottom layers provide fundamental storage and retrieval; the top layers provide advanced intelligence and cross-product analytics.
 
 **Key design principles:**
 - **Zero required dependencies** — every backend has a pure-Python fallback
@@ -409,7 +409,7 @@ src/memoria/
 ├── orchestration/           # Orchestration layer (optional)
 ├── namespace/               # Namespace management
 ├── versioning/              # Memory versioning
-└── mcp/                     # MCP server (59 tools)
+└── mcp/                     # MCP server (97 tools)
     └── server.py            # FastMCP 3.0+ server
 ```
 

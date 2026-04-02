@@ -11,7 +11,7 @@
 
 ---
 
-**Table of Contents:** [Install](#install) · [Quick Start](#quick-start) · [MCP Server](#mcp-server) · [Architecture](#architecture-8-layers-20-subsystems) · [Features](#features) · [Use Cases](#use-cases--scenarios) · [Examples](#examples) · [Documentation](#documentation) · [Tests](#tests)
+**Table of Contents:** [Install](#install) · [Quick Start](#quick-start) · [MCP Server](#mcp-server) · [Architecture](#architecture-9-layers-28-subsystems) · [Features](#features) · [Use Cases](#use-cases--scenarios) · [Examples](#examples) · [Documentation](#documentation) · [Tests](#tests)
 
 ---
 
@@ -77,7 +77,7 @@ profile = m.profile(user_id="daniel")
 insights = m.insights(user_id="daniel")
 ```
 
-## Architecture (8 Layers, 28 Subsystems)
+## Architecture (9 Layers, 28 Subsystems)
 
 ```mermaid
 mindmap
@@ -951,7 +951,7 @@ Comprehensive documentation in the [`docs/`](docs/) directory:
 | [**MCP Server Guide**](docs/MCP_SERVER.md)                     | Complete MCP reference: 97 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
 | [**Configuration**](docs/CONFIGURATION.md)                     | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets                                                |
 | [**API Reference**](docs/API_REFERENCE.md)                     | Python API: Memoria class, VectorClient, GraphClient, types                                                                  |
-| [**Architecture**](docs/ARCHITECTURE.md)                       | 8-layer deep dive, data flow, module map, recall pipeline                                                                    |
+| [**Architecture**](docs/ARCHITECTURE.md)                       | 9-layer deep dive, data flow, module map, recall pipeline                                                                    |
 
 ## License
 

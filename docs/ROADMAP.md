@@ -773,7 +773,7 @@ graph TB
     end
 
     subgraph "MEMORIA"
-        MCP2["MCP Server<br/>(existing 59 tools)"]
+        MCP2["MCP Server<br/>(97 tools)"]
     end
 
     HOME & MEM & GRAPH & TIME & USER & PROD & SEC & AUDIT & CONF --> REST & SSE2

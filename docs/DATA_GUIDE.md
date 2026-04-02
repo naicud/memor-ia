@@ -14,7 +14,7 @@ graph TB
         JSONRPC["JSON-RPC over stdio/HTTP"]
     end
 
-    subgraph "MEMORIA MCP Server (59 tools)"
+    subgraph "MEMORIA MCP Server (97 tools)"
         TOOLS["Tool Dispatch"]
 
         subgraph "Core Memory"
@@ -75,7 +75,7 @@ Uses FalkorDB for graph, SQLite+sqlite-vec for vectors.
 ```
 memory/
 ├── b66f1415.md  →  "Daniel created memor-ia using Python 3.12..."  (project)
-├── 6978c5e6.md  →  "Alice maintains the MCP server with 59 tools"  (project)
+├── 6978c5e6.md  →  "Alice maintains the MCP server with 97 tools"  (project)
 ├── e59c1502.md  →  "The CI/CD uses GitHub Actions + Docker..."      (project)
 ├── b9547f1b.md  →  "sqlite-vec doesn't support INSERT OR REPLACE"  (user)
 └── 81e87d32.md  →  "Use ruff for linting, pytest for testing..."   (user)
@@ -352,7 +352,7 @@ python -m pytest tests/test_e2e_mcp_client.py -v -s
 python -m pytest tests/ -q
 ```
 
-## Tool Reference (59 tools)
+## Tool Reference (97 tools)
 
 | Category | Tools | Count |
 |----------|-------|-------|
@@ -375,3 +375,12 @@ python -m pytest tests/ -q
 | **Business** | `biz_revenue_signal`, `biz_lifecycle_update` | 2 |
 | **Adversarial** | `adversarial_scan`, `adversarial_check_consistency`, `adversarial_verify_integrity` | 3 |
 | **Cognitive** | `cognitive_record`, `cognitive_check_overload`, `cognitive_focus_session` | 3 |
+| **GDPR & Audit** | `gdpr_forget`, `gdpr_export`, `audit_log`, `audit_stats`, `consent_manage` | 5 |
+| **Webhooks** | `webhook_register`, `webhook_list`, `webhook_unregister` | 3 |
+| **Summarization & Dedup** | `memoria_summarize`, `memoria_summarize_all`, `dedup_scan`, `dedup_merge`, `dedup_history`, `dedup_stats` | 6 |
+| **Templates** | `template_create`, `template_list`, `template_apply` | 3 |
+| **Streaming** | `stream_subscribe`, `stream_unsubscribe`, `stream_broadcast`, `stream_list`, `stream_stats` | 5 |
+| **Attachments** | `add_attachment`, `get_attachment`, `list_attachments`, `delete_attachment`, `attachment_stats` | 5 |
+| **Plugins** | `plugin_discover`, `plugin_list`, `plugin_activate`, `plugin_deactivate`, `plugin_stats` | 5 |
+| **Dashboard** | `start_dashboard`, `stop_dashboard`, `dashboard_status`, `dashboard_url`, `dashboard_config` | 5 |
+| **Federation** | `federation_connect`, `federation_disconnect`, `federation_trust`, `federation_sync`, `federation_status` | 5 |
