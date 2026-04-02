@@ -27,6 +27,7 @@ class SemanticSearch:
         self,
         query: str,
         limit: int = 5,
+        offset: int = 0,
         user_id: str | None = None,
         min_score: float = 0.0,
     ) -> list[SearchResult]:
@@ -35,6 +36,7 @@ class SemanticSearch:
         return self.search_by_embedding(
             embedding,
             limit=limit,
+            offset=offset,
             user_id=user_id,
             min_score=min_score,
         )
@@ -43,13 +45,14 @@ class SemanticSearch:
         self,
         embedding: list[float],
         limit: int = 5,
+        offset: int = 0,
         user_id: str | None = None,
         min_score: float = 0.0,
     ) -> list[SearchResult]:
         """Search using a pre-computed embedding."""
         records = self.client.search(
             embedding,
-            limit=limit * 2,  # over-fetch to allow min_score filtering
+            limit=(limit + offset) * 2,  # over-fetch to allow min_score filtering
             user_id=user_id,
         )
 
@@ -68,13 +71,13 @@ class SemanticSearch:
             )
 
         results.sort(key=lambda r: r.score, reverse=True)
-        return results[:limit]
+        return results[offset:offset + limit]
 
-    def find_similar(self, text_id: str, limit: int = 5) -> list[SearchResult]:
+    def find_similar(self, text_id: str, limit: int = 5, offset: int = 0) -> list[SearchResult]:
         """Find content similar to an existing indexed text."""
         record = self.client.get(text_id)
         if record is None:
             return []
-        results = self.search_by_embedding(record.embedding, limit=limit + 1)
+        results = self.search_by_embedding(record.embedding, limit=limit + offset + 1)
         # Exclude the source document itself
-        return [r for r in results if r.id != text_id][:limit]
+        return [r for r in results if r.id != text_id][offset:offset + limit]

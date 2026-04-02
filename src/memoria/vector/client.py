@@ -150,18 +150,20 @@ class VectorClient:
         self,
         query_embedding: list[float],
         limit: int = 5,
+        offset: int = 0,
         user_id: str | None = None,
         memory_type: str | None = None,
     ) -> list[VectorRecord]:
         """Find nearest neighbours."""
         if self._use_vec:
-            return self._search_vec(query_embedding, limit, user_id, memory_type)
-        return self._search_python(query_embedding, limit, user_id, memory_type)
+            return self._search_vec(query_embedding, limit, offset, user_id, memory_type)
+        return self._search_python(query_embedding, limit, offset, user_id, memory_type)
 
     def _search_vec(
         self,
         query_embedding: list[float],
         limit: int,
+        offset: int,
         user_id: str | None,
         memory_type: str | None,
     ) -> list[VectorRecord]:
@@ -169,7 +171,7 @@ class VectorClient:
         rows = self.conn.execute(
             "SELECT id, distance FROM vec_embeddings "
             "WHERE embedding MATCH ? ORDER BY distance LIMIT ?",
-            (blob, limit * 5),
+            (blob, (limit + offset) * 5),
         ).fetchall()
 
         results: list[VectorRecord] = []
@@ -201,14 +203,15 @@ class VectorClient:
                     distance=dist,
                 )
             )
-            if len(results) >= limit:
+            if len(results) >= limit + offset:
                 break
-        return results
+        return results[offset:]
 
     def _search_python(
         self,
         query_embedding: list[float],
         limit: int,
+        offset: int,
         user_id: str | None,
         memory_type: str | None,
     ) -> list[VectorRecord]:
@@ -250,7 +253,7 @@ class VectorClient:
             )
 
         scored.sort(key=lambda t: t[0])
-        return [rec for _, rec in scored[:limit]]
+        return [rec for _, rec in scored[offset:offset + limit]]
 
     def delete(self, record_id: str) -> None:
         """Delete a record by id."""

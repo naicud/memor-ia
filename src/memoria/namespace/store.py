@@ -103,6 +103,7 @@ class SharedMemoryStore:
         namespace: str | None = None,
         user_id: str | None = None,
         limit: int = 10,
+        offset: int = 0,
         include_ancestors: bool = True,
     ) -> list[dict]:
         """Keyword search across memories.
@@ -126,8 +127,9 @@ class SharedMemoryStore:
             clauses.append("user_id = ?")
             params.append(user_id)
 
-        sql = f"SELECT * FROM memories WHERE {' AND '.join(clauses)} ORDER BY updated_at DESC LIMIT ?"
+        sql = f"SELECT * FROM memories WHERE {' AND '.join(clauses)} ORDER BY updated_at DESC LIMIT ? OFFSET ?"
         params.append(limit)
+        params.append(offset)
         cur = self._conn.execute(sql, params)
         return [self._row_to_dict(r) for r in cur.fetchall()]
 
@@ -137,6 +139,7 @@ class SharedMemoryStore:
         *,
         recursive: bool = False,
         limit: int = 1000,
+        offset: int = 0,
     ) -> list[dict]:
         """List memories in a namespace.
 
@@ -144,13 +147,13 @@ class SharedMemoryStore:
         """
         if recursive:
             cur = self._conn.execute(
-                "SELECT * FROM memories WHERE namespace = ? OR namespace LIKE ? ORDER BY updated_at DESC LIMIT ?",
-                (namespace, f"{namespace}/%", limit),
+                "SELECT * FROM memories WHERE namespace = ? OR namespace LIKE ? ORDER BY updated_at DESC LIMIT ? OFFSET ?",
+                (namespace, f"{namespace}/%", limit, offset),
             )
         else:
             cur = self._conn.execute(
-                "SELECT * FROM memories WHERE namespace = ? ORDER BY updated_at DESC LIMIT ?",
-                (namespace, limit),
+                "SELECT * FROM memories WHERE namespace = ? ORDER BY updated_at DESC LIMIT ? OFFSET ?",
+                (namespace, limit, offset),
             )
         return [self._row_to_dict(r) for r in cur.fetchall()]
 

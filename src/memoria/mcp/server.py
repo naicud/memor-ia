@@ -547,6 +547,7 @@ def memoria_search(
     query: str,
     user_id: Optional[str] = None,
     limit: int = 5,
+    offset: int = 0,
 ) -> list[dict]:
     """Search memories using the hybrid recall pipeline.
 
@@ -557,7 +558,7 @@ def memoria_search(
     """
     try:
         m = _get_memoria()
-        return m.search(query, user_id=user_id, limit=limit)
+        return m.search(query, user_id=user_id, limit=limit, offset=offset)
     except Exception as e:
         return [{"error": str(e)}]
 
@@ -706,6 +707,7 @@ def memoria_search_tiers(
     query: str,
     tiers: Optional[str] = None,
     limit: int = 10,
+    offset: int = 0,
 ) -> list[dict]:
     """Search across memory tiers (working, recall, archival).
 
@@ -715,7 +717,7 @@ def memoria_search_tiers(
     try:
         m = _get_memoria()
         tier_list = [t.strip() for t in tiers.split(",")] if tiers else None
-        return m.search_tiers(query, tiers=tier_list, limit=limit)
+        return m.search_tiers(query, tiers=tier_list, limit=limit, offset=offset)
     except Exception as e:
         return [{"error": str(e)}]
 
@@ -886,6 +888,7 @@ def episodic_timeline(
     event_types: Optional[str] = None,
     min_importance: float = 0.0,
     limit: int = 50,
+    offset: int = 0,
 ) -> list[dict]:
     """Query events across episodes in a time range.
 
@@ -909,19 +912,21 @@ def episodic_timeline(
             end_time=end_time,
             event_types=type_list,
             min_importance=min_importance,
-            limit=limit,
+            limit=limit + offset,
         )
+        events = events[offset:offset + limit]
         return _to_dict(events)
     except Exception as e:
         return [{"error": str(e)}]
 
 
 @mcp.tool
-def episodic_search(query: str, limit: int = 5) -> list[dict]:
+def episodic_search(query: str, limit: int = 5, offset: int = 0) -> list[dict]:
     """Search episodes by content similarity."""
     try:
         em = _get_episodic()
-        episodes = em.search_episodes(query, limit=limit)
+        episodes = em.search_episodes(query, limit=limit + offset)
+        episodes = episodes[offset:offset + limit]
         return [_episode_summary(ep) for ep in episodes]
     except Exception as e:
         return [{"error": str(e)}]
@@ -1375,14 +1380,14 @@ def get_budget() -> str:
 
 
 @mcp.prompt
-def recall_context(query: str, user_id: Optional[str] = None, limit: int = 5) -> str:
+def recall_context(query: str, user_id: Optional[str] = None, limit: int = 5, offset: int = 0) -> str:
     """Recall relevant memories and inject them as context.
 
     Searches MEMORIA for memories related to the query and formats
     them as context for the LLM to use in its response.
     """
     m = _get_memoria()
-    results = m.search(query, user_id=user_id, limit=limit)
+    results = m.search(query, user_id=user_id, limit=limit, offset=offset)
 
     if not results:
         return f"No relevant memories found for: '{query}'"
@@ -1542,11 +1547,12 @@ def consolidation_report(user_id: Optional[str] = None) -> str:
 
 
 @mcp.prompt
-def episodic_recap(limit: int = 5) -> str:
+def episodic_recap(limit: int = 5, offset: int = 0) -> str:
     """Recap of recent episodes with summaries and outcomes."""
     try:
         em = _get_episodic()
-        episodes = em.list_episodes(limit=limit)
+        episodes = em.list_episodes(limit=limit + offset)
+        episodes = episodes[offset:offset + limit]
     except Exception:
         return "Episodic memory not available."
 
@@ -1649,11 +1655,12 @@ def dream_consolidate(memories: Optional[str] = None) -> dict:
 
 
 @mcp.tool()
-def dream_journal(limit: int = 10) -> dict:
+def dream_journal(limit: int = 10, offset: int = 0) -> dict:
     """View recent dream consolidation journal entries."""
     try:
         engine = _get_dream()
-        entries = engine.journal.get_entries(limit=limit)
+        entries = engine.journal.get_entries(limit=limit + offset)
+        entries = entries[offset:offset + limit]
         return {"entries": [{"cycle_id": e.cycle_id, "started_at": e.started_at, "memories_scanned": e.memories_scanned, "decisions": len(e.decisions), "insights": len(e.insights)} for e in entries], "total": len(entries)}
     except Exception as e:
         return {"error": str(e)}

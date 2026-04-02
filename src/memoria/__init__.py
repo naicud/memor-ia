@@ -94,7 +94,7 @@ class Memoria:
         write_memory_file(path, fm, content)
         return str(path)
 
-    def search(self, query, *, user_id=None, limit=5, namespace=None):
+    def search(self, query, *, user_id=None, limit=5, offset=0, namespace=None):
         """Search memories.
 
         When *namespace* is provided searches the SharedMemoryStore;
@@ -105,7 +105,7 @@ class Memoria:
         if namespace is not None:
             store = self._get_namespace_store()
             results = store.search(query, namespace=namespace,
-                                   user_id=user_id, limit=limit)
+                                   user_id=user_id, limit=limit, offset=offset)
             out = []
             for r in results:
                 out.append({
@@ -127,7 +127,7 @@ class Memoria:
         )
 
         ctx = RecallContext(user_id=user_id) if user_id else None
-        ranked = pipeline.recall(query, limit=limit, context=ctx)
+        ranked = pipeline.recall(query, limit=limit, offset=offset, context=ctx)
 
         out = []
         for r in ranked:
@@ -312,7 +312,7 @@ class Memoria:
         mgr = self._get_tiered_manager()
         return mgr.add(content, tier=tier, **kwargs)
 
-    def search_tiers(self, query, tiers=None, limit=10):
+    def search_tiers(self, query, tiers=None, limit=10, offset=0):
         """Search across memory tiers.
 
         *tiers* is an optional list of tier names to search
@@ -321,7 +321,8 @@ class Memoria:
         Returns a list of dicts.
         """
         mgr = self._get_tiered_manager()
-        return mgr.search(query, tiers=tiers, limit=limit)
+        results = mgr.search(query, tiers=tiers, limit=limit + offset)
+        return results[offset:offset + limit]
 
     def flush_session(self):
         """Flush working memory to recall and run auto-promote.
@@ -475,16 +476,18 @@ class Memoria:
         event = ep.record_event(content, event_type=et, importance=importance, agent_id=agent_id, user_id=user_id, metadata=metadata)
         return {"event_id": event.event_id, "event_type": event.event_type.value, "timestamp": event.timestamp}
 
-    def episodic_timeline(self, start_time=None, end_time=None, event_types=None, min_importance=0.0, limit=50):
+    def episodic_timeline(self, start_time=None, end_time=None, event_types=None, min_importance=0.0, limit=50, offset=0):
         """Query events across episodes."""
         ep = self._get_episodic()
-        events = ep.query_timeline(start_time=start_time, end_time=end_time, event_types=event_types, min_importance=min_importance, limit=limit)
+        events = ep.query_timeline(start_time=start_time, end_time=end_time, event_types=event_types, min_importance=min_importance, limit=limit + offset)
+        events = events[offset:offset + limit]
         return [{"event_id": e.event_id, "event_type": e.event_type.value, "content": e.content, "timestamp": e.timestamp, "importance": e.importance} for e in events]
 
-    def episodic_search(self, query, limit=5):
+    def episodic_search(self, query, limit=5, offset=0):
         """Search episodes by content."""
         ep = self._get_episodic()
-        episodes = ep.search_episodes(query, limit=limit)
+        episodes = ep.search_episodes(query, limit=limit + offset)
+        episodes = episodes[offset:offset + limit]
         return [{"episode_id": e.episode_id, "title": e.title, "event_count": e.event_count, "summary": e.summary, "outcome": e.outcome} for e in episodes]
 
     def episodic_stats(self):
@@ -880,11 +883,12 @@ class Memoria:
         except Exception as e:
             return {"error": str(e)}
 
-    def dream_journal(self, limit=10):
+    def dream_journal(self, limit=10, offset=0):
         """Get recent dream journal entries."""
         try:
             engine = self._get_dream_engine()
-            entries = engine.journal.get_entries(limit=limit)
+            entries = engine.journal.get_entries(limit=limit + offset)
+            entries = entries[offset:offset + limit]
             result = []
             for e in entries:
                 result.append({

@@ -412,6 +412,7 @@ Parameters:
   query: str            — Search query (required)
   user_id: str | None   — Filter by user
   limit: int            — Max results (default: 5)
+  offset: int           — Skip first N results for pagination (default: 0)
 
 Returns: list[dict]
   [{ "id": "...", "content": "...", "score": 0.87, "metadata": {...} }]
@@ -512,6 +513,7 @@ Parameters:
   query: str            — Search query (required)
   tiers: str | None     — Comma-separated tier names (default: all tiers)
   limit: int            — Max results (default: 10)
+  offset: int           — Skip first N results for pagination (default: 0)
 
 Returns: list[dict]
 ```
@@ -645,6 +647,7 @@ Parameters:
   event_types: str | None  — Comma-separated event types
   min_importance: float    — Minimum importance filter (default: 0.0)
   limit: int               — Max results (default: 50)
+  offset: int              — Skip first N results for pagination (default: 0)
 
 Returns: list[dict]
 ```
@@ -657,6 +660,7 @@ Search episodes by content similarity.
 Parameters:
   query: str            — Search query (required)
   limit: int            — Max results (default: 5)
+  offset: int           — Skip first N results for pagination (default: 0)
 
 Returns: list[dict]
 ```
@@ -837,6 +841,7 @@ View recent dream consolidation journal entries.
 ```
 Parameters:
   limit: int            — Number of entries (default: 10)
+  offset: int           — Skip first N entries for pagination (default: 0)
 
 Returns: dict
 ```
@@ -1383,6 +1388,7 @@ Parameters:
   query: str            — What to recall (required)
   user_id: str | None   — User filter
   limit: int            — Max memories (default: 5)
+  offset: int           — Skip first N results for pagination (default: 0)
 
 Use: "Before answering, recall what you know about this topic"
 ```
@@ -1429,6 +1435,7 @@ Recap of recent episodes with summaries and outcomes.
 ```
 Parameters:
   limit: int            — Number of episodes (default: 5)
+  offset: int           — Skip first N episodes for pagination (default: 0)
 
 Use: "What happened in my last few sessions?"
 ```

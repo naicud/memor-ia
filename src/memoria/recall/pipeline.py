@@ -146,6 +146,7 @@ class RecallPipeline:
         self,
         query: str,
         limit: int = 5,
+        offset: int = 0,
         context: RecallContext | None = None,
         **kwargs: Any,
     ) -> list[RankedResult]:
@@ -155,7 +156,7 @@ class RecallPipeline:
         2. Fuse results with RRF or weighted scoring.
         3. Apply context filtering.
         4. Deduplicate.
-        5. Return top-k.
+        5. Return top-k with offset.
         """
         if not self.strategies:
             return []
@@ -164,14 +165,14 @@ class RecallPipeline:
             return []
 
         # 0. Check cache
-        cache_key = f"{query}:{limit}:{sorted(kwargs.items())}"
+        cache_key = f"{query}:{limit}:{offset}:{sorted(kwargs.items())}"
         if self._cache is not None:
             cached = self._cache.get(cache_key)
             if cached is not None:
                 return cached
 
         # 1. Gather results from each strategy (parallel)
-        result_lists = self._run_strategies(query, limit, **kwargs)
+        result_lists = self._run_strategies(query, limit + offset, **kwargs)
 
         if not any(result_lists):
             return []
@@ -190,10 +191,10 @@ class RecallPipeline:
         fused = deduplicate(fused)
 
         # 4.5. Diversify
-        fused = diversify_results(fused, limit=limit)
+        fused = diversify_results(fused, limit=limit + offset)
 
-        # 5. Top-k
-        results = fused[:limit]
+        # 5. Top-k with offset
+        results = fused[offset:offset + limit]
 
         # 6. Store in cache
         if self._cache is not None:

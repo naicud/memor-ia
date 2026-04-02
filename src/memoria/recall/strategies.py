@@ -37,7 +37,7 @@ class RecallStrategy(ABC):
 
     @abstractmethod
     def retrieve(
-        self, query: str, limit: int = 10, **kwargs: Any
+        self, query: str, limit: int = 10, offset: int = 0, **kwargs: Any
     ) -> list[RecallResult]:
         """Retrieve relevant results for a query."""
 
@@ -59,7 +59,7 @@ class KeywordStrategy(RecallStrategy):
         self.memory_dir = Path(memory_dir)
 
     def retrieve(
-        self, query: str, limit: int = 10, **kwargs: Any
+        self, query: str, limit: int = 10, offset: int = 0, **kwargs: Any
     ) -> list[RecallResult]:
         """Use find_relevant_memories from core.recall."""
         from memoria.core.recall import find_relevant_memories
@@ -67,7 +67,7 @@ class KeywordStrategy(RecallStrategy):
         memories = find_relevant_memories(query, str(self.memory_dir))
 
         results: list[RecallResult] = []
-        for m in memories[:limit]:
+        for m in memories[offset:offset + limit]:
             # Read file content when available
             content = _read_file_content(m.path)
             results.append(
@@ -98,7 +98,7 @@ class VectorStrategy(RecallStrategy):
         self._search = search
 
     def retrieve(
-        self, query: str, limit: int = 10, **kwargs: Any
+        self, query: str, limit: int = 10, offset: int = 0, **kwargs: Any
     ) -> list[RecallResult]:
         """Use SemanticSearch.search()."""
         search_kwargs: dict[str, Any] = {}
@@ -107,7 +107,7 @@ class VectorStrategy(RecallStrategy):
         if "min_score" in kwargs:
             search_kwargs["min_score"] = kwargs["min_score"]
 
-        results = self._search.search(query, limit=limit, **search_kwargs)
+        results = self._search.search(query, limit=limit, offset=offset, **search_kwargs)
         return [
             RecallResult(
                 id=r.id,
@@ -136,7 +136,7 @@ class GraphStrategy(RecallStrategy):
         self._kg = kg
 
     def retrieve(
-        self, query: str, limit: int = 10, **kwargs: Any
+        self, query: str, limit: int = 10, offset: int = 0, **kwargs: Any
     ) -> list[RecallResult]:
         """Extract entities from query, find related entities in graph."""
         from memoria.graph.entities import extract_entities
@@ -173,7 +173,7 @@ class GraphStrategy(RecallStrategy):
                 )
 
         results.sort(key=lambda r: r.score, reverse=True)
-        return results[:limit]
+        return results[offset:offset + limit]
 
     @property
     def name(self) -> str:

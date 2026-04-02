@@ -129,7 +129,7 @@ class TestVectorStrategy:
         strategy = VectorStrategy(mock_search)
         results = strategy.retrieve("test query", limit=5)
 
-        mock_search.search.assert_called_once_with("test query", limit=5)
+        mock_search.search.assert_called_once_with("test query", limit=5, offset=0)
         assert len(results) == 1
         assert results[0].id == "v1"
         assert results[0].source == "vector"
@@ -140,7 +140,7 @@ class TestVectorStrategy:
         mock_search.search.return_value = []
         strategy = VectorStrategy(mock_search)
         strategy.retrieve("q", user_id="u1")
-        mock_search.search.assert_called_once_with("q", limit=10, user_id="u1")
+        mock_search.search.assert_called_once_with("q", limit=10, offset=0, user_id="u1")
 
     def test_empty_results(self):
         mock_search = MagicMock()
