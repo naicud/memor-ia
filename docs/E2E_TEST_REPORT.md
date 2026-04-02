@@ -1,6 +1,6 @@
-# MEMORIA — End-to-End Test Report
+# MEMORIA v2.0.0 — End-to-End Test Report
 
-> Full conversation simulation tests covering all 56 MCP tools, 7 resources,
+> Full conversation simulation tests covering all 56 MCP tools, 6 resources,
 > and 5 prompts through realistic multi-turn scenarios.
 
 ## Test Summary

@@ -32,7 +32,7 @@ All MEMORIA behavior can be configured via environment variables:
 | `MEMORIA_TRANSPORT` | Transport protocol | `stdio` | `http` |
 | `MEMORIA_HOST` | HTTP bind address | `127.0.0.1` | `0.0.0.0` |
 | `MEMORIA_PORT` | HTTP port | `8080` | `3000` |
-| `MEMORIA_PROJECT_DIR` | Memory storage root | `cwd` | `/data/memoria` |
+| `MEMORIA_DATA_DIR` | Memory storage root | `cwd` | `/data/memoria` |
 
 ### Graph Backend
 
@@ -54,7 +54,7 @@ When `MEMORIA_GRAPH_HOST` is not set, MEMORIA uses InMemoryGraph (pure Python, n
 
 ```bash
 # Minimal (pure Python backends)
-export MEMORIA_PROJECT_DIR=/path/to/project
+export MEMORIA_DATA_DIR=/path/to/project
 
 # With FalkorDB
 export MEMORIA_GRAPH_HOST=localhost

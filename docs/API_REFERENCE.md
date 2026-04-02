@@ -57,7 +57,7 @@ Memoria(
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `project_dir` | `str \| None` | Root directory for memory files. Defaults to `MEMORIA_PROJECT_DIR` or `cwd` |
+| `project_dir` | `str \| None` | Root directory for memory files. Defaults to `MEMORIA_DATA_DIR` or `cwd` |
 | `config` | `dict \| None` | Optional configuration overrides |
 
 **Example:**

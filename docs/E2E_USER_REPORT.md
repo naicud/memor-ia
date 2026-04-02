@@ -14,9 +14,9 @@
 _A developer connects MEMORIA for the first time, teaches it about their project, preferences, and verifies recall._
 
 **Turns:** 10  
-**Total time:** 18ms  
+**Total time:** 19ms  
 
-### Turn 1: `memoria_add` ✅ (6ms)
+### Turn 1: `memoria_add` ✅ (7ms)
 
 **Request:**
 ```json
@@ -31,7 +31,7 @@ _A developer connects MEMORIA for the first time, teaches it about their project
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-abfcbcfe150a749e/memory/fb27780e.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-4c9fa2e8c5f04592/memory/186c41f7.md",
   "content_preview": "I'm Daniel, a senior Python developer. I use Python 3.12+ with strict type hints everywhere. My pref"
 }
 ```
@@ -51,7 +51,7 @@ _A developer connects MEMORIA for the first time, teaches it about their project
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-abfcbcfe150a749e/memory/de9f1cce.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-4c9fa2e8c5f04592/memory/8ec10d14.md",
   "content_preview": "The memor-ia project is a proactive memory framework for AI agents. It uses FalkorDB for the knowled"
 }
 ```
@@ -71,7 +71,7 @@ _A developer connects MEMORIA for the first time, teaches it about their project
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-abfcbcfe150a749e/memory/fafa73f7.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-4c9fa2e8c5f04592/memory/6d711d66.md",
   "content_preview": "The team: Daniel (lead, backend), Alice (MCP tools), Bob (frontend React dashboard). CI runs on GitH"
 }
 ```
@@ -187,7 +187,7 @@ _A developer connects MEMORIA for the first time, teaches it about their project
 {
   "core": {
     "total_memories": 3,
-    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-abfcbcfe150a749e/memory"
+    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-4c9fa2e8c5f04592/memory"
   },
   "episodic": {
     "total_episodes": 0,
@@ -212,8 +212,8 @@ _A developer connects MEMORIA for the first time, teaches it about their project
 **Response:**
 ```json
 {
-  "project_dir": "/private/var/folders/fv/mf1hrly52x52xn37lc4wq3y00000gn/T/pytest-of-danielnicusornaicu/pytest-274/test_developer_onboarding_conv0",
-  "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-abfcbcfe150a749e/memory",
+  "project_dir": "/private/var/folders/fv/mf1hrly52x52xn37lc4wq3y00000gn/T/pytest-of-danielnicusornaicu/pytest-275/test_developer_onboarding_conv0",
+  "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_developer_onboarding_conv0-4c9fa2e8c5f04592/memory",
   "version": "2.0.0",
   "backends": {
     "graph": "KnowledgeGraph",
@@ -247,9 +247,9 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 **Response:**
 ```json
 {
-  "episode_id": "07b098cb2500",
+  "episode_id": "dbf8e45680a7",
   "title": "Debug sqlite-vec INSERT OR REPLACE failure",
-  "started_at": 1775131058.394155,
+  "started_at": 1775131340.0043619,
   "ended_at": null,
   "agent_id": "",
   "session_id": "",
@@ -273,10 +273,10 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 **Response:**
 ```json
 {
-  "event_id": "f3d1983d7392",
+  "event_id": "ef35f54f3589",
   "event_type": "observation",
   "content": "test_vector.py::test_upsert fails with: UNIQUE constraint failed: vec_embeddings.id. The INSERT OR REPLACE statement isn't working.",
-  "timestamp": 1775131058.395894,
+  "timestamp": 1775131340.006243,
   "agent_id": "",
   "user_id": "",
   "metadata": {},
@@ -297,10 +297,10 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 **Response:**
 ```json
 {
-  "event_id": "631ed13e57c4",
+  "event_id": "5e26028d3066",
   "event_type": "tool_use",
   "content": "Tried using ON CONFLICT clause but sqlite-vec virtual tables don't support it. The SQLite docs confirm virtual tables have limited DML support.",
-  "timestamp": 1775131058.3969002,
+  "timestamp": 1775131340.007159,
   "agent_id": "",
   "user_id": "",
   "metadata": {},
@@ -321,10 +321,10 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 **Response:**
 ```json
 {
-  "event_id": "2f3653c410a0",
+  "event_id": "33f00fb48101",
   "event_type": "decision",
   "content": "Decision: Use DELETE + INSERT pattern instead. First DELETE WHERE id = ?, then INSERT. This works for both single and batch operations.",
-  "timestamp": 1775131058.3979762,
+  "timestamp": 1775131340.0080938,
   "agent_id": "",
   "user_id": "",
   "metadata": {},
@@ -345,10 +345,10 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 **Response:**
 ```json
 {
-  "event_id": "f0c2b345eb23",
+  "event_id": "738e65d1f0e7",
   "event_type": "milestone",
   "content": "Fix applied in vector/client.py lines 95-138. Both insert() and insert_batch() now use DELETE+INSERT. All 4044 tests pass.",
-  "timestamp": 1775131058.399002,
+  "timestamp": 1775131340.0090292,
   "agent_id": "",
   "user_id": "",
   "metadata": {},
@@ -369,7 +369,7 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_debugging_conversation0-3783433642c33b39/memory/a47b82e1.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_debugging_conversation0-219595b4fc892970/memory/66d8c074.md",
   "content_preview": "sqlite-vec virtual tables do NOT support INSERT OR REPLACE or ON CONFLICT. The workaround is DELETE "
 }
 ```
@@ -387,10 +387,10 @@ _A developer debugs a test failure while MEMORIA tracks the full episode: observ
 **Response:**
 ```json
 {
-  "episode_id": "07b098cb2500",
+  "episode_id": "dbf8e45680a7",
   "title": "Debug sqlite-vec INSERT OR REPLACE failure",
-  "started_at": 1775131058.394155,
-  "ended_at": 1775131058.403877,
+  "started_at": 1775131340.0043619,
+  "ended_at": 1775131340.014117,
   "agent_id": "",
   "session_id": "",
   "summary": "Fixed sqlite-vec upsert by replacing INSERT OR REPLACE with DELETE + INSERT pattern.",
@@ -484,12 +484,12 @@ _An agent records tool invocations, learns patterns, creates named workflows, an
 ```json
 {
   "tool_name": "grep",
-  "pattern_id": "7af1423b62dc",
+  "pattern_id": "7b5a457d9e28",
   "input_template": "grep -rn 'def authenticate' src/",
   "context_trigger": "searching for authentication code",
   "success_rate": 1.0,
   "use_count": 1,
-  "last_used": 1775131058.4111218,
+  "last_used": 1775131340.020855,
   "avg_duration_ms": 150.0,
   "common_errors": []
 }
@@ -513,12 +513,12 @@ _An agent records tool invocations, learns patterns, creates named workflows, an
 ```json
 {
   "tool_name": "pytest",
-  "pattern_id": "2a8ae62251be",
+  "pattern_id": "36a234a33159",
   "input_template": "pytest tests/ -q",
   "context_trigger": "running full test suite",
   "success_rate": 1.0,
   "use_count": 1,
-  "last_used": 1775131058.4128718,
+  "last_used": 1775131340.02247,
   "avg_duration_ms": 12000.0,
   "common_errors": []
 }
@@ -542,12 +542,12 @@ _An agent records tool invocations, learns patterns, creates named workflows, an
 ```json
 {
   "tool_name": "docker",
-  "pattern_id": "9439d9077335",
+  "pattern_id": "188c64a4a6e9",
   "input_template": "docker compose up -d",
   "context_trigger": "deploying for integration test",
   "success_rate": 1.0,
   "use_count": 1,
-  "last_used": 1775131058.413831,
+  "last_used": 1775131340.023381,
   "avg_duration_ms": 30000.0,
   "common_errors": []
 }
@@ -571,12 +571,12 @@ _An agent records tool invocations, learns patterns, creates named workflows, an
 ```json
 {
   "tool_name": "pytest",
-  "pattern_id": "2a8ae62251be",
+  "pattern_id": "36a234a33159",
   "input_template": "pytest tests/ -q",
   "context_trigger": "running full test suite",
   "success_rate": 0.5,
   "use_count": 2,
-  "last_used": 1775131058.41477,
+  "last_used": 1775131340.024262,
   "avg_duration_ms": 6250.0,
   "common_errors": [
     "UNIQUE constraint failed"
@@ -615,7 +615,7 @@ _An agent records tool invocations, learns patterns, creates named workflows, an
 **Response:**
 ```json
 {
-  "workflow_id": "dcea913192a1",
+  "workflow_id": "be3e7f5c46bb",
   "name": "deploy-and-test",
   "description": "Full deploy + E2E test cycle",
   "steps": [
@@ -688,9 +688,9 @@ _An agent records tool invocations, learns patterns, creates named workflows, an
 _Store project facts, auto-extract entities, search across the knowledge graph, get cross-database insights._
 
 **Turns:** 8  
-**Total time:** 175ms  
+**Total time:** 169ms  
 
-### Turn 1: `memoria_add` ✅ (5ms)
+### Turn 1: `memoria_add` ✅ (4ms)
 
 **Request:**
 ```json
@@ -705,7 +705,7 @@ _Store project facts, auto-extract entities, search across the knowledge graph, 
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-9bffe2da49399698/memory/ca9c7ecc.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-da85d1501b5a20c9/memory/296ff0df.md",
   "content_preview": "Daniel created the memor-ia project in 2024. It uses FalkorDB for the knowledge graph and SQLite for"
 }
 ```
@@ -725,7 +725,7 @@ _Store project facts, auto-extract entities, search across the knowledge graph, 
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-9bffe2da49399698/memory/b084f0b1.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-da85d1501b5a20c9/memory/00841ef5.md",
   "content_preview": "Alice works on the MCP server component. She writes all the FastMCP tool handlers and maintains the "
 }
 ```
@@ -745,7 +745,7 @@ _Store project facts, auto-extract entities, search across the knowledge graph, 
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-9bffe2da49399698/memory/e786b253.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-da85d1501b5a20c9/memory/be4a17f8.md",
   "content_preview": "The CI pipeline uses GitHub Actions. Docker Compose orchestrates FalkorDB + the MCP server for deplo"
 }
 ```
@@ -793,7 +793,7 @@ _Store project facts, auto-extract entities, search across the knowledge graph, 
 ]
 ```
 
-### Turn 6: `memoria_insights` ✅ (162ms)
+### Turn 6: `memoria_insights` ✅ (157ms)
 
 **Response:**
 ```json
@@ -817,7 +817,7 @@ _Store project facts, auto-extract entities, search across the knowledge graph, 
 {
   "core": {
     "total_memories": 3,
-    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-9bffe2da49399698/memory"
+    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_graph_enrichment_conversa0-da85d1501b5a20c9/memory"
   },
   "episodic": {
     "total_episodes": 0,
@@ -867,7 +867,7 @@ _Store memories across tiers (working/reference/archival), grant access to team 
 **Turns:** 8  
 **Total time:** 11ms  
 
-### Turn 1: `memoria_add_to_tier` ✅ (4ms)
+### Turn 1: `memoria_add_to_tier` ✅ (5ms)
 
 **Request:**
 ```json
@@ -882,7 +882,7 @@ _Store memories across tiers (working/reference/archival), grant access to team 
 ```json
 {
   "status": "created",
-  "id": "2c222eb6-5d77-4ef9-a966-400d4e8b140c",
+  "id": "d203e08d-6eeb-4fe3-9e3c-5aba626d9568",
   "tier": "working"
 }
 ```
@@ -920,7 +920,7 @@ _Store memories across tiers (working/reference/archival), grant access to team 
 ```json
 {
   "status": "created",
-  "id": "e01b31cd-b645-45f4-ac46-916f40bc4c94",
+  "id": "6341efc4-2d7c-41d1-8562-80adccbc4895",
   "tier": "archival"
 }
 ```
@@ -958,7 +958,7 @@ _Store memories across tiers (working/reference/archival), grant access to team 
 ```json
 {
   "status": "granted",
-  "grant_id": "0bcac079ad4d4f9fa5255318326a173d",
+  "grant_id": "2108581ffc754a40aef2e7e7f6b31b0e",
   "agent_id": "alice",
   "namespace": "project-memoria",
   "role": "reader"
@@ -1071,7 +1071,7 @@ _Register a product, record usage, run analytics: churn prediction, workflow det
     "episodic"
   ],
   "metadata": {},
-  "registered_at": 1775131058.611091
+  "registered_at": 1775131340.215212
 }
 ```
 
@@ -1094,7 +1094,7 @@ _Register a product, record usage, run analytics: churn prediction, workflow det
     "product_id": "memoria-mcp",
     "feature": "search",
     "action": "hybrid_recall",
-    "timestamp": 1775131058.6126888,
+    "timestamp": 1775131340.21683,
     "duration_seconds": 45.0,
     "metadata": {},
     "session_id": ""
@@ -1125,7 +1125,7 @@ _Register a product, record usage, run analytics: churn prediction, workflow det
     "product_id": "memoria-mcp",
     "feature": "graph",
     "action": "entity_extract",
-    "timestamp": 1775131058.6136022,
+    "timestamp": 1775131340.217676,
     "duration_seconds": 45.0,
     "metadata": {},
     "session_id": ""
@@ -1156,7 +1156,7 @@ _Register a product, record usage, run analytics: churn prediction, workflow det
     "product_id": "memoria-mcp",
     "feature": "episodic",
     "action": "start_session",
-    "timestamp": 1775131058.6144829,
+    "timestamp": 1775131340.2184892,
     "duration_seconds": 45.0,
     "metadata": {},
     "session_id": ""
@@ -1262,13 +1262,13 @@ _Register a product, record usage, run analytics: churn prediction, workflow det
 **Response:**
 ```json
 {
-  "signal_id": "b89ed084f4f34013bb615981d7552b43",
+  "signal_id": "15fc431cf59c4401a2e973369f3cc359",
   "signal_type": "expansion_signal",
   "product_id": "memoria-mcp",
   "description": "User adopted 3 new feature categories",
   "impact_score": 0.7,
   "confidence": 0.8,
-  "timestamp": 1775131058.618458,
+  "timestamp": 1775131340.222353,
   "evidence": [],
   "recommended_action": "",
   "metadata": {}
@@ -1331,7 +1331,7 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
     "Matched pattern: sql_drop"
   ],
   "confidence": 0.3,
-  "timestamp": 1775131058.621789,
+  "timestamp": 1775131340.22578,
   "source_content": "DROP TABLE users; -- this is a normal memory",
   "recommended_action": "block"
 }
@@ -1354,7 +1354,7 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
   "contradictions": [],
   "confidence": 1.0,
   "checked_against": 2,
-  "timestamp": 1775131058.62323
+  "timestamp": 1775131340.2271721
 }
 ```
 
@@ -1374,8 +1374,8 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
   "content_hash": "32fd1ac48ef23cd8026389448ccc82dc98ef5cf1f56ef30d4eec7de307624f75",
   "content_id": "integrity-check-001",
   "status": "intact",
-  "created_at": 1775131058.623905,
-  "last_verified": 1775131058.623905,
+  "created_at": 1775131340.2278342,
+  "last_verified": 1775131340.2278342,
   "verification_count": 0,
   "metadata": {
     "content_length": 33
@@ -1402,8 +1402,8 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
   "focus_state": "deep_focus",
   "active_topics": 1,
   "context_switches": 0,
-  "session_duration_minutes": 3.5762786865234374e-08,
-  "timestamp": 1775131058.624563
+  "session_duration_minutes": 4.76837158203125e-08,
+  "timestamp": 1775131340.2284749
 }
 ```
 
@@ -1425,8 +1425,8 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
   "focus_state": "deep_focus",
   "active_topics": 2,
   "context_switches": 1,
-  "session_duration_minutes": 1.09712282816569e-05,
-  "timestamp": 1775131058.625219
+  "session_duration_minutes": 1.0732809702555338e-05,
+  "timestamp": 1775131340.229116
 }
 ```
 
@@ -1440,7 +1440,7 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
   "severity": 0.0,
   "recommendation": "",
   "cooldown_minutes": 0,
-  "timestamp": 1775131058.625867
+  "timestamp": 1775131340.229752
 }
 ```
 
@@ -1457,8 +1457,8 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
 **Response:**
 ```json
 {
-  "session_id": "d52ea0a9-643a-4100-9944-a04c68776b2d",
-  "started_at": 1775131058.626514,
+  "session_id": "f352c689-f48e-4ddc-b836-c931c91ab8dd",
+  "started_at": 1775131340.230376,
   "ended_at": null,
   "focus_scores": [],
   "context_switches": 0,
@@ -1475,9 +1475,9 @@ _Scan content for poisoning, check consistency, track cognitive load, start focu
 _A realistic developer workday: onboard context, debug a bug, record findings, learn patterns, get suggestions, end the session with a snapshot._
 
 **Turns:** 17  
-**Total time:** 163ms  
+**Total time:** 165ms  
 
-### Turn 1: `memoria_add` ✅ (4ms)
+### Turn 1: `memoria_add` ✅ (5ms)
 
 **Request:**
 ```json
@@ -1492,7 +1492,7 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-df4400b03de86c8c/memory/8290d200.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-cd325034ea9aed1f/memory/3322dd5d.md",
   "content_preview": "memor-ia v2.0 uses FalkorDB graph + sqlite-vec vectors. MCP server on FastMCP with 56 tools. Deploy "
 }
 ```
@@ -1509,9 +1509,9 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 **Response:**
 ```json
 {
-  "episode_id": "9ca2511d1b63",
+  "episode_id": "ec2aee59df96",
   "title": "Morning session: fix vector upsert bug",
-  "started_at": 1775131058.6332061,
+  "started_at": 1775131340.2381382,
   "ended_at": null,
   "agent_id": "",
   "session_id": "",
@@ -1535,10 +1535,10 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 **Response:**
 ```json
 {
-  "event_id": "f23fd22564a3",
+  "event_id": "7c24be8be46f",
   "event_type": "observation",
   "content": "test_vector.py fails on INSERT OR REPLACE with sqlite-vec",
-  "timestamp": 1775131058.6341171,
+  "timestamp": 1775131340.23905,
   "agent_id": "",
   "user_id": "",
   "metadata": {},
@@ -1559,10 +1559,10 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 **Response:**
 ```json
 {
-  "event_id": "152df4491b7e",
+  "event_id": "e492c754f634",
   "event_type": "decision",
   "content": "Virtual tables don't support ON CONFLICT. Using DELETE+INSERT.",
-  "timestamp": 1775131058.635009,
+  "timestamp": 1775131340.239912,
   "agent_id": "",
   "user_id": "",
   "metadata": {},
@@ -1583,7 +1583,7 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 ```json
 {
   "status": "created",
-  "id": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-df4400b03de86c8c/memory/5c1a2b9d.md",
+  "id": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-cd325034ea9aed1f/memory/ae15a142.md",
   "content_preview": "sqlite-vec virtual tables don't support INSERT OR REPLACE. Use DELETE + INSERT as workaround."
 }
 ```
@@ -1606,12 +1606,12 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 ```json
 {
   "tool_name": "pytest",
-  "pattern_id": "2de641052d85",
+  "pattern_id": "9bb630c28ef7",
   "input_template": "pytest tests/ -q",
   "context_trigger": "verify fix",
   "success_rate": 1.0,
   "use_count": 1,
-  "last_used": 1775131058.636993,
+  "last_used": 1775131340.242026,
   "avg_duration_ms": 12000.0,
   "common_errors": []
 }
@@ -1630,10 +1630,10 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 **Response:**
 ```json
 {
-  "episode_id": "9ca2511d1b63",
+  "episode_id": "ec2aee59df96",
   "title": "Morning session: fix vector upsert bug",
-  "started_at": 1775131058.6332061,
-  "ended_at": 1775131058.637844,
+  "started_at": 1775131340.2381382,
+  "ended_at": 1775131340.243068,
   "agent_id": "",
   "session_id": "",
   "summary": "Fixed sqlite-vec upsert with DELETE+INSERT pattern",
@@ -1681,7 +1681,7 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 ```json
 {
   "status": "created",
-  "id": "83fb67a8-3302-4e18-83c3-568289ac31fb",
+  "id": "55b69590-d7c8-47e7-af29-199559ad5450",
   "tier": "working"
 }
 ```
@@ -1701,7 +1701,7 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 []
 ```
 
-### Turn 11: `memoria_insights` ✅ (144ms)
+### Turn 11: `memoria_insights` ✅ (143ms)
 
 **Request:**
 ```json
@@ -1750,7 +1750,7 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 {
   "core": {
     "total_memories": 2,
-    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-df4400b03de86c8c/memory"
+    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-cd325034ea9aed1f/memory"
   },
   "episodic": {
     "total_episodes": 1,
@@ -1776,11 +1776,11 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 ```json
 [
   {
-    "id": "MemoryHeader(filename='5c1a2b9d.md', file_path='/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-df4400b03de86c8c/memory/5c1a2b9d.md', mtime_ms=1775131058636.0933, description=\"sqlite-vec virtual tables don't support INSERT OR REPLACE. Use DELETE + INSERT as workaround.\", type=<MemoryType.USER: 'user'>)",
+    "id": "MemoryHeader(filename='ae15a142.md', file_path='/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-cd325034ea9aed1f/memory/ae15a142.md', mtime_ms=1775131340240.9036, description=\"sqlite-vec virtual tables don't support INSERT OR REPLACE. Use DELETE + INSERT as workaround.\", type=<MemoryType.USER: 'user'>)",
     "error": "unreadable"
   },
   {
-    "id": "MemoryHeader(filename='8290d200.md', file_path='/Users/danielnicusornaicu/.memoria/projects/test_full_work…
+    "id": "MemoryHeader(filename='3322dd5d.md', file_path='/Users/danielnicusornaicu/.memoria/projects/test_full_work…
 ```
 
 ### Turn 15: `resource:memoria://config` ✅ (1ms)
@@ -1788,8 +1788,8 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 **Response:**
 ```json
 {
-  "project_dir": "/private/var/folders/fv/mf1hrly52x52xn37lc4wq3y00000gn/T/pytest-of-danielnicusornaicu/pytest-274/test_full_workday_session0",
-  "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-df4400b03de86c8c/memory",
+  "project_dir": "/private/var/folders/fv/mf1hrly52x52xn37lc4wq3y00000gn/T/pytest-of-danielnicusornaicu/pytest-275/test_full_workday_session0",
+  "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-cd325034ea9aed1f/memory",
   "version": "2.0.0",
   "backends": {
     "graph": "KnowledgeGraph",
@@ -1809,7 +1809,7 @@ _A realistic developer workday: onboard context, debug a bug, record findings, l
 {
   "core": {
     "total_memories": 2,
-    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-df4400b03de86c8c/memory"
+    "memory_dir": "/Users/danielnicusornaicu/.memoria/projects/test_full_workday_session0-cd325034ea9aed1f/memory"
   },
   "episodic": {
     "total_episodes": 1,

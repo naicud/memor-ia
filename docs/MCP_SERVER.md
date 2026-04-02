@@ -1,8 +1,8 @@
-# MEMORIA MCP Server
+# MEMORIA MCP Server — v2.0.0
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **56 tools**, **7 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **56 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -133,7 +133,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
       "command": "memoria-mcp",
       "args": [],
       "env": {
-        "MEMORIA_PROJECT_DIR": "/path/to/your/project"
+        "MEMORIA_DATA_DIR": "/path/to/your/project"
       }
     }
   }
@@ -149,7 +149,7 @@ With UV (recommended for isolated environments):
       "command": "uvx",
       "args": ["--from", "git+https://github.com/naicud/memor-ia.git", "memoria-mcp"],
       "env": {
-        "MEMORIA_PROJECT_DIR": "/path/to/your/project"
+        "MEMORIA_DATA_DIR": "/path/to/your/project"
       }
     }
   }
@@ -165,7 +165,7 @@ With FalkorDB graph backend:
       "command": "memoria-mcp",
       "args": [],
       "env": {
-        "MEMORIA_PROJECT_DIR": "/path/to/your/project",
+        "MEMORIA_DATA_DIR": "/path/to/your/project",
         "MEMORIA_GRAPH_HOST": "localhost",
         "MEMORIA_GRAPH_PORT": "6379"
       }
@@ -185,7 +185,7 @@ Add to `.cursor/mcp.json` in your project root:
       "command": "memoria-mcp",
       "args": [],
       "env": {
-        "MEMORIA_PROJECT_DIR": "."
+        "MEMORIA_DATA_DIR": "."
       }
     }
   }
@@ -204,7 +204,7 @@ Add to `.continue/config.json`:
       "command": "memoria-mcp",
       "args": [],
       "env": {
-        "MEMORIA_PROJECT_DIR": "${workspaceFolder}"
+        "MEMORIA_DATA_DIR": "${workspaceFolder}"
       }
     }
   ]
@@ -223,7 +223,7 @@ proc = subprocess.Popen(
     ["memoria-mcp"],
     stdin=subprocess.PIPE,
     stdout=subprocess.PIPE,
-    env={"MEMORIA_PROJECT_DIR": "/my/project"}
+    env={"MEMORIA_DATA_DIR": "/my/project"}
 )
 
 # Send MCP JSON-RPC requests via stdin
@@ -334,7 +334,7 @@ services:
       - MEMORIA_GRAPH_PORT=6379
       - MEMORIA_VECTOR_DB=/app/data/vectors.db
       - MEMORIA_EMBEDDING_DIM=384
-      - MEMORIA_PROJECT_DIR=/app/data
+      - MEMORIA_DATA_DIR=/app/data
     volumes:
       - memoria-data:/app/data
     depends_on:
@@ -361,7 +361,7 @@ volumes:
 | `MEMORIA_TRANSPORT` | MCP transport protocol (`stdio` or `http`) | `stdio` |
 | `MEMORIA_HOST` | HTTP server bind address | `127.0.0.1` |
 | `MEMORIA_PORT` | HTTP server port | `8080` |
-| `MEMORIA_PROJECT_DIR` | Memory storage directory | Current working directory |
+| `MEMORIA_DATA_DIR` | Memory storage directory | Current working directory |
 | `MEMORIA_GRAPH_HOST` | FalkorDB host (enables graph backend) | _(not set — uses InMemoryGraph)_ |
 | `MEMORIA_GRAPH_PORT` | FalkorDB port | `6379` |
 | `MEMORIA_VECTOR_DB` | SQLite vector database path | _(not set — uses in-memory)_ |
