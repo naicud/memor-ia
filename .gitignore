@@ -46,3 +46,4 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 memoria_data/
+AGENTS.copilot-cli.MD
