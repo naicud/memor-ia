@@ -7,7 +7,7 @@ name = "memoria"
 version = "2.0.0"
 description = "Proactive memory framework for AI agents — inspired by Mem0, with agent orchestration, proactive engine, and dream consolidation"
 readme = "README.md"
-license = "BSL-1.1"
+license = {text = "BSL-1.1"}
 requires-python = ">=3.11"
 classifiers = [
     "Development Status :: 3 - Alpha",
