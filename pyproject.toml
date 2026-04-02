@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "memoria"
-version = "2.0.0"
+version = "2.1.0"
 description = "Proactive memory framework for AI agents — inspired by Mem0, with agent orchestration, proactive engine, and dream consolidation"
 readme = "README.md"
 license = {text = "BSL-1.1"}
