@@ -20,7 +20,7 @@
 
 _Subscribe → broadcast → list → stats → unsubscribe._
 
-**Turns:** 6 | **Total time:** 12ms | **Avg:** 2ms/turn
+**Turns:** 6 | **Total time:** 10ms | **Avg:** 2ms/turn
 
 ### Turn 1 — `stream_subscribe` ✅
 
@@ -35,16 +35,16 @@ _Subscribe → broadcast → list → stats → unsubscribe._
 }
 ```
 
-**Response** (8.27ms):
+**Response** (6.9ms):
 
 ```json
 {
-  "channel_id": "111501dea380411b",
+  "channel_id": "f55d095b39234c73",
   "type": "sse",
   "closed": false,
   "event_count": 0,
   "queue_size": 0,
-  "created_at": 1775150408.948905,
+  "created_at": 1775154700.1561642,
   "filter": {
     "event_types": ["memory_created", "memory_updated"],
     "user_ids": ["user-stream-1"],
@@ -61,17 +61,17 @@ _Subscribe → broadcast → list → stats → unsubscribe._
 {}
 ```
 
-**Response** (0.81ms):
+**Response** (0.78ms):
 
 ```json
 [
   {
-    "channel_id": "111501dea380411b",
+    "channel_id": "f55d095b39234c73",
     "type": "sse",
     "closed": false,
     "event_count": 0,
     "queue_size": 0,
-    "created_at": 1775150408.948905,
+    "created_at": 1775154700.1561642,
     "filter": {
       "event_types": ["memory_created", "memory_updated"],
       "user_ids": ["user-stream-1"],
@@ -128,16 +128,16 @@ _Subscribe → broadcast → list → stats → unsubscribe._
 
 ```json
 {
-  "channel_id": "111501dea380411b"
+  "channel_id": "f55d095b39234c73"
 }
 ```
 
-**Response** (0.67ms):
+**Response** (0.66ms):
 
 ```json
 {
   "status": "closed",
-  "channel_id": "111501dea380411b"
+  "channel_id": "f55d095b39234c73"
 }
 ```
 
@@ -149,7 +149,7 @@ _Subscribe → broadcast → list → stats → unsubscribe._
 {}
 ```
 
-**Response** (0.66ms):
+**Response** (0.63ms):
 
 ```json
 {
@@ -167,7 +167,7 @@ _Subscribe → broadcast → list → stats → unsubscribe._
 
 _Create memory → attach files → list → get → stats → delete._
 
-**Turns:** 8 | **Total time:** 13ms | **Avg:** 2ms/turn
+**Turns:** 8 | **Total time:** 12ms | **Avg:** 2ms/turn
 
 ### Turn 1 — `memoria_add` ✅
 
@@ -181,12 +181,12 @@ _Create memory → attach files → list → get → stats → delete._
 }
 ```
 
-**Response** (6.71ms):
+**Response** (5.67ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+  "id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
   "content_preview": "Architecture diagram discussion"
 }
 ```
@@ -197,7 +197,7 @@ _Create memory → attach files → list → get → stats → delete._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
   "data_base64": "iVBORw0KGgpmYWtlaW1hZ2U=",
   "filename": "diagram.png",
   "mime_type": "image/png",
@@ -205,12 +205,12 @@ _Create memory → attach files → list → get → stats → delete._
 }
 ```
 
-**Response** (1.17ms):
+**Response** (1.19ms):
 
 ```json
 {
-  "attachment_id": "att_308171395157",
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+  "attachment_id": "att_4d40bc5e1b12",
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
   "filename": "diagram.png",
   "mime_type": "image/png",
   "size": 17,
@@ -224,7 +224,7 @@ _Create memory → attach files → list → get → stats → delete._
     "height": null,
     "format": "png"
   },
-  "created_at": 1775150408.963572
+  "created_at": 1775154700.169664
 }
 ```
 
@@ -234,19 +234,19 @@ _Create memory → attach files → list → get → stats → delete._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
   "data_base64": "eyJrZXkiOiJ2YWx1ZSJ9",
   "filename": "config.json",
   "mime_type": "application/json"
 }
 ```
 
-**Response** (0.89ms):
+**Response** (0.98ms):
 
 ```json
 {
-  "attachment_id": "att_c56b609b2f7e",
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+  "attachment_id": "att_6e025a9cdbf9",
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
   "filename": "config.json",
   "mime_type": "application/json",
   "size": 15,
@@ -261,7 +261,7 @@ _Create memory → attach files → list → get → stats → delete._
     "word_count": 1,
     "valid_json": true
   },
-  "created_at": 1775150408.9645371
+  "created_at": 1775154700.170614
 }
 ```
 
@@ -271,17 +271,17 @@ _Create memory → attach files → list → get → stats → delete._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md"
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md"
 }
 ```
 
-**Response** (0.83ms):
+**Response** (1.01ms):
 
 ```json
 [
   {
-    "attachment_id": "att_308171395157",
-    "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+    "attachment_id": "att_4d40bc5e1b12",
+    "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
     "filename": "diagram.png",
     "mime_type": "image/png",
     "size": 17,
@@ -295,11 +295,11 @@ _Create memory → attach files → list → get → stats → delete._
       "height": null,
       "format": "png"
     },
-    "created_at": 1775150408.963572
+    "created_at": 1775154700.169664
   },
   {
-    "attachment_id": "att_c56b609b2f7e",
-    "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+    "attachment_id": "att_6e025a9cdbf9",
+    "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
     "filename": "config.json",
     "mime_type": "application/json",
     "size": 15,
@@ -314,7 +314,7 @@ _Create memory → attach files → list → get → stats → delete._
       "word_count": 1,
       "valid_json": true
     },
-    "created_at": 1775150408.9645371
+    "created_at": 1775154700.170614
   }
 ]
 ```
@@ -325,16 +325,16 @@ _Create memory → attach files → list → get → stats → delete._
 
 ```json
 {
-  "attachment_id": "att_308171395157"
+  "attachment_id": "att_4d40bc5e1b12"
 }
 ```
 
-**Response** (0.71ms):
+**Response** (0.87ms):
 
 ```json
 {
-  "attachment_id": "att_308171395157",
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+  "attachment_id": "att_4d40bc5e1b12",
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
   "filename": "diagram.png",
   "mime_type": "image/png",
   "size": 17,
@@ -348,7 +348,7 @@ _Create memory → attach files → list → get → stats → delete._
     "height": null,
     "format": "png"
   },
-  "created_at": 1775150408.963572
+  "created_at": 1775154700.169664
 }
 ```
 
@@ -360,7 +360,7 @@ _Create memory → attach files → list → get → stats → delete._
 {}
 ```
 
-**Response** (0.72ms):
+**Response** (0.84ms):
 
 ```json
 {
@@ -375,16 +375,16 @@ _Create memory → attach files → list → get → stats → delete._
 
 ```json
 {
-  "attachment_id": "att_c56b609b2f7e"
+  "attachment_id": "att_6e025a9cdbf9"
 }
 ```
 
-**Response** (0.77ms):
+**Response** (0.88ms):
 
 ```json
 {
   "status": "deleted",
-  "attachment_id": "att_c56b609b2f7e"
+  "attachment_id": "att_6e025a9cdbf9"
 }
 ```
 
@@ -394,17 +394,17 @@ _Create memory → attach files → list → get → stats → delete._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md"
+  "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md"
 }
 ```
 
-**Response** (0.71ms):
+**Response** (0.76ms):
 
 ```json
 [
   {
-    "attachment_id": "att_308171395157",
-    "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-45978c45f924fa1c/memory/244dc182.md",
+    "attachment_id": "att_4d40bc5e1b12",
+    "memory_id": "/Users/user/.memoria/projects/test_attachment_lifecycle0-ad2864aecb4d7e38/memory/51de0c98.md",
     "filename": "diagram.png",
     "mime_type": "image/png",
     "size": 17,
@@ -418,7 +418,7 @@ _Create memory → attach files → list → get → stats → delete._
       "height": null,
       "format": "png"
     },
-    "created_at": 1775150408.963572
+    "created_at": 1775154700.169664
   }
 ]
 ```
@@ -429,7 +429,7 @@ _Create memory → attach files → list → get → stats → delete._
 
 _Discover → list → stats (activate/deactivate if any exist)._
 
-**Turns:** 3 | **Total time:** 9ms | **Avg:** 3ms/turn
+**Turns:** 3 | **Total time:** 10ms | **Avg:** 3ms/turn
 
 ### Turn 1 — `plugin_discover` ✅
 
@@ -439,7 +439,7 @@ _Discover → list → stats (activate/deactivate if any exist)._
 {}
 ```
 
-**Response** (7.26ms):
+**Response** (8.99ms):
 
 ```json
 []
@@ -467,7 +467,7 @@ _Discover → list → stats (activate/deactivate if any exist)._
 {}
 ```
 
-**Response** (0.68ms):
+**Response** (0.66ms):
 
 ```json
 {
@@ -501,7 +501,7 @@ _Create template → list → apply._
 }
 ```
 
-**Response** (5.98ms):
+**Response** (5.93ms):
 
 ```json
 {
@@ -522,7 +522,7 @@ _Create template → list → apply._
 }
 ```
 
-**Response** (0.71ms):
+**Response** (0.75ms):
 
 ```json
 [
@@ -553,7 +553,7 @@ _Create template → list → apply._
 ```json
 {
   "status": "created",
-  "id": "2ddc17d5-ee8c-42fa-ae51-9eb21345aa71",
+  "id": "037a70c2-9307-43ff-8e66-5f8044db3491",
   "template": "meeting-notes",
   "content_length": 89
 }
@@ -565,7 +565,7 @@ _Create template → list → apply._
 
 _Register → list → unregister._
 
-**Turns:** 3 | **Total time:** 9ms | **Avg:** 3ms/turn
+**Turns:** 3 | **Total time:** 8ms | **Avg:** 3ms/turn
 
 ### Turn 1 — `webhook_register` ✅
 
@@ -580,16 +580,16 @@ _Register → list → unregister._
 }
 ```
 
-**Response** (6.97ms):
+**Response** (6.27ms):
 
 ```json
 {
-  "webhook_id": "wh_d3d8f00e81df",
+  "webhook_id": "wh_27d98585e6cc",
   "url": "https://example.com/hook",
   "events": ["memory_created", "memory_updated"],
   "active": true,
   "description": "CI notification hook",
-  "created_at": "2026-04-02T17:20:08.995480+00:00"
+  "created_at": "2026-04-02T18:31:40.203464+00:00"
 }
 ```
 
@@ -601,18 +601,18 @@ _Register → list → unregister._
 {}
 ```
 
-**Response** (0.86ms):
+**Response** (0.76ms):
 
 ```json
 [
   {
-    "webhook_id": "wh_d3d8f00e81df",
+    "webhook_id": "wh_27d98585e6cc",
     "url": "https://example.com/hook",
     "events": ["memory_created", "memory_updated"],
     "active": true,
     "consecutive_failures": 0,
     "description": "CI notification hook",
-    "created_at": "2026-04-02T17:20:08.995480+00:00"
+    "created_at": "2026-04-02T18:31:40.203464+00:00"
   }
 ]
 ```
@@ -623,16 +623,16 @@ _Register → list → unregister._
 
 ```json
 {
-  "webhook_id": "wh_d3d8f00e81df"
+  "webhook_id": "wh_27d98585e6cc"
 }
 ```
 
-**Response** (1.01ms):
+**Response** (1.0ms):
 
 ```json
 {
   "removed": true,
-  "webhook_id": "wh_d3d8f00e81df"
+  "webhook_id": "wh_27d98585e6cc"
 }
 ```
 
@@ -655,7 +655,7 @@ _Summarize content + summarize_all._
 }
 ```
 
-**Response** (6.64ms):
+**Response** (6.77ms):
 
 ```json
 {
@@ -680,12 +680,12 @@ _Summarize content + summarize_all._
 }
 ```
 
-**Response** (1.38ms):
+**Response** (1.26ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_summarize0-1bbbd017c07d0a63/memory/f159ea84.md",
+  "id": "/Users/user/.memoria/projects/test_summarize0-13c30c1ec579a879/memory/481c24eb.md",
   "content_preview": "Python 3.14 improves generics and type inference"
 }
 ```
@@ -701,12 +701,12 @@ _Summarize content + summarize_all._
 }
 ```
 
-**Response** (1.15ms):
+**Response** (1.07ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_summarize0-1bbbd017c07d0a63/memory/6764d4db.md",
+  "id": "/Users/user/.memoria/projects/test_summarize0-13c30c1ec579a879/memory/1253f84e.md",
   "content_preview": "Team decided to use FalkorDB for graph storage"
 }
 ```
@@ -722,7 +722,7 @@ _Summarize content + summarize_all._
 }
 ```
 
-**Response** (0.8ms):
+**Response** (0.77ms):
 
 ```json
 {
@@ -739,7 +739,7 @@ _Summarize content + summarize_all._
 
 _Status → start → url → config → stop._
 
-**Turns:** 6 | **Total time:** 512ms | **Avg:** 85ms/turn
+**Turns:** 6 | **Total time:** 511ms | **Avg:** 85ms/turn
 
 ### Turn 1 — `dashboard_status` ✅
 
@@ -749,7 +749,7 @@ _Status → start → url → config → stop._
 {}
 ```
 
-**Response** (6.87ms):
+**Response** (5.81ms):
 
 ```json
 {
@@ -768,7 +768,7 @@ _Status → start → url → config → stop._
 }
 ```
 
-**Response** (3.39ms):
+**Response** (3.35ms):
 
 ```json
 {
@@ -787,7 +787,7 @@ _Status → start → url → config → stop._
 {}
 ```
 
-**Response** (0.71ms):
+**Response** (0.74ms):
 
 ```json
 {
@@ -823,7 +823,7 @@ _Status → start → url → config → stop._
 {}
 ```
 
-**Response** (0.63ms):
+**Response** (0.66ms):
 
 ```json
 {
@@ -842,7 +842,7 @@ _Status → start → url → config → stop._
 {}
 ```
 
-**Response** (500.15ms):
+**Response** (499.58ms):
 
 ```json
 {
@@ -857,7 +857,7 @@ _Status → start → url → config → stop._
 
 _Connect → trust → status → sync → disconnect._
 
-**Turns:** 5 | **Total time:** 17ms | **Avg:** 3ms/turn
+**Turns:** 5 | **Total time:** 13ms | **Avg:** 3ms/turn
 
 ### Turn 1 — `federation_connect` ✅
 
@@ -872,7 +872,7 @@ _Connect → trust → status → sync → disconnect._
 }
 ```
 
-**Response** (11.64ms):
+**Response** (9.35ms):
 
 ```json
 {
@@ -881,7 +881,7 @@ _Connect → trust → status → sync → disconnect._
   "public_key": "",
   "shared_namespaces": ["dev", "staging"],
   "direction": "bidirectional",
-  "connected_at": 1775150409.53895,
+  "connected_at": 1775154700.7414432,
   "last_sync": null,
   "status": "connected",
   "metadata": {}
@@ -900,7 +900,7 @@ _Connect → trust → status → sync → disconnect._
 }
 ```
 
-**Response** (1.63ms):
+**Response** (1.13ms):
 
 ```json
 {
@@ -908,7 +908,7 @@ _Connect → trust → status → sync → disconnect._
   "public_key": "",
   "trust_level": "elevated",
   "allowed_namespaces": [],
-  "granted_at": 1775150409.543127,
+  "granted_at": 1775154700.744452,
   "expires_at": null,
   "revoked": false,
   "metadata": {}
@@ -923,12 +923,12 @@ _Connect → trust → status → sync → disconnect._
 {}
 ```
 
-**Response** (1.56ms):
+**Response** (1.01ms):
 
 ```json
 {
   "protocol": {
-    "instance_id": "memoria-80ecd0dd",
+    "instance_id": "memoria-0e7ef0d1",
     "total_peers": 1,
     "connected_peers": 1,
     "total_messages": 1
@@ -940,7 +940,7 @@ _Connect → trust → status → sync → disconnect._
     "expired": 0
   },
   "sync": {
-    "instance_id": "memoria-80ecd0dd",
+    "instance_id": "memoria-0e7ef0d1",
     "namespaces": 0,
     "total_memories": 0,
     "total_syncs": 0
@@ -959,7 +959,7 @@ _Connect → trust → status → sync → disconnect._
 }
 ```
 
-**Response** (1.14ms):
+**Response** (0.95ms):
 
 ```json
 {
@@ -980,7 +980,7 @@ _Connect → trust → status → sync → disconnect._
 }
 ```
 
-**Response** (1.15ms):
+**Response** (0.94ms):
 
 ```json
 {
@@ -995,7 +995,7 @@ _Connect → trust → status → sync → disconnect._
 
 _20+ turn conversation covering: CRUD, search, attachments, streaming, templates, webhooks, plugins, dashboard, federation, summarization._
 
-**Turns:** 24 | **Total time:** 40ms | **Avg:** 2ms/turn
+**Turns:** 24 | **Total time:** 36ms | **Avg:** 1ms/turn
 
 ### Turn 1 — `memoria_add` ✅
 
@@ -1009,12 +1009,12 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (9.26ms):
+**Response** (8.85ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-7a0bdd2b6da777cc/memory/4ea1cb91.md",
+  "id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-f2aa62ad8d0e1884/memory/8a58f50f.md",
   "content_preview": "Our API uses FastAPI with Pydantic v2 models. All endpoints require JWT auth. Rate limit: 100 req/mi"
 }
 ```
@@ -1031,12 +1031,12 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (1.98ms):
+**Response** (1.64ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-7a0bdd2b6da777cc/memory/1cb5e070.md",
+  "id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-f2aa62ad8d0e1884/memory/36b7c308.md",
   "content_preview": "Database schema: users(id, email, role), memories(id, content, embedding, namespace, created_at)."
 }
 ```
@@ -1053,7 +1053,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (5.38ms):
+**Response** (4.22ms):
 
 ```json
 ["Root()"]
@@ -1065,7 +1065,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-7a0bdd2b6da777cc/memory/4ea1cb91.md",
+  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-f2aa62ad8d0e1884/memory/8a58f50f.md",
   "data_base64": "PHN2Zz5hcmNoPC9zdmc+",
   "filename": "api-arch.svg",
   "mime_type": "image/svg+xml",
@@ -1073,12 +1073,12 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (1.87ms):
+**Response** (1.41ms):
 
 ```json
 {
-  "attachment_id": "att_fbaae84ce315",
-  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-7a0bdd2b6da777cc/memory/4ea1cb91.md",
+  "attachment_id": "att_dc4e88fbdd10",
+  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-f2aa62ad8d0e1884/memory/8a58f50f.md",
   "filename": "api-arch.svg",
   "mime_type": "image/svg+xml",
   "size": 15,
@@ -1092,7 +1092,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
     "height": null,
     "format": "svg+xml"
   },
-  "created_at": 1775150409.5686772
+  "created_at": 1775154700.766068
 }
 ```
 
@@ -1102,19 +1102,19 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-7a0bdd2b6da777cc/memory/1cb5e070.md",
+  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-f2aa62ad8d0e1884/memory/36b7c308.md",
   "data_base64": "Q1JFQVRFIFRBQkxFIHVzZXJzIChpZCBJTlQpOw==",
   "filename": "schema.sql",
   "mime_type": "text/sql"
 }
 ```
 
-**Response** (1.27ms):
+**Response** (1.06ms):
 
 ```json
 {
-  "attachment_id": "att_d7a47920ef66",
-  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-7a0bdd2b6da777cc/memory/1cb5e070.md",
+  "attachment_id": "att_828fbd21d186",
+  "memory_id": "/Users/user/.memoria/projects/test_realistic_multi_feature_s0-f2aa62ad8d0e1884/memory/36b7c308.md",
   "filename": "schema.sql",
   "mime_type": "text/sql",
   "size": 28,
@@ -1128,7 +1128,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
     "char_count": 28,
     "word_count": 5
   },
-  "created_at": 1775150409.5700831
+  "created_at": 1775154700.767164
 }
 ```
 
@@ -1140,7 +1140,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (1.03ms):
+**Response** (0.91ms):
 
 ```json
 {
@@ -1160,16 +1160,16 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (0.91ms):
+**Response** (0.83ms):
 
 ```json
 {
-  "channel_id": "3e3625699cb7455b",
+  "channel_id": "5cf660faf5434f5b",
   "type": "sse",
   "closed": false,
   "event_count": 0,
   "queue_size": 0,
-  "created_at": 1775150409.572355,
+  "created_at": 1775154700.769151,
   "filter": {
     "event_types": ["memory_created"],
     "user_ids": [],
@@ -1189,7 +1189,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (0.96ms):
+**Response** (0.82ms):
 
 ```json
 {
@@ -1207,7 +1207,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.87ms):
+**Response** (0.78ms):
 
 ```json
 {
@@ -1233,7 +1233,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (0.88ms):
+**Response** (0.8ms):
 
 ```json
 {
@@ -1255,12 +1255,12 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (1.07ms):
+**Response** (1.02ms):
 
 ```json
 {
   "status": "created",
-  "id": "d1119121-78e9-4f9a-9f2f-c09f88500552",
+  "id": "f142d790-b33a-4cb0-b754-15e4601bc1a0",
   "template": "bug-report-cross",
   "content_length": 105
 }
@@ -1279,16 +1279,16 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (2.03ms):
+**Response** (1.83ms):
 
 ```json
 {
-  "webhook_id": "wh_a80a7abb099c",
+  "webhook_id": "wh_2dbf0d76c0cd",
   "url": "https://hooks.example.com/memoria",
   "events": ["memory_created", "memory_deleted"],
   "active": true,
   "description": "Slack notification",
-  "created_at": "2026-04-02T17:20:09.577761+00:00"
+  "created_at": "2026-04-02T18:31:40.773977+00:00"
 }
 ```
 
@@ -1300,18 +1300,18 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.87ms):
+**Response** (0.82ms):
 
 ```json
 [
   {
-    "webhook_id": "wh_a80a7abb099c",
+    "webhook_id": "wh_2dbf0d76c0cd",
     "url": "https://hooks.example.com/memoria",
     "events": ["memory_created", "memory_deleted"],
     "active": true,
     "consecutive_failures": 0,
     "description": "Slack notification",
-    "created_at": "2026-04-02T17:20:09.577761+00:00"
+    "created_at": "2026-04-02T18:31:40.773977+00:00"
   }
 ]
 ```
@@ -1324,7 +1324,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (3.08ms):
+**Response** (2.68ms):
 
 ```json
 []
@@ -1338,7 +1338,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.93ms):
+**Response** (0.77ms):
 
 ```json
 []
@@ -1352,7 +1352,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.86ms):
+**Response** (0.73ms):
 
 ```json
 {
@@ -1371,7 +1371,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.83ms):
+**Response** (0.72ms):
 
 ```json
 {
@@ -1387,7 +1387,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.77ms):
+**Response** (0.72ms):
 
 ```json
 {
@@ -1410,7 +1410,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (0.81ms):
+**Response** (0.85ms):
 
 ```json
 {
@@ -1419,7 +1419,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
   "public_key": "",
   "shared_namespaces": ["shared"],
   "direction": "bidirectional",
-  "connected_at": 1775150409.586456,
+  "connected_at": 1775154700.781764,
   "last_sync": null,
   "status": "connected",
   "metadata": {}
@@ -1446,7 +1446,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
   "public_key": "",
   "trust_level": "standard",
   "allowed_namespaces": [],
-  "granted_at": 1775150409.587266,
+  "granted_at": 1775154700.782584,
   "expires_at": null,
   "revoked": false,
   "metadata": {}
@@ -1461,12 +1461,12 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 {}
 ```
 
-**Response** (0.77ms):
+**Response** (0.76ms):
 
 ```json
 {
   "protocol": {
-    "instance_id": "memoria-1d84da7d",
+    "instance_id": "memoria-859ee79d",
     "total_peers": 1,
     "connected_peers": 1,
     "total_messages": 1
@@ -1478,7 +1478,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
     "expired": 0
   },
   "sync": {
-    "instance_id": "memoria-1d84da7d",
+    "instance_id": "memoria-859ee79d",
     "namespaces": 0,
     "total_memories": 0,
     "total_syncs": 0
@@ -1497,7 +1497,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 }
 ```
 
-**Response** (1.16ms):
+**Response** (1.05ms):
 
 ```json
 {
@@ -1517,16 +1517,16 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 
 ```json
 {
-  "channel_id": "3e3625699cb7455b"
+  "channel_id": "5cf660faf5434f5b"
 }
 ```
 
-**Response** (0.78ms):
+**Response** (0.77ms):
 
 ```json
 {
   "status": "closed",
-  "channel_id": "3e3625699cb7455b"
+  "channel_id": "5cf660faf5434f5b"
 }
 ```
 
@@ -1536,16 +1536,16 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 
 ```json
 {
-  "webhook_id": "wh_a80a7abb099c"
+  "webhook_id": "wh_2dbf0d76c0cd"
 }
 ```
 
-**Response** (1.19ms):
+**Response** (1.16ms):
 
 ```json
 {
   "removed": true,
-  "webhook_id": "wh_a80a7abb099c"
+  "webhook_id": "wh_2dbf0d76c0cd"
 }
 ```
 
@@ -1555,7 +1555,7 @@ _20+ turn conversation covering: CRUD, search, attachments, streaming, templates
 
 _Add → search → get → delete → verify._
 
-**Turns:** 7 | **Total time:** 17ms | **Avg:** 2ms/turn
+**Turns:** 7 | **Total time:** 15ms | **Avg:** 2ms/turn
 
 ### Turn 1 — `memoria_add` ✅
 
@@ -1568,12 +1568,12 @@ _Add → search → get → delete → verify._
 }
 ```
 
-**Response** (8.26ms):
+**Response** (7.42ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/54321135.md",
+  "id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/a3ec974a.md",
   "content_preview": "Python asyncio: use asyncio.run(), prefer TaskGroup over gather"
 }
 ```
@@ -1589,12 +1589,12 @@ _Add → search → get → delete → verify._
 }
 ```
 
-**Response** (1.33ms):
+**Response** (1.25ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/c3be1ec6.md",
+  "id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/e4de2e3f.md",
   "content_preview": "Docker multi-stage builds: use python:3.14-slim as final stage"
 }
 ```
@@ -1610,12 +1610,12 @@ _Add → search → get → delete → verify._
 }
 ```
 
-**Response** (1.21ms):
+**Response** (1.18ms):
 
 ```json
 {
   "status": "created",
-  "id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/8a57c861.md",
+  "id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/91adeb51.md",
   "content_preview": "FalkorDB Cypher: MATCH (n:Memory)-[:RELATED]->(m) RETURN n, m"
 }
 ```
@@ -1632,7 +1632,7 @@ _Add → search → get → delete → verify._
 }
 ```
 
-**Response** (2.73ms):
+**Response** (2.3ms):
 
 ```json
 ["Root()"]
@@ -1644,15 +1644,15 @@ _Add → search → get → delete → verify._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/54321135.md"
+  "memory_id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/a3ec974a.md"
 }
 ```
 
-**Response** (1.13ms):
+**Response** (1.02ms):
 
 ```json
 {
-  "id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/54321135.md",
+  "id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/a3ec974a.md",
   "memory": "Python asyncio: use asyncio.run(), prefer TaskGroup over gather",
   "metadata": {
     "name": "Python asyncio: use asyncio.run(), prefer TaskGroup over gat",
@@ -1668,16 +1668,16 @@ _Add → search → get → delete → verify._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/8a57c861.md"
+  "memory_id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/91adeb51.md"
 }
 ```
 
-**Response** (1.12ms):
+**Response** (1.01ms):
 
 ```json
 {
   "status": "deleted",
-  "id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/8a57c861.md"
+  "id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/91adeb51.md"
 }
 ```
 
@@ -1687,16 +1687,16 @@ _Add → search → get → delete → verify._
 
 ```json
 {
-  "memory_id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/8a57c861.md"
+  "memory_id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/91adeb51.md"
 }
 ```
 
-**Response** (1.04ms):
+**Response** (0.96ms):
 
 ```json
 {
   "status": "not_found",
-  "id": "/Users/user/.memoria/projects/test_crud_and_search0-d5d0bb17a38444e3/memory/8a57c861.md"
+  "id": "/Users/user/.memoria/projects/test_crud_and_search0-7a8e4496ddff3041/memory/91adeb51.md"
 }
 ```
 
@@ -1721,6 +1721,6 @@ _Add → search → get → delete → verify._
 - **Conversations:** 10
 - **Total turns:** 69
 - **Errors:** 0
-- **Total time:** 646ms
+- **Total time:** 634ms
 - **Unique tools tested:** 35
 - **Average response time:** 9ms
