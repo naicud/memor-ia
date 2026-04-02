@@ -5,6 +5,33 @@ All notable changes to **memor-ia** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] — 2025-07-21
+
+### Added
+
+#### Web Dashboard (Phase 4.1)
+- **REST API layer** — 12 endpoints bridging HTTP to Memoria methods
+- **Interactive SPA** — Overview, Memory Explorer, Knowledge Graph, Audit Log, Settings
+- **D3.js knowledge graph** — Force-directed layout with namespace + memory nodes
+- **Zero dependencies** — Uses Python's built-in `http.server`, ships with the package
+- 5 new MCP tools: `start_dashboard`, `stop_dashboard`, `dashboard_status`, `dashboard_config`, `dashboard_url`
+- 40 new tests (API + server + HTTP integration + Memoria integration)
+
+#### Federation Protocol (Phase 4.2)
+- **Peer-to-peer protocol** — Connection management, message exchange, heartbeat
+- **PKI trust registry** — Trust levels (untrusted/standard/elevated/full), namespace ACL, HMAC signing
+- **CRDT conflict resolution** — Vector clocks with LWW/merge/local-first/remote-first strategies
+- **Selective namespace sync** — Push/pull/bidirectional with conflict detection
+- 5 new MCP tools: `federation_connect`, `federation_disconnect`, `federation_sync`, `federation_status`, `federation_trust`
+- 64 new tests (vector clocks, conflict resolution, protocol, trust, sync, integration)
+
+### Stats
+- Total MCP tools: **97** (was 87)
+- Total tests: **4,730 passing** (was 4,626)
+- **All 12 roadmap features complete** 🎉
+
+---
+
 ## [2.2.0] — 2025-07-21
 
 ### Added
