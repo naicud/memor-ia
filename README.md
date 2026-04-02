@@ -76,34 +76,109 @@ insights = m.insights(user_id="daniel")
 
 ## Architecture (8 Layers, 20 Subsystems)
 
+```mermaid
+mindmap
+  root((MEMOR-IA))
+    L1 — Core Services
+      Identity & Context
+      Communication Bus
+      Consolidation Engine
+      ACL & Namespaces
+    L2 — Hybrid Recall & Storage
+      Keyword + Vector + Graph → RRF Fusion
+      FalkorDB Graph / InMemory
+      SQLite-vec Embeddings
+      Markdown Files ~/.memoria/
+      Procedural Memory
+      Self-Edit Engine
+    L3 — Proactive Intelligence
+      User Profiler
+      Insight Analyzer
+      Suggestion Engine
+      Trigger System
+      Episodic Memory
+    L4 — Cognitive Services
+      User DNA Fingerprint
+      Dream Consolidation Engine
+      Preference Learning
+      Session Resurrection
+    L5 — Multi-Agent & Sharing
+      Memory Broadcasting
+      Team Coherence Check
+      DNA Sync Across Agents
+      Coordinator Protocol
+    L6 — Behavioral Prediction
+      Next-Action Prediction
+      Anomaly Detection
+      Timing Optimization
+      Difficulty Estimation
+    L7 — Emotional Intelligence
+      Emotion Analysis
+      Empathy Triggers
+      Fatigue Detection
+    L8 — Cross-Product Intelligence
+      Product Tracking
+      Behavioral Fusion
+      Habit Intelligence
+      Contextual Engine
+      Business Intelligence
 ```
-┌─────────────────────────────────────────────────────────┐
-│  Layer 8: Cross-Product Intelligence                    │
-│  product tracking │ behavioral fusion │ habit intel     │
-│  contextual engine │ business intelligence              │
-├─────────────────────────────────────────────────────────┤
-│  Layer 7: Emotional Intelligence                        │
-│  emotion analysis │ empathy triggers │ fatigue detection │
-├─────────────────────────────────────────────────────────┤
-│  Layer 6: Behavioral Prediction                         │
-│  action prediction │ anomaly detection │ timing │ diff. │
-├─────────────────────────────────────────────────────────┤
-│  Layer 5: Multi-Agent & Sharing                         │
-│  broadcasting │ team coherence │ DNA sync │ coordinator │
-├─────────────────────────────────────────────────────────┤
-│  Layer 4: Cognitive Services                            │
-│  user DNA │ dream engine │ preferences │ resurrection   │
-├─────────────────────────────────────────────────────────┤
-│  Layer 3: Proactive Intelligence Engine                 │
-│  profiler │ analyzer │ suggestions │ triggers │ episodic│
-├─────────────────────────────────────────────────────────┤
-│  Layer 2: Hybrid Recall & Storage                       │
-│  keyword + vector + graph → RRF │ procedural │ self-edit│
-│  FalkorDB/InMemory │ SQLite-vec │ Markdown              │
-├─────────────────────────────────────────────────────────┤
-│  Layer 1: Core Services                                 │
-│  identity │ comms │ context │ consolidation │ ACL       │
-└─────────────────────────────────────────────────────────┘
+
+### Data Flow
+
+```mermaid
+graph LR
+    A[AI Agent] -->|MCP Protocol| B[MEMORIA Server]
+    B --> C[Layer 1: Core]
+    C --> D[Layer 2: Storage]
+    D --> E[(SQLite-vec)]
+    D --> F[(FalkorDB Graph)]
+    D --> G[(Markdown Files)]
+    C --> H[Layer 3: Proactive]
+    H --> I[Layer 4: Cognitive]
+    I --> J[Layer 5: Multi-Agent]
+    J --> K[Layer 6: Prediction]
+    K --> L[Layer 7: Emotional]
+    L --> M[Layer 8: Cross-Product]
+    
+    style A fill:#4A90D9,color:#fff
+    style B fill:#7B68EE,color:#fff
+    style E fill:#FF6B6B,color:#fff
+    style F fill:#FF6B6B,color:#fff
+    style G fill:#FF6B6B,color:#fff
+```
+
+### Storage Architecture
+
+```mermaid
+graph TB
+    subgraph "Memory Tiers"
+        W[Working Memory<br/>ephemeral, fast]
+        R[Recall Memory<br/>persistent, searchable]
+        A[Archival Memory<br/>cold, compressed]
+    end
+    
+    subgraph "Backends"
+        SQ[(SQLite + sqlite-vec<br/>vectors & metadata)]
+        FK[(FalkorDB<br/>knowledge graph)]
+        MD[(Markdown Files<br/>human-readable)]
+    end
+    
+    W -->|promote| R
+    R -->|archive| A
+    R --> SQ
+    R --> FK
+    R --> MD
+    
+    subgraph "56 MCP Tools"
+        T1[Core CRUD 7]
+        T2[Tiered & ACL 5]
+        T3[Episodic 5]
+        T4[Procedural 4]
+        T5[Intelligence 20]
+        T6[Defensive 6]
+        T7[Resources 7 + Prompts 5]
+    end
 ```
 
 ## Features
