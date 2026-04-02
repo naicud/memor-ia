@@ -385,17 +385,19 @@ class TestMemoriaMultimodal:
 
     def test_list_attachments_all(self, tmp_path):
         m = self._make_memoria(tmp_path)
+        before = len(m.list_attachments())
         m.add_attachment("m1", b"a", "a.txt")
         m.add_attachment("m2", b"b", "b.txt")
         atts = m.list_attachments()
-        assert len(atts) == 2
+        assert len(atts) == before + 2
 
     def test_list_attachments_by_memory(self, tmp_path):
         m = self._make_memoria(tmp_path)
-        m.add_attachment("m1", b"a", "a.txt")
-        m.add_attachment("m1", b"b", "b.txt")
-        m.add_attachment("m2", b"c", "c.txt")
-        atts = m.list_attachments(memory_id="m1")
+        unique_mem = f"m1-{id(self)}"
+        m.add_attachment(unique_mem, b"a", "a.txt")
+        m.add_attachment(unique_mem, b"b", "b.txt")
+        m.add_attachment("m2-other", b"c", "c.txt")
+        atts = m.list_attachments(memory_id=unique_mem)
         assert len(atts) == 2
 
     def test_delete_attachment(self, tmp_path):
@@ -412,11 +414,13 @@ class TestMemoriaMultimodal:
 
     def test_attachment_stats(self, tmp_path):
         m = self._make_memoria(tmp_path)
+        before_count = m.attachment_stats()["total_attachments"]
+        before_usage = m.attachment_stats()["disk_usage_bytes"]
         m.add_attachment("m1", b"x" * 100, "a.bin")
         m.add_attachment("m1", b"y" * 200, "b.bin")
         stats = m.attachment_stats()
-        assert stats["total_attachments"] == 2
-        assert stats["disk_usage_bytes"] == 300
+        assert stats["total_attachments"] == before_count + 2
+        assert stats["disk_usage_bytes"] == before_usage + 300
 
     def test_attachment_metadata_extraction(self, tmp_path):
         m = self._make_memoria(tmp_path)
