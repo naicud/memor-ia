@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import math
 import time
 import unittest
 
@@ -1058,7 +1057,7 @@ class TestFocusOptimizer(unittest.TestCase):
 
     def test_session_cap_enforced(self):
         for i in range(110):
-            s = self.optimizer.start_session(f"s{i}")
+            self.optimizer.start_session(f"s{i}")
             self.optimizer.end_session(f"s{i}")
         # Start one more
         self.optimizer.start_session("latest")

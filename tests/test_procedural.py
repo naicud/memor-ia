@@ -8,13 +8,11 @@ import pytest
 
 from memoria.procedural.store import ProceduralMemory, _word_overlap
 from memoria.procedural.types import (
-    Procedure,
     ProcedureStatus,
     ToolPattern,
     WorkflowStep,
     WorkflowTemplate,
 )
-
 
 # ── Helpers ────────────────────────────────────────────────────────────
 
@@ -396,7 +394,7 @@ class TestListProcedures:
     def test_filter_by_status(self) -> None:
         mem = _make_memory(min_observations=1)
         p1 = mem.register_procedure("a", "desc a")
-        p2 = mem.register_procedure("b", "desc b")
+        mem.register_procedure("b", "desc b")
         mem.observe_procedure(p1.procedure_id)
         # p1 is now LEARNED, p2 still LEARNING
         learned = mem.list_procedures(status=ProcedureStatus.LEARNED)

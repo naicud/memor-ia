@@ -8,14 +8,13 @@ import json
 import os
 import tempfile
 import unittest
-from unittest.mock import patch
 
 
 class TestMCPServerImport(unittest.TestCase):
     """Test that the MCP server module can be imported."""
 
     def test_import_server_module(self):
-        from memoria.mcp.server import mcp, create_server
+        from memoria.mcp.server import mcp
         self.assertIsNotNone(mcp)
         self.assertEqual(mcp.name, "MEMORIA")
 
@@ -126,7 +125,10 @@ class TestMCPTools(unittest.TestCase):
 
     def test_memoria_add_search_get_delete_lifecycle(self):
         from memoria.mcp.server import (
-            memoria_add, memoria_search, memoria_get, memoria_delete,
+            memoria_add,
+            memoria_delete,
+            memoria_get,
+            memoria_search,
         )
         # Add
         added = memoria_add("Full lifecycle test memory about React hooks")
@@ -230,7 +232,7 @@ class TestMCPResources(unittest.TestCase):
         self.assertIsInstance(result, list)
 
     def test_list_memories_with_content(self):
-        from memoria.mcp.server import memoria_add, list_memories
+        from memoria.mcp.server import list_memories, memoria_add
         memoria_add("First memory for resource test")
         memoria_add("Second memory for resource test")
 
@@ -242,7 +244,7 @@ class TestMCPResources(unittest.TestCase):
             self.assertIn("id", mem)
 
     def test_list_memories_has_preview(self):
-        from memoria.mcp.server import memoria_add, list_memories
+        from memoria.mcp.server import list_memories, memoria_add
         memoria_add("This is a test memory with a nice preview")
 
         result = json.loads(list_memories())
@@ -369,8 +371,12 @@ class TestMCPServerIntegration(unittest.TestCase):
     def test_full_workflow(self):
         """Complete workflow: add → search → recall → suggest → profile."""
         from memoria.mcp.server import (
-            memoria_add, memoria_search, recall_context,
-            memoria_suggest, memoria_profile, get_config,
+            get_config,
+            memoria_add,
+            memoria_profile,
+            memoria_search,
+            memoria_suggest,
+            recall_context,
         )
 
         # 1. Add memories
@@ -417,7 +423,7 @@ class TestMCPServerIntegration(unittest.TestCase):
 
     def test_memory_persistence_across_calls(self):
         """Verify memories persist within the same server instance."""
-        from memoria.mcp.server import memoria_add, list_memories
+        from memoria.mcp.server import list_memories, memoria_add
 
         memoria_add("Persistent memory 1")
         count1 = len(json.loads(list_memories()))
@@ -429,7 +435,7 @@ class TestMCPServerIntegration(unittest.TestCase):
 
     def test_delete_removes_from_listing(self):
         """Verify deleted memories don't appear in listings."""
-        from memoria.mcp.server import memoria_add, memoria_delete, list_memories
+        from memoria.mcp.server import list_memories, memoria_add, memoria_delete
 
         added = memoria_add("Temp memory to delete")
         mid = added["id"]
@@ -452,11 +458,11 @@ class TestMCPServerIntegration(unittest.TestCase):
 
     def test_create_server_with_custom_dir(self):
         """Verify create_server accepts custom project_dir."""
-        from memoria.mcp.server import create_server
         import memoria.mcp.server as srv
+        from memoria.mcp.server import create_server
 
         with tempfile.TemporaryDirectory() as td:
-            server = create_server(project_dir=td)
+            create_server(project_dir=td)
             self.assertEqual(srv._PROJECT_DIR, td)
 
 
@@ -489,7 +495,6 @@ class TestMCPCLI(unittest.TestCase):
 
     def test_transport_env_var_default(self):
         """Verify MEMORIA_TRANSPORT env var is read."""
-        import memoria.mcp.server as srv
         # Default should be stdio when env not set
         transport = os.environ.get("MEMORIA_TRANSPORT", "stdio")
         self.assertEqual(transport, "stdio")

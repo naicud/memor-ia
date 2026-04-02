@@ -6,8 +6,7 @@ import time
 
 import pytest
 
-from memoria.episodic import EpisodicMemory, Episode, EpisodicEvent, EventType
-
+from memoria.episodic import Episode, EpisodicEvent, EpisodicMemory, EventType
 
 # ═══════════════════════════════════════════════════════════════════
 # Fixtures
@@ -91,7 +90,7 @@ class TestEpisodeLifecycle:
         assert mem.get_active_episode() is ep
 
     def test_end_episode(self, mem: EpisodicMemory) -> None:
-        ep = mem.start_episode()
+        mem.start_episode()
         ended = mem.end_episode(summary="done", outcome="success")
         assert ended is not None
         assert not ended.is_active()
@@ -444,7 +443,7 @@ class TestRotation:
         ep2.started_at = 2.0
         # ep2 is active — should not be evicted
 
-        ep3 = mem.start_episode(title="new")
+        mem.start_episode(title="new")
         # starting ep3 closes ep2, but rotation only removes completed
         assert len(mem._episodes) == 2
 

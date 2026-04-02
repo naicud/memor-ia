@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-import json
 import os
 import time
 from pathlib import Path
 from unittest import mock
-
-import pytest
 
 from memoria.core.paths import (
     AUTO_MEM_DIRNAME,
@@ -17,8 +14,8 @@ from memoria.core.paths import (
     ensure_memory_dir_exists,
     get_auto_mem_entrypoint,
     get_auto_mem_path,
-    get_memoria_home,
     get_daily_log_path,
+    get_memoria_home,
     get_project_dir,
     get_session_dir,
     get_session_memory_path,
@@ -26,16 +23,16 @@ from memoria.core.paths import (
     is_auto_mem_path,
     is_auto_memory_enabled,
 )
-from memoria.core.types import (
-    MEMORY_TYPE_DESCRIPTIONS,
-    MemoryFrontmatter,
-    MemoryType,
-    format_frontmatter,
-    parse_frontmatter,
-    parse_memory_type,
+from memoria.core.recall import (
+    find_relevant_memories,
+)
+from memoria.core.scanner import (
+    MAX_MEMORY_FILES,
+    MemoryHeader,
+    format_memory_manifest,
+    scan_memory_files,
 )
 from memoria.core.store import (
-    EntrypointTruncation,
     create_memory_file,
     delete_memory_file,
     list_memory_files,
@@ -45,19 +42,7 @@ from memoria.core.store import (
     update_entrypoint,
     write_memory_file,
 )
-from memoria.core.scanner import (
-    MAX_MEMORY_FILES,
-    MemoryHeader,
-    format_memory_manifest,
-    scan_memory_files,
-)
-from memoria.core.recall import (
-    RelevantMemory,
-    find_relevant_memories,
-)
 from memoria.core.transcript import (
-    SessionInfo,
-    SessionTranscript,
     append_message,
     create_session,
     list_sessions,
@@ -65,7 +50,14 @@ from memoria.core.transcript import (
     read_head_and_tail,
     read_transcript,
 )
-
+from memoria.core.types import (
+    MEMORY_TYPE_DESCRIPTIONS,
+    MemoryFrontmatter,
+    MemoryType,
+    format_frontmatter,
+    parse_frontmatter,
+    parse_memory_type,
+)
 
 # =========================================================================
 # Path resolution tests

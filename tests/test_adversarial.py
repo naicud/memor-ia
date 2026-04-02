@@ -2,11 +2,11 @@
 
 import hashlib
 import json
+import os
+import sys
 import time
 import unittest
-from collections import deque
 
-import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from memoria.adversarial import (
@@ -896,20 +896,6 @@ class TestTypesEnums(unittest.TestCase):
 
 class TestImports(unittest.TestCase):
     def test_all_exports_accessible(self):
-        from memoria.adversarial import (
-            PoisonDetector,
-            HallucinationGuard,
-            ConsistencyVerifier,
-            TamperProof,
-            ThreatLevel,
-            ThreatType,
-            VerificationStatus,
-            IntegrityStatus,
-            ThreatDetection,
-            ConsistencyReport,
-            IntegrityRecord,
-            AnomalyReport,
-        )
         self.assertTrue(True)
 
 

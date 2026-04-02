@@ -6,8 +6,9 @@ import threading
 import time
 import uuid
 
-import pytest
-
+from memoria.sharing.broadcaster import MemoryBroadcaster
+from memoria.sharing.coordinator import MemoryCoordinator
+from memoria.sharing.team_dna import TeamDNASync
 from memoria.sharing.types import (
     BroadcastPolicy,
     CoherenceReport,
@@ -18,11 +19,7 @@ from memoria.sharing.types import (
     TeamDNAProfile,
     TeamMemoryView,
 )
-from memoria.sharing.broadcaster import MemoryBroadcaster
 from memoria.sharing.watcher import MemoryWatcher
-from memoria.sharing.team_dna import TeamDNASync
-from memoria.sharing.coordinator import MemoryCoordinator
-
 
 # ======================================================================
 # Type Tests
@@ -1078,17 +1075,7 @@ class TestSharingIntegration:
         """Verify all public symbols are importable from the package."""
         from memoria.sharing import (
             BroadcastPolicy,
-            CoherenceReport,
-            ConflictStrategy,
-            MemoryBroadcaster,
             MemoryCoordinator,
-            MemorySubscription,
-            MemoryWatcher,
-            SharedMemoryEvent,
-            SubscriptionFilter,
-            TeamDNAProfile,
-            TeamDNASync,
-            TeamMemoryView,
         )
         assert BroadcastPolicy is not None
         assert MemoryCoordinator is not None

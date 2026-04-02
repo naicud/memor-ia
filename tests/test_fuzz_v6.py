@@ -13,23 +13,35 @@ import time
 import unittest
 from typing import Any, Dict, List
 
-# ── product_intel ────────────────────────────────────────────────────
-from memoria.product_intel import (
-    AdoptionAnalyzer,
-    ProductGraph,
-    ProductTracker,
-    UsageProfiler,
+# ── biz_intel ────────────────────────────────────────────────────────
+from memoria.biz_intel import (
+    LifecycleTracker,
+    RevenueSignals,
+    SegmentClassifier,
+    ValueScorer,
 )
-from memoria.product_intel.types import (
-    AdoptionCurve,
-    AdoptionStage,
-    FeatureStatus,
-    ProductCategory,
-    ProductInfo,
-    ProductRelationship,
-    ProductUsageEvent,
-    UsageFrequency,
-    UsageProfile,
+from memoria.biz_intel.types import (
+    LifecyclePosition,
+    RevenueSignalType,
+    SegmentType,
+    UserSegment,
+    ValueScore,
+)
+
+# ── contextual ───────────────────────────────────────────────────────
+from memoria.contextual import (
+    IntentInference,
+    ProactiveAssistant,
+    SituationAwareness,
+    SmartHandoff,
+)
+from memoria.contextual.types import (
+    AssistanceType,
+    HandoffContext,
+    HandoffReason,
+    InferredIntent,
+    SituationSnapshot,
+    SituationType,
 )
 
 # ── fusion ───────────────────────────────────────────────────────────
@@ -44,11 +56,7 @@ from memoria.fusion.types import (
     ChurnPrediction,
     ChurnRisk,
     Correlation,
-    CorrelationType,
-    DetectedWorkflow,
     SignalType,
-    UnifiedUserModel,
-    WorkflowType,
 )
 
 # ── habits ───────────────────────────────────────────────────────────
@@ -66,43 +74,24 @@ from memoria.habits.types import (
     Habit,
     HabitStrength,
     Routine,
-    RoutineStatus,
 )
 
-# ── contextual ───────────────────────────────────────────────────────
-from memoria.contextual import (
-    IntentInference,
-    ProactiveAssistant,
-    SituationAwareness,
-    SmartHandoff,
+# ── product_intel ────────────────────────────────────────────────────
+from memoria.product_intel import (
+    AdoptionAnalyzer,
+    ProductGraph,
+    ProductTracker,
+    UsageProfiler,
 )
-from memoria.contextual.types import (
-    AssistanceType,
-    HandoffContext,
-    HandoffReason,
-    InferredIntent,
-    IntentConfidence,
-    ProactiveAssistance,
-    SituationSnapshot,
-    SituationType,
-)
-
-# ── biz_intel ────────────────────────────────────────────────────────
-from memoria.biz_intel import (
-    LifecycleTracker,
-    RevenueSignals,
-    SegmentClassifier,
-    ValueScorer,
-)
-from memoria.biz_intel.types import (
-    LifecyclePosition,
-    LifecycleStage,
-    RevenueSignal,
-    RevenueSignalType,
-    SegmentType,
-    UserSegment,
-    ValueScore,
-    ValueTier,
+from memoria.product_intel.types import (
+    AdoptionCurve,
+    FeatureStatus,
+    ProductCategory,
+    ProductInfo,
+    ProductRelationship,
+    ProductUsageEvent,
+    UsageFrequency,
+    UsageProfile,
 )
 
 # ── Fuzz helpers ─────────────────────────────────────────────────────
@@ -229,7 +218,7 @@ class TestProductTrackerFuzz(unittest.TestCase):
     def test_from_dict_corrupted(self):
         bad = {"max_products": "not_int", "products": {"p1": {"product_id": "p1", "name": 123, "category": "ide"}}}
         try:
-            pt = ProductTracker.from_dict(bad)
+            ProductTracker.from_dict(bad)
         except Exception:
             pass  # acceptable to raise
 
@@ -738,7 +727,7 @@ class TestRoutineOptimizerFuzz(unittest.TestCase):
         ro.record_completion(r1.routine_id, timestamp=1.0)
         r2 = ro.create_routine("R2", ["h2"])
         ro.record_completion(r2.routine_id, timestamp=2.0)
-        r3 = ro.create_routine("R3", ["h3"])
+        ro.create_routine("R3", ["h3"])
         routines = ro.get_routines()
         self.assertLessEqual(len(routines), 2)
 

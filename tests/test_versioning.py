@@ -6,11 +6,10 @@ import time
 
 import pytest
 
-from memoria.versioning.history import VersionEntry, VersionHistory
+from memoria.versioning.audit import AuditTrail
 from memoria.versioning.diff import DiffEntry, MemoryDiff
-from memoria.versioning.audit import AuditEvent, AuditTrail
-from memoria.versioning.snapshots import Snapshot, SnapshotStore
-
+from memoria.versioning.history import VersionEntry, VersionHistory
+from memoria.versioning.snapshots import SnapshotStore
 
 # ===================================================================
 # Fixtures
@@ -264,7 +263,7 @@ class TestAuditTrail:
         assert len(eid) > 0
 
     def test_log_with_namespace_and_details(self, audit: AuditTrail) -> None:
-        eid = audit.log("m1", "update", "agent-1", namespace="acme/team", details={"reason": "fix"})
+        audit.log("m1", "update", "agent-1", namespace="acme/team", details={"reason": "fix"})
         events = audit.get_events("m1")
         assert len(events) == 1
         assert events[0].namespace == "acme/team"
@@ -295,7 +294,7 @@ class TestAuditTrail:
         time.sleep(0.01)
         audit.log("m2", "update", "a1")
         events = audit.get_events("m1")
-        ts = events[0].timestamp
+        events[0].timestamp
         # Range covering all events
         result = audit.get_events_in_range("2020-01-01T00:00:00", "2099-01-01T00:00:00")
         assert len(result) == 2

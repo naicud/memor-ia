@@ -12,19 +12,13 @@ These tests exercise the code paths that run when the external task system
 from __future__ import annotations
 
 import os
-import stat
-import textwrap
-import threading
 import time
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 # ======================================================================
 # consolidation/lock.py
 # ======================================================================
-
 from memoria.consolidation.lock import (
     HOLDER_STALE_S,
     LOCK_FILE_NAME,
@@ -118,7 +112,6 @@ class TestTryAcquireLockEdge:
                 assert result is None
 
     def test_returns_none_on_race_read_oserror(self, tmp_path: Path) -> None:
-        original_write = Path.write_text
         read_count = 0
 
         def patched_read(self_path, *a, **kw):
@@ -251,7 +244,6 @@ class TestRecordConsolidationEdge:
 # ======================================================================
 
 from memoria.consolidation.auto import (
-    SESSION_SCAN_INTERVAL,
     AutoDreamConfig,
     execute_auto_dream,
     get_dream_config,
@@ -495,10 +487,10 @@ class TestAutoDreamGates:
 
 from memoria.consolidation.dream import (
     DREAM_TASK,
-    DreamTaskState,
-    DreamTurn,
     MAX_FILES_TOUCHED,
     MAX_TURNS,
+    DreamTaskState,
+    DreamTurn,
     is_dream_task,
 )
 
@@ -544,7 +536,6 @@ class TestDreamStubMode:
 # ======================================================================
 
 from memoria.bridge.events import (
-    TaskEventBridge,
     _EVENT_TO_STATUS,
     _STATUS_TO_EVENT,
 )

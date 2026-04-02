@@ -18,9 +18,6 @@ from __future__ import annotations
 
 import asyncio
 import json
-import shutil
-import tempfile
-from pathlib import Path
 
 import pytest
 
@@ -28,89 +25,88 @@ pytest.importorskip("fastmcp")
 
 import memoria.mcp.server as srv
 from memoria.mcp.server import (
-    # Core
-    memoria_add,
-    memoria_search,
-    memoria_get,
-    memoria_delete,
-    memoria_suggest,
-    memoria_profile,
-    memoria_insights,
-    memoria_stats,
-    # Tiered / ACL / Enrichment
-    memoria_add_to_tier,
-    memoria_search_tiers,
-    memoria_grant_access,
-    memoria_check_access,
-    memoria_enrich,
-    memoria_sync,
-    # Episodic
-    episodic_start,
+    adversarial_check_consistency,
+    # Adversarial
+    adversarial_scan,
+    adversarial_verify_integrity,
+    biz_lifecycle_update,
+    # Biz Intel
+    biz_revenue_signal,
+    cognitive_check_overload,
+    cognitive_focus_session,
+    # Cognitive
+    cognitive_record,
+    context_infer_intent,
+    # Context
+    context_situation,
+    # Dream
+    dream_consolidate,
+    dream_journal,
+    emotion_analyze,
+    emotion_fatigue_check,
     episodic_end,
     episodic_record,
-    episodic_timeline,
     episodic_search,
+    # Episodic
+    episodic_start,
+    episodic_timeline,
+    estimate_difficulty,
+    fusion_churn_predict,
+    fusion_detect_workflows,
+    fusion_unified_model,
+    get_budget,
+    get_config,
+    get_episodic_timeline,
+    get_procedural_patterns,
+    get_stats,
+    habit_detect,
+    # Importance / Self-edit / Budget
+    importance_score,
+    # Resources
+    list_memories,
+    # Core
+    memoria_add,
+    # Tiered / ACL / Enrichment
+    memoria_add_to_tier,
+    memoria_check_access,
+    memoria_delete,
+    memoria_enrich,
+    memoria_get,
+    memoria_grant_access,
+    memoria_insights,
+    memoria_profile,
+    memoria_search,
+    memoria_search_tiers,
+    memoria_stats,
+    memoria_suggest,
+    memoria_sync,
+    memory_budget,
+    predict_next_action,
+    # Preferences
+    preference_query,
+    preference_teach,
+    procedural_add_workflow,
     # Procedural
     procedural_record,
     procedural_suggest,
     procedural_workflows,
-    procedural_add_workflow,
-    # Importance / Self-edit / Budget
-    importance_score,
-    self_edit,
-    memory_budget,
-    # User DNA
-    user_dna_snapshot,
-    user_dna_collect,
-    # Dream
-    dream_consolidate,
-    dream_journal,
-    # Preferences
-    preference_query,
-    preference_teach,
-    # Resurrection
-    session_snapshot,
-    session_resume,
-    # Sharing / Prediction / Emotion
-    team_share_memory,
-    team_coherence_check,
-    predict_next_action,
-    estimate_difficulty,
-    emotion_analyze,
-    emotion_fatigue_check,
     # Product / Fusion
     product_register,
     product_usage_record,
-    fusion_unified_model,
-    fusion_churn_predict,
-    fusion_detect_workflows,
-    habit_detect,
-    # Context
-    context_situation,
-    context_infer_intent,
-    # Biz Intel
-    biz_revenue_signal,
-    biz_lifecycle_update,
-    # Adversarial
-    adversarial_scan,
-    adversarial_check_consistency,
-    adversarial_verify_integrity,
-    # Cognitive
-    cognitive_record,
-    cognitive_check_overload,
-    cognitive_focus_session,
-    # Resources
-    list_memories,
-    get_config,
-    get_stats,
-    get_episodic_timeline,
-    get_procedural_patterns,
-    get_budget,
     # Prompts
     recall_context,
+    self_edit,
+    session_resume,
+    # Resurrection
+    session_snapshot,
     suggest_next,
+    team_coherence_check,
+    # Sharing / Prediction / Emotion
+    team_share_memory,
+    user_dna_collect,
+    # User DNA
+    user_dna_snapshot,
 )
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -165,7 +161,6 @@ class TestDeveloperOnboarding:
     """
 
     def test_full_onboarding_flow(self, isolated_server):
-        tmp = isolated_server
 
         # Turn 1: Store coding preferences
         r1 = _no_error(memoria_add(
@@ -600,7 +595,7 @@ class TestImportanceSelfEdit:
     def test_importance_and_self_edit(self, isolated_server):
         # Add memories of varying importance
         m1 = _no_error(memoria_add("Critical: production database credentials rotated today"))
-        m2 = _no_error(memoria_add("Reminder: team standup at 10am"))
+        _no_error(memoria_add("Reminder: team standup at 10am"))
         m3 = _no_error(memoria_add("FYI: new coffee machine in the kitchen"))
 
         # Score importance by memory ID
@@ -1037,7 +1032,7 @@ class TestFullConversationSimulation:
         ))
 
         # --- Turn 3: Store what was learned ---
-        m1 = _no_error(memoria_add(
+        _no_error(memoria_add(
             "sqlite-vec virtual tables do NOT support INSERT OR REPLACE. "
             "The workaround is DELETE followed by INSERT.",
             user_id="daniel",
@@ -1074,13 +1069,13 @@ class TestFullConversationSimulation:
         assert isinstance(search_results, list)
 
         # --- Turn 8: Enrich with entities ---
-        enrichment = _no_error(memoria_enrich(
+        _no_error(memoria_enrich(
             "Daniel fixed the vector client to use DELETE+INSERT for sqlite-vec "
             "virtual tables. This was deployed via Docker."
         ))
 
         # --- Turn 9: Score importance ---
-        score = _no_error(importance_score(
+        _no_error(importance_score(
             "sqlite-vec virtual tables do NOT support INSERT OR REPLACE"
         ))
 
@@ -1091,7 +1086,7 @@ class TestFullConversationSimulation:
         ))
 
         # --- Turn 11: Get proactive suggestions ---
-        suggestions = memoria_suggest(
+        memoria_suggest(
             context="Just fixed vector backend, considering what to work on next",
             user_id="daniel",
         )

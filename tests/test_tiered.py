@@ -10,8 +10,8 @@ import pytest
 from memoria.tiered import (
     ArchivalMemory,
     RecallMemory,
-    TierPromoter,
     TieredMemoryManager,
+    TierPromoter,
     WorkingMemory,
 )
 

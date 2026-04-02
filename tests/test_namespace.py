@@ -5,7 +5,6 @@ from __future__ import annotations
 import pytest
 
 from memoria.namespace.hierarchy import MemoryNamespace, NamespaceLevel
-from memoria.namespace.store import SharedMemoryStore
 from memoria.namespace.resolver import (
     find_shared_ancestor,
     resolve_namespace,
@@ -18,7 +17,7 @@ from memoria.namespace.scopes import (
     validate_namespace_path,
     validate_part,
 )
-
+from memoria.namespace.store import SharedMemoryStore
 
 # ===================================================================
 # Fixtures

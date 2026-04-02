@@ -15,9 +15,6 @@ from __future__ import annotations
 
 import copy
 import threading
-import time
-from pathlib import Path
-from unittest import mock
 
 import pytest
 
@@ -32,9 +29,9 @@ pytestmark = pytest.mark.skipif(
     not _HAS_TASK_SYSTEM, reason="Task system (src.task) not available"
 )
 
-from memoria.identity import AgentContext, create_agent_id, create_session_id
+from memoria.bridge.events import TaskEventBridge
+from memoria.bridge.protocol import ProtocolBridge, _status_to_event_type
 from memoria.comms import (
-    Event,
     EventType,
     Mailbox,
     MailboxMessage,
@@ -44,15 +41,10 @@ from memoria.comms import (
 from memoria.comms.permissions import PermissionDecision
 from memoria.context import (
     CompactionConfig,
-    ContextCompactor,
     TokenBudget,
-    estimate_tokens,
 )
+from memoria.identity import AgentContext, create_agent_id
 from memoria.orchestration.team import _reset_registry
-
-from memoria.bridge.protocol import ProtocolBridge, _status_to_event_type
-from memoria.bridge.events import TaskEventBridge
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

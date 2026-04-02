@@ -16,76 +16,75 @@ import tempfile
 import threading
 import time
 from pathlib import Path
-from typing import Any
-
-import pytest
 
 # --- Core (Layer 1) ---
 from memoria import Memoria
-from memoria.core.types import MemoryType, MemoryFrontmatter, format_frontmatter
-from memoria.core.store import (
-    write_memory_file, read_memory_file, create_memory_file,
-    delete_memory_file, list_memory_files,
+
+# --- Comms / Identity / Orchestration ---
+from memoria.comms.bus import Event, EventType, MessageBus
+from memoria.comms.mailbox import Mailbox, MailboxMessage
+from memoria.comms.permissions import PermissionBridge, PermissionDecision
+from memoria.context.compaction import CompactionConfig, ContextCompactor
+from memoria.context.window import (
+    TokenBudget,
+    analyze_context,
 )
 from memoria.core.paths import ensure_memory_dir_exists
-from memoria.core.recall import find_relevant_memories
+from memoria.core.store import (
+    read_memory_file,
+    write_memory_file,
+)
+from memoria.core.types import MemoryFrontmatter, MemoryType
 
 # --- Graph (Layer 2 – Storage) ---
 from memoria.graph.client import GraphClient, InMemoryGraph
 from memoria.graph.knowledge import KnowledgeGraph
-from memoria.graph.entities import Entity, extract_entities, extract_relations
-from memoria.graph.schema import NodeType, RelationType
 from memoria.graph.temporal import (
-    record_interaction, get_entity_timeline,
-    get_trending_concepts, get_stale_entities,
+    get_entity_timeline,
+    get_stale_entities,
+    get_trending_concepts,
+    record_interaction,
 )
-
-# --- Vector (Layer 2 – Storage) ---
-from memoria.vector.client import VectorClient, VectorRecord
-from memoria.vector.embeddings import TFIDFEmbedder
-from memoria.vector.search import SemanticSearch
-from memoria.vector.index import VectorIndex
-
-# --- Recall (Layer 3) ---
-from memoria.recall.strategies import (
-    KeywordStrategy, VectorStrategy, GraphStrategy, RecallResult,
-)
-from memoria.recall.pipeline import RecallPipeline
-from memoria.recall.ranker import reciprocal_rank_fusion, RankedResult
-from memoria.recall.context_filter import RecallContext, deduplicate
-
-# --- Proactive (Layer 4) ---
-from memoria.proactive.profiler import Profiler, ClientProfile
-from memoria.proactive.analyzer import PatternAnalyzer
-from memoria.proactive.suggestions import SuggestionEngine
-from memoria.proactive.triggers import TriggerSystem, Trigger
-from memoria.proactive.insights import InsightGenerator
-
-# --- Comms / Identity / Orchestration ---
-from memoria.comms.bus import MessageBus, Event, EventType
-from memoria.comms.mailbox import Mailbox, MailboxMessage
-from memoria.comms.permissions import PermissionBridge, PermissionDecision
 from memoria.identity.agent_id import (
-    create_agent_id, create_session_id, AgentId, SessionId,
-    format_agent_id,
+    create_agent_id,
+    create_session_id,
 )
 from memoria.identity.context import (
-    AgentContext, set_current_agent, get_current_agent,
-    run_in_agent_context,
+    AgentContext,
 )
 from memoria.identity.factory import (
-    create_subagent_context, create_fork_context, SubagentOverrides,
+    create_fork_context,
 )
 from memoria.orchestration.spawner import AgentSpawner, SpawnConfig, SpawnMode
 from memoria.orchestration.team import (
-    TeamManager, TeamConfig, TeamMember, _reset_registry,
+    TeamConfig,
+    TeamManager,
+    _reset_registry,
 )
-from memoria.orchestration.fork import ForkAgent, ForkConfig
-from memoria.context.window import (
-    TokenBudget, estimate_tokens, analyze_context,
-)
-from memoria.context.compaction import ContextCompactor, CompactionConfig
+from memoria.proactive.analyzer import PatternAnalyzer
+from memoria.proactive.insights import InsightGenerator
 
+# --- Proactive (Layer 4) ---
+from memoria.proactive.profiler import ClientProfile, Profiler
+from memoria.proactive.suggestions import SuggestionEngine
+from memoria.proactive.triggers import Trigger, TriggerSystem
+from memoria.recall.context_filter import RecallContext, deduplicate
+from memoria.recall.pipeline import RecallPipeline
+from memoria.recall.ranker import reciprocal_rank_fusion
+
+# --- Recall (Layer 3) ---
+from memoria.recall.strategies import (
+    GraphStrategy,
+    KeywordStrategy,
+    RecallResult,
+    VectorStrategy,
+)
+
+# --- Vector (Layer 2 – Storage) ---
+from memoria.vector.client import VectorClient
+from memoria.vector.embeddings import TFIDFEmbedder
+from memoria.vector.index import VectorIndex
+from memoria.vector.search import SemanticSearch
 
 # ====================================================================
 #  Helpers
@@ -459,7 +458,7 @@ class TestGraphVectorSynergy:
     def test_stale_entities_cleanup(self):
         # Create entity with old timestamp
         graph: InMemoryGraph = self._gc.get_graph()
-        nid = graph.add_node("Concept", {
+        graph.add_node("Concept", {
             "name": "old_concept",
             "last_seen": "2020-01-01T00:00:00+00:00",
             "interaction_count": 1,
@@ -692,7 +691,7 @@ class TestCommsOrchestrationIntegration:
         )
         tm = TeamManager(config)
         w1 = tm.add_member(str(create_agent_id("w1")), "worker-1")
-        w2 = tm.add_member(str(create_agent_id("w2")), "worker-2")
+        tm.add_member(str(create_agent_id("w2")), "worker-2")
         assert tm.size == 2
         assert w1.role == "worker"
 

@@ -1,7 +1,7 @@
 """Comprehensive tests for the Contextual Intelligence Engine."""
 
-import time
 import threading
+import time
 import unittest
 
 from memoria.contextual import (
@@ -18,7 +18,6 @@ from memoria.contextual import (
     SituationType,
     SmartHandoff,
 )
-
 
 # ======================================================================
 # Types
@@ -358,7 +357,7 @@ class TestIntentInferenceBasic(unittest.TestCase):
 
     def test_confidence_increases_with_more_matches(self):
         self.ii.register_intent_pattern("deploying", ["build", "test", "deploy", "release"])
-        r1 = self.ii.observe_action("p1", "build project", timestamp=100.0)
+        self.ii.observe_action("p1", "build project", timestamp=100.0)
         # Only 1/4 keywords -> confidence 0.25 -> None (below threshold)
         r2 = self.ii.observe_action("p1", "test suite", timestamp=101.0)
         # 2/4 keywords -> 0.5 -> inferred

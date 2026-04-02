@@ -7,23 +7,22 @@ with 90+ tests across all classes.
 import time
 import unittest
 
+from memoria.emotional.analyzer import EmotionAnalyzer
+from memoria.emotional.empathy import EmpathyEngine
+from memoria.emotional.fatigue import FatigueDetector
+from memoria.emotional.tracker import EmotionalArcTracker
 from memoria.emotional.types import (
-    EmpathyAction,
-    EmpathyTrigger,
     EmotionalArc,
     EmotionalProfile,
     EmotionReading,
     EmotionType,
+    EmpathyAction,
+    EmpathyTrigger,
     FatigueScore,
     IntensityLevel,
     SentimentScore,
     TrendDirection,
 )
-from memoria.emotional.analyzer import EmotionAnalyzer
-from memoria.emotional.tracker import EmotionalArcTracker
-from memoria.emotional.empathy import EmpathyEngine
-from memoria.emotional.fatigue import FatigueDetector
-
 
 # ═══════════════════════════════════════════════════════════════════════
 # TYPE TESTS
@@ -916,11 +915,7 @@ class TestEmotionalLayerIntegration(unittest.TestCase):
         """Verify the public __init__ exports work."""
         from memoria.emotional import (
             EmotionAnalyzer,
-            EmpathyEngine,
-            FatigueDetector,
-            EmotionalArcTracker,
             EmotionType,
-            IntensityLevel,
         )
         self.assertIsNotNone(EmotionAnalyzer)
         self.assertIsNotNone(EmotionType.JOY)

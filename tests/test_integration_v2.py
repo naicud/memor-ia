@@ -15,34 +15,35 @@ All tests use in-memory backends and require no external services.
 from __future__ import annotations
 
 import tempfile
-import time
-from pathlib import Path
 
 import pytest
 
-# --- v2 modules ---
-from memoria.namespace import SharedMemoryStore
-from memoria.acl import (
-    Role, GrantStore, PolicyEngine,
-    role_can_read, role_can_write, role_can_admin,
-)
-from memoria.tiered import (
-    TieredMemoryManager, WorkingMemory, RecallMemory, ArchivalMemory,
-)
-from memoria.extraction import (
-    MemoryEnricher, RegexExtractor, MemoryDeduplicator, ConflictDetector,
-)
-from memoria.versioning import VersionHistory
-from memoria.reasoning import GraphTraverser, ExplanationBuilder
-from memoria.sync import SyncProtocol, InMemoryTransport, SyncConflictResolver
-
-# --- existing modules ---
-from memoria.graph.client import GraphClient, InMemoryGraph
-from memoria.graph.knowledge import KnowledgeGraph
-
 # --- top-level API ---
 from memoria import Memoria
+from memoria.acl import (
+    GrantStore,
+    PolicyEngine,
+    Role,
+)
+from memoria.extraction import (
+    ConflictDetector,
+    MemoryDeduplicator,
+    MemoryEnricher,
+    RegexExtractor,
+)
 
+# --- existing modules ---
+from memoria.graph.client import GraphClient
+from memoria.graph.knowledge import KnowledgeGraph
+
+# --- v2 modules ---
+from memoria.namespace import SharedMemoryStore
+from memoria.reasoning import ExplanationBuilder, GraphTraverser
+from memoria.sync import InMemoryTransport, SyncConflictResolver, SyncProtocol
+from memoria.tiered import (
+    TieredMemoryManager,
+)
+from memoria.versioning import VersionHistory
 
 # ===================================================================
 # Fixtures
@@ -297,7 +298,7 @@ class TestExtractionGraphIntegration:
         from memoria.graph.schema import NodeType, RelationType
         e_python = Entity(name="Python", entity_type=NodeType.TOOL)
         e_guido = Entity(name="Guido", entity_type=NodeType.PERSON)
-        nid_python = knowledge_graph.add_entity(e_python)
+        knowledge_graph.add_entity(e_python)
         nid_guido = knowledge_graph.add_entity(e_guido)
         rel = Relation(source=e_guido, target=e_python, relation_type=RelationType.USES)
         knowledge_graph.add_relation(rel)

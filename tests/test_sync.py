@@ -15,12 +15,10 @@ from memoria.sync.conflicts import (
     ConflictStrategy,
     SyncConflict,
     SyncConflictResolver,
-    SyncResolution,
 )
+from memoria.sync.federation import FederationManager
+from memoria.sync.protocol import SyncProtocol, SyncResult
 from memoria.sync.transport import FileTransport, InMemoryTransport, SyncTransport
-from memoria.sync.protocol import SyncProtocol, SyncResult, SyncState
-from memoria.sync.federation import FederationManager, PeerInfo
-
 
 # ===================================================================
 # Fixtures
@@ -379,7 +377,7 @@ class TestSyncProtocol:
         self, store: SharedMemoryStore, transport: InMemoryTransport,
     ) -> None:
         mid = store.add("ns1", "local version")
-        local_mem = store.get(mid)
+        store.get(mid)
         transport.send([{
             "id": mid,
             "content": "remote version",

@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
-import re
-import threading
 from dataclasses import FrozenInstanceError
 
 import pytest
@@ -39,7 +36,6 @@ from memoria.identity.factory import (
     create_subagent_context,
     create_teammate_context,
 )
-
 
 # ===================================================================
 # identity.py — create_agent_id
@@ -207,7 +203,7 @@ class TestContextVars:
 
     def test_set_get_agent(self):
         ctx = AgentContext(agent_id=AgentId("a" + "0" * 16), session_id=SessionId("s" * 32))
-        token = set_current_agent(ctx)
+        set_current_agent(ctx)
         assert get_current_agent() is ctx
         set_current_agent(None)
         # Clean reset
@@ -216,7 +212,7 @@ class TestContextVars:
 
     def test_set_get_session(self):
         sid = SessionId("f" * 32)
-        token = set_current_session(sid)
+        set_current_session(sid)
         assert get_current_session() == sid
         from memoria.identity.context import _current_session
         _current_session.set(None)

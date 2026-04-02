@@ -3,18 +3,14 @@
 from __future__ import annotations
 
 import math
-import os
-from pathlib import Path
-from unittest import mock
 
 import pytest
 
+from memoria.vector.chunking import chunk_code, chunk_markdown, chunk_text
 from memoria.vector.client import VectorClient, VectorRecord, _cosine_similarity
 from memoria.vector.embeddings import TFIDFEmbedder, get_default_embedder
 from memoria.vector.index import VectorIndex
 from memoria.vector.search import SearchResult, SemanticSearch
-from memoria.vector.chunking import TextChunk, chunk_code, chunk_markdown, chunk_text
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

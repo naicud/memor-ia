@@ -5,7 +5,6 @@ from __future__ import annotations
 import threading
 import time
 import unittest
-from typing import Any, Dict
 
 from memoria.product_intel import (
     AdoptionAnalyzer,
@@ -22,7 +21,6 @@ from memoria.product_intel import (
     UsageProfile,
     UsageProfiler,
 )
-
 
 # ======================================================================
 # Module exports

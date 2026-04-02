@@ -19,7 +19,6 @@ from memoria.habits import (
     RoutineStatus,
 )
 
-
 # ======================================================================
 # Enum tests
 # ======================================================================
@@ -1312,7 +1311,7 @@ class TestEdgeCases(unittest.TestCase):
             ht.record_action("c", timestamp=ts + 10)
         # Should detect both 2-action and 3-action habits
         habits = ht.detect_habits(min_frequency=0.1, min_length=2, max_length=3)
-        lengths = {len(h.actions) for h in habits}
+        {len(h.actions) for h in habits}
         self.assertTrue(len(habits) > 0)
 
     def test_multiple_anchor_types(self) -> None:
@@ -1330,20 +1329,6 @@ class TestImportAll(unittest.TestCase):
     """Verify all public symbols are importable."""
 
     def test_all_classes_importable(self) -> None:
-        from memoria.habits import (
-            AnchorBehavior,
-            AnchorDetector,
-            AnchorType,
-            DisruptionAlert,
-            DisruptionEvent,
-            DisruptionSeverity,
-            Habit,
-            HabitStrength,
-            HabitTracker,
-            Routine,
-            RoutineOptimizer,
-            RoutineStatus,
-        )
         self.assertTrue(True)
 
     def test_all_list(self) -> None:

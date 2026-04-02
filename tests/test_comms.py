@@ -9,19 +9,18 @@ import threading
 import time
 import unittest
 
-from memoria.comms.mailbox import Mailbox, MailboxMessage
 from memoria.comms.bus import (
     Event,
     EventType,
     MessageBus,
     get_message_bus,
 )
+from memoria.comms.mailbox import Mailbox, MailboxMessage
 from memoria.comms.permissions import (
     PermissionBridge,
     PermissionDecision,
     PermissionRequest,
 )
-
 
 # ======================================================================
 # Mailbox tests
@@ -115,7 +114,6 @@ class TestMailboxReceive(unittest.TestCase):
         self.assertGreaterEqual(elapsed, 0.05)
 
     def test_receive_blocks_until_send(self) -> None:
-        result: list[MailboxMessage] = []
 
         def delayed_send() -> None:
             time.sleep(0.05)

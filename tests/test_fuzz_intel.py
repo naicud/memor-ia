@@ -3,19 +3,16 @@
 import dataclasses
 import math
 import threading
-import time
 import unittest
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from unittest.mock import patch
 
-# ── prediction ──────────────────────────────────────────────────────────
-from memoria.prediction import ActionPredictor, AnomalyDetector, DifficultyEstimator
-from memoria.prediction.difficulty import DifficultyLevel
+# ── facade ──────────────────────────────────────────────────────────────
+from memoria import Memoria
 
 # ── emotional ───────────────────────────────────────────────────────────
 from memoria.emotional import (
-    EmotionAnalyzer,
     EmotionalArcTracker,
+    EmotionAnalyzer,
     EmpathyEngine,
     FatigueDetector,
 )
@@ -28,6 +25,14 @@ from memoria.emotional.types import (
     SentimentScore,
 )
 
+# ── prediction ──────────────────────────────────────────────────────────
+from memoria.prediction import ActionPredictor, AnomalyDetector, DifficultyEstimator
+from memoria.prediction.difficulty import DifficultyLevel
+
+# ── preferences ─────────────────────────────────────────────────────────
+from memoria.preferences import PreferenceDetector, PreferenceStore
+from memoria.preferences.types import Preference, PreferenceCategory, PreferenceQuery
+
 # ── proactive ───────────────────────────────────────────────────────────
 from memoria.proactive import (
     InsightGenerator,
@@ -36,14 +41,6 @@ from memoria.proactive import (
     SuggestionEngine,
 )
 
-# ── user_dna ────────────────────────────────────────────────────────────
-from memoria.user_dna import DNAAnalyzer, PassiveCollector, UserDNAStore
-from memoria.user_dna.types import UserDNA
-
-# ── preferences ─────────────────────────────────────────────────────────
-from memoria.preferences import PreferenceDetector, PreferenceStore
-from memoria.preferences.types import Preference, PreferenceCategory, PreferenceQuery
-
 # ── reasoning ───────────────────────────────────────────────────────────
 from memoria.reasoning import ReasoningChain
 from memoria.reasoning.chains import ChainLink, ChainType
@@ -51,8 +48,9 @@ from memoria.reasoning.chains import ChainLink, ChainType
 # ── sharing ─────────────────────────────────────────────────────────────
 from memoria.sharing import MemoryCoordinator
 
-# ── facade ──────────────────────────────────────────────────────────────
-from memoria import Memoria
+# ── user_dna ────────────────────────────────────────────────────────────
+from memoria.user_dna import DNAAnalyzer, PassiveCollector, UserDNAStore
+from memoria.user_dna.types import UserDNA
 
 # ═══════════════════════════════════════════════════════════════════════
 # Fuzz Payloads
@@ -87,7 +85,7 @@ def _no_crash(fn, *args, **kwargs):
         fn(*args, **kwargs)
         return True
     except (TypeError, ValueError, KeyError, AttributeError, IndexError,
-            ZeroDivisionError, OverflowError, RecursionError) as exc:
+            ZeroDivisionError, OverflowError, RecursionError):
         # Known-acceptable guard exceptions
         return True
     except Exception:
@@ -1154,7 +1152,7 @@ class TestConcurrencyStress(unittest.TestCase):
                 lambda: self.m.search(f"query_{idx}"),
                 lambda: self.m.add(f"memory_{idx}"),
             ]
-        ops = _make_ops(0)
+        _make_ops(0)
         with ThreadPoolExecutor(max_workers=20) as pool:
             futures = []
             for i in range(20):

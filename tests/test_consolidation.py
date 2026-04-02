@@ -5,14 +5,13 @@ from __future__ import annotations
 import os
 import threading
 import time
-from pathlib import Path
 from unittest import mock
 
 import pytest
 
 try:
     from src.task import TaskStatus, TaskType
-    from src.utils.task_framework import get_task, _manager
+    from src.utils.task_framework import _manager, get_task
     _HAS_TASK_SYSTEM = True
 except ImportError:
     _HAS_TASK_SYSTEM = False
@@ -21,12 +20,19 @@ pytestmark = pytest.mark.skipif(
     not _HAS_TASK_SYSTEM, reason="Task system (src.task) not available"
 )
 
+from memoria.consolidation.auto import (
+    SESSION_SCAN_INTERVAL,
+    AutoDreamConfig,
+    execute_auto_dream,
+    get_dream_config,
+    init_auto_dream,
+    is_auto_dream_enabled,
+)
 from memoria.consolidation.dream import (
     DREAM_DESCRIPTION,
     DREAM_TASK,
-    DreamTaskState,
-    DreamTurn,
     MAX_TURNS,
+    DreamTurn,
     add_dream_turn,
     complete_dream_task,
     fail_dream_task,
@@ -35,7 +41,6 @@ from memoria.consolidation.dream import (
     register_dream_task,
 )
 from memoria.consolidation.lock import (
-    HOLDER_STALE_S,
     LOCK_FILE_NAME,
     list_sessions_touched_since,
     read_last_consolidated_at,
@@ -49,15 +54,6 @@ from memoria.consolidation.prompt_template import (
     MAX_ENTRYPOINT_LINES,
     build_consolidation_prompt,
 )
-from memoria.consolidation.auto import (
-    SESSION_SCAN_INTERVAL,
-    AutoDreamConfig,
-    execute_auto_dream,
-    get_dream_config,
-    init_auto_dream,
-    is_auto_dream_enabled,
-)
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -170,7 +166,7 @@ class TestAddDreamTurn:
         assert len(task.turns) == MAX_TURNS
         # Oldest turns evicted — last turn should be the most recent
         assert task.turns[-1].text == f"turn-{MAX_TURNS + 4}"
-        assert task.turns[0].text == f"turn-5"
+        assert task.turns[0].text == "turn-5"
 
     def test_files_touched_accumulated(self):
         task_id = register_dream_task(sessions_reviewing=1)

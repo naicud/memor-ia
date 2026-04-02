@@ -1,8 +1,6 @@
 """Tests for the Behavioral Prediction Engine."""
 
-import math
 import threading
-import time
 import unittest
 
 from memoria.prediction import (
@@ -20,7 +18,6 @@ from memoria.prediction import (
     TimingRecommendation,
     TransitionMatrix,
 )
-
 
 # ======================================================================
 # Type / enum tests

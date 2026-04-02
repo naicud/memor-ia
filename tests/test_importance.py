@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import time
-from unittest import mock
 
 import pytest
 
@@ -14,7 +13,6 @@ from memoria.core.self_edit import (
     MemoryBudget,
     SelfEditingMemory,
 )
-
 
 # ===========================================================================
 # ImportanceSignals
@@ -194,7 +192,7 @@ class TestScorerWeights:
 class TestBatchScoring:
     def test_batch_matches_individual(self):
         scorer = ImportanceScorer()
-        now = time.time()
+        time.time()
         # Use last_accessed=0 to avoid time-dependent recency drift between calls
         signals = [
             ImportanceSignals(access_count=i, last_accessed=0) for i in range(5)
@@ -591,8 +589,9 @@ class TestMemoriaFacadeMerge:
     """Test MERGE action through the Memoria.self_edit_action facade."""
 
     def test_merge_action_returns_decision(self):
-        from memoria import Memoria
         import tempfile
+
+        from memoria import Memoria
         d = tempfile.mkdtemp()
         try:
             m = Memoria(project_dir=d)
@@ -609,8 +608,9 @@ class TestMemoriaFacadeMerge:
             shutil.rmtree(d, ignore_errors=True)
 
     def test_merge_action_requires_new_content(self):
-        from memoria import Memoria
         import tempfile
+
+        from memoria import Memoria
         d = tempfile.mkdtemp()
         try:
             m = Memoria(project_dir=d)

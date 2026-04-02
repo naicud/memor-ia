@@ -1,10 +1,7 @@
 """Tests for the Dream Engine module — cognitive consolidation engine."""
 from __future__ import annotations
 
-import math
 import time
-
-import pytest
 
 from memoria.dream import (
     ConsolidationAction,
@@ -371,7 +368,6 @@ class TestInsightSynthesizerClusters:
             _mem("a", "python async programming"),
             _mem("b", "python web framework"),
         ]
-        scores = {"a": 0.5, "b": 0.5}
         insights = self.synth._find_topic_clusters(mems)
         titles = [i.title for i in insights]
         assert any("python" in t for t in titles)

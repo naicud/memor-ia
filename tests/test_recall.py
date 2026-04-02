@@ -3,11 +3,21 @@
 from __future__ import annotations
 
 import time
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
+from memoria.recall.context_filter import (
+    RecallContext,
+    deduplicate,
+    filter_by_context,
+)
+from memoria.recall.pipeline import RecallPipeline
+from memoria.recall.ranker import (
+    RankedResult,
+    reciprocal_rank_fusion,
+    weighted_score_fusion,
+)
 from memoria.recall.strategies import (
     GraphStrategy,
     KeywordStrategy,
@@ -15,18 +25,6 @@ from memoria.recall.strategies import (
     RecallStrategy,
     VectorStrategy,
 )
-from memoria.recall.ranker import (
-    RankedResult,
-    reciprocal_rank_fusion,
-    weighted_score_fusion,
-)
-from memoria.recall.context_filter import (
-    RecallContext,
-    deduplicate,
-    filter_by_context,
-)
-from memoria.recall.pipeline import RecallPipeline
-
 
 # ===================================================================
 # Helpers
@@ -159,8 +157,8 @@ class TestGraphStrategy:
 
     def test_extracts_entities_and_traverses(self):
         from memoria.graph.client import GraphClient
-        from memoria.graph.knowledge import KnowledgeGraph
         from memoria.graph.entities import Entity
+        from memoria.graph.knowledge import KnowledgeGraph
         from memoria.graph.schema import NodeType
 
         client = GraphClient(use_memory=True)
@@ -609,10 +607,10 @@ class TestCreateDefault:
         assert names == {"keyword", "graph"}
 
     def test_all_backends(self, tmp_path):
-        from memoria.vector.client import VectorClient
-        from memoria.vector.embeddings import TFIDFEmbedder
         from memoria.graph.client import GraphClient
         from memoria.graph.knowledge import KnowledgeGraph
+        from memoria.vector.client import VectorClient
+        from memoria.vector.embeddings import TFIDFEmbedder
 
         mem_dir = tmp_path / ".claude" / "memory"
         mem_dir.mkdir(parents=True)

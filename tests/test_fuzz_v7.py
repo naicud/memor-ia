@@ -6,7 +6,6 @@ with malformed inputs, concurrency stress, and serialization round-trips.
 """
 
 import math
-import os
 import sys
 import threading
 import time
@@ -35,7 +34,6 @@ from memoria.cognitive import (
 from memoria.cognitive.types import (
     CognitiveSnapshot,
     ComplexityLevel,
-    FocusSession,
     FocusState,
     LoadLevel,
     OverloadAlert,
@@ -283,7 +281,7 @@ class TestMalformedInputTamperProof(unittest.TestCase):
 
     def test_binary_content_hash(self) -> None:
         for i, b in enumerate(BINARY_PAYLOADS):
-            rec = self.tp.hash_content(b, f"bin_{i}")
+            self.tp.hash_content(b, f"bin_{i}")
             status = self.tp.verify_integrity(b, f"bin_{i}")
             self.assertEqual(status, IntegrityStatus.INTACT)
 
@@ -733,7 +731,7 @@ class TestFocusOptimizerStress(unittest.TestCase):
 
     def test_rapid_session_create_destroy(self) -> None:
         for i in range(50):
-            s = self.fo.start_session(f"sess_{i}")
+            self.fo.start_session(f"sess_{i}")
             self.fo.record_focus_point(f"sess_{i}", "topic", 0.8)
             self.fo.end_session(f"sess_{i}")
 
@@ -791,7 +789,7 @@ class TestFocusOptimizerStress(unittest.TestCase):
     def test_unicode_session_ids(self) -> None:
         for i, u in enumerate(UNICODE_EDGE_CASES[:5]):
             sid = f"unicode_{i}_{u[:10]}"
-            s = self.fo.start_session(sid)
+            self.fo.start_session(sid)
             self.fo.record_focus_point(sid, "topic", 0.7)
             self.fo.end_session(sid)
 

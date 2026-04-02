@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import time
 
-import pytest
-
 from memoria.resurrection import (
     CognitiveState,
     ResumeContext,
@@ -18,7 +16,6 @@ from memoria.resurrection import (
     WorkItem,
     WorkThread,
 )
-
 
 # ── 1. TestSessionOutcome ────────────────────────────────────────────
 

@@ -4,17 +4,14 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-import pytest
-
 from memoria.graph.client import GraphClient
 from memoria.graph.entities import Entity, Relation
 from memoria.graph.knowledge import KnowledgeGraph
 from memoria.graph.schema import NodeType, RelationType
-from memoria.reasoning.chains import ChainBuilder, ChainLink, ReasoningChain
+from memoria.reasoning.chains import ChainBuilder, ReasoningChain
 from memoria.reasoning.explanations import Explanation, ExplanationBuilder
 from memoria.reasoning.temporal import TemporalReasoner
 from memoria.reasoning.traversal import GraphTraverser, PathResult
-
 
 # ---------------------------------------------------------------------------
 # Shared test-graph builder
@@ -241,7 +238,7 @@ class TestGraphTraverser:
         gc = GraphClient(use_memory=True)
         kg = KnowledgeGraph(gc)
         a = kg.add_entity(Entity("A", NodeType.CONCEPT))
-        b = kg.add_entity(Entity("B", NodeType.CONCEPT))
+        kg.add_entity(Entity("B", NodeType.CONCEPT))
         c = kg.add_entity(Entity("C", NodeType.CONCEPT))
         kg.add_relation(Relation(Entity("A", NodeType.CONCEPT), Entity("B", NodeType.CONCEPT), RelationType.RELATED_TO))
         kg.add_relation(Relation(Entity("B", NodeType.CONCEPT), Entity("C", NodeType.CONCEPT), RelationType.RELATED_TO))

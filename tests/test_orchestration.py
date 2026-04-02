@@ -5,13 +5,13 @@ Covers AgentRunner, AgentSpawner, TeamManager, and ForkAgent.
 
 from __future__ import annotations
 
-import asyncio
 import threading
 import time
 from unittest import mock
 
 import pytest
 
+from memoria.orchestration.fork import ForkAgent, ForkConfig, ForkResult
 from memoria.orchestration.runner import (
     AgentResult,
     AgentRunner,
@@ -21,23 +21,18 @@ from memoria.orchestration.runner import (
 )
 from memoria.orchestration.spawner import (
     AgentSpawner,
-    ChildStatus,
     SpawnConfig,
     SpawnMode,
-    SpawnResult,
 )
-from memoria.orchestration.fork import ForkAgent, ForkConfig, ForkResult
 from memoria.orchestration.team import (
     TeamConfig,
     TeamManager,
-    TeamMember,
     _reset_registry,
     create_team,
     disband_team,
     get_team,
     list_teams,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -755,36 +750,22 @@ class TestPackageExports:
 
     def test_all_runner_exports(self):
         from memoria.orchestration import (
-            AgentResult,
-            AgentRunner,
-            RunnerConfig,
             StopReason,
-            TurnResult,
         )
         assert StopReason.END_TURN.value == "end_turn"
 
     def test_all_spawner_exports(self):
         from memoria.orchestration import (
-            AgentSpawner,
-            ChildStatus,
-            SpawnConfig,
             SpawnMode,
-            SpawnResult,
         )
         assert SpawnMode.FORK.value == "fork"
 
     def test_all_fork_exports(self):
-        from memoria.orchestration import ForkAgent, ForkConfig, ForkResult
+        from memoria.orchestration import ForkConfig
         assert ForkConfig(fork_label="x").fork_label == "x"
 
     def test_all_team_exports(self):
         from memoria.orchestration import (
-            TeamConfig,
-            TeamManager,
             TeamMember,
-            create_team,
-            disband_team,
-            get_team,
-            list_teams,
         )
         assert TeamMember(agent_id="a", agent_name="b").role == "worker"

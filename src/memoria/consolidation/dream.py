@@ -248,7 +248,6 @@ def kill_dream_task(task_id: str) -> None:
     prior_mtime = getattr(task, "prior_mtime", 0.0)
     if prior_mtime > 0.0:
         try:
-            import os
 
             from memoria.consolidation.lock import rollback_consolidation_lock
             from memoria.core.paths import get_memoria_home

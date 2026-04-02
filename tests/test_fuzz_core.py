@@ -7,14 +7,22 @@ serialization round-trips across all major modules.
 from __future__ import annotations
 
 import asyncio
-import math
 import sys
 import threading
 import time
 import unittest
-from collections import Counter
-from unittest import mock
 
+from memoria.context.compaction import (
+    CompactBoundary,
+    CompactionConfig,
+    ContextCompactor,
+)
+from memoria.context.window import (
+    TokenBudget,
+    analyze_context,
+    estimate_message_tokens,
+    estimate_tokens,
+)
 from memoria.core.importance import ImportanceScorer, ImportanceSignals, ImportanceTracker
 from memoria.core.self_edit import (
     EditAction,
@@ -23,7 +31,6 @@ from memoria.core.self_edit import (
     SelfEditingMemory,
 )
 from memoria.core.store import (
-    EntrypointTruncation,
     truncate_entrypoint,
 )
 from memoria.core.types import (
@@ -33,38 +40,23 @@ from memoria.core.types import (
     parse_frontmatter,
     parse_memory_type,
 )
-from memoria.tiered import WorkingMemory, TieredMemoryManager
 from memoria.episodic.store import EpisodicMemory
-from memoria.episodic.types import Episode, EpisodicEvent, EventType
-from memoria.procedural.store import ProceduralMemory
-from memoria.procedural.types import (
-    Procedure,
-    ProcedureStatus,
-    ToolPattern,
-    WorkflowStep,
-    WorkflowTemplate,
-)
-from memoria.context.window import (
-    TokenBudget,
-    ContextAnalysis,
-    estimate_tokens,
-    estimate_message_tokens,
-    estimate_messages_tokens,
-    analyze_context,
-)
-from memoria.context.compaction import (
-    CompactBoundary,
-    CompactionConfig,
-    ContextCompactor,
-)
-from memoria.extraction.dedup import MemoryDeduplicator, jaccard_similarity
+from memoria.episodic.types import EpisodicEvent, EventType
 from memoria.extraction.conflicts import (
     ConflictDetector,
     ConflictType,
     ResolutionStrategy,
 )
-from memoria.extraction.enricher import MemoryEnricher, MemoryCategory
-
+from memoria.extraction.dedup import MemoryDeduplicator, jaccard_similarity
+from memoria.extraction.enricher import MemoryCategory, MemoryEnricher
+from memoria.procedural.store import ProceduralMemory
+from memoria.procedural.types import (
+    Procedure,
+    ProcedureStatus,
+    WorkflowStep,
+    WorkflowTemplate,
+)
+from memoria.tiered import TieredMemoryManager, WorkingMemory
 
 # ---------------------------------------------------------------------------
 # Fuzz data constants
@@ -296,7 +288,7 @@ class TestSelfEditingMemoryFuzz(unittest.TestCase):
     def test_edit_history_rotation(self):
         for i in range(600):
             self.sem.keep(f"m{i}")
-        history = self.sem.get_edit_history(limit=1000)
+        self.sem.get_edit_history(limit=1000)
         self.assertLessEqual(len(self.sem._edit_history), 500)
 
     def test_auto_manage_empty_memories(self):
@@ -699,7 +691,7 @@ class TestEpisodicMemoryFuzz(unittest.TestCase):
     def test_episode_rotation(self):
         em = EpisodicMemory(max_episodes=3)
         for i in range(5):
-            ep = em.start_episode(title=f"ep{i}")
+            em.start_episode(title=f"ep{i}")
             em.end_episode()
         self.assertLessEqual(len(em._episodes), 4)  # 3 max + possibly 1 active
 
@@ -1509,7 +1501,7 @@ class TestAdditionalEdgeCases(unittest.TestCase):
 
     def test_recall_memory_sql_injection(self):
         mgr = TieredMemoryManager()
-        r_id = mgr.add(SQL_INJECTION, tier="recall")
+        mgr.add(SQL_INJECTION, tier="recall")
         results = mgr.recall.search(SQL_INJECTION)
         self.assertGreater(len(results), 0)
 

@@ -7,15 +7,13 @@ Covers: Profiler, PatternAnalyzer, SuggestionEngine, TriggerSystem,
 from __future__ import annotations
 
 import time
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
+from memoria.proactive.analyzer import PatternAnalyzer
+from memoria.proactive.insights import InsightGenerator
 from memoria.proactive.profiler import ClientProfile, Profiler
-from memoria.proactive.analyzer import Pattern, PatternAnalyzer
-from memoria.proactive.suggestions import Suggestion, SuggestionEngine
+from memoria.proactive.suggestions import SuggestionEngine
 from memoria.proactive.triggers import Trigger, TriggerSystem
-from memoria.proactive.insights import Insight, InsightGenerator
-
 
 # ===================================================================
 # 1. Profiler tests (~12)
@@ -484,7 +482,7 @@ class TestTriggerSystem:
         assert t.condition({"context_usage": 0.5}) is False
 
     def test_message_bus_integration(self):
-        from memoria.comms.bus import MessageBus, Event, EventType
+        from memoria.comms.bus import Event, EventType, MessageBus
 
         bus = MessageBus()
         ts = TriggerSystem(bus=bus)

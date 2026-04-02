@@ -2,19 +2,9 @@
 
 from __future__ import annotations
 
-import time
-
 import pytest
 
 from memoria.graph.client import GraphClient, InMemoryGraph
-from memoria.graph.schema import (
-    GRAPH_SCHEMA,
-    NodeSchema,
-    NodeType,
-    RelationType,
-    all_allowed_props,
-    validate_node_props,
-)
 from memoria.graph.entities import (
     Entity,
     Relation,
@@ -22,6 +12,14 @@ from memoria.graph.entities import (
     extract_relations,
 )
 from memoria.graph.knowledge import KnowledgeGraph
+from memoria.graph.queries import QUERIES
+from memoria.graph.schema import (
+    GRAPH_SCHEMA,
+    NodeType,
+    RelationType,
+    all_allowed_props,
+    validate_node_props,
+)
 from memoria.graph.temporal import (
     decay_confidence,
     get_entity_timeline,
@@ -29,8 +27,6 @@ from memoria.graph.temporal import (
     get_trending_concepts,
     record_interaction,
 )
-from memoria.graph.queries import QUERIES
-
 
 # ===================================================================
 # Fixtures

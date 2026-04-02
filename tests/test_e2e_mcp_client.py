@@ -15,12 +15,7 @@ Run:
 
 from __future__ import annotations
 
-import asyncio
 import json
-import os
-import shutil
-import tempfile
-import textwrap
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -30,8 +25,9 @@ import pytest
 
 pytest.importorskip("fastmcp")
 
-import memoria.mcp.server as srv
 from fastmcp import Client
+
+import memoria.mcp.server as srv
 
 # ---------------------------------------------------------------------------
 # Report collector
@@ -196,7 +192,7 @@ class TestNewDeveloperSetup:
                 "memory_type": "user",
             })
             assert r["status"] == "created"
-            mem1_id = r["id"]
+            r["id"]
 
             # Turn 2: "Remember my project architecture"
             r = await call(client, conv, "memoria_add", {
@@ -610,7 +606,7 @@ class TestTieredStorageAndACL:
                 "tier": "working",
                 "importance": 0.95,
             })
-            mem_id = r["id"]
+            r["id"]
 
             # Turn 2: Store in reference tier
             await call(client, conv, "memoria_add_to_tier", {
@@ -1105,7 +1101,7 @@ def _generate_report():
         "",
         f"**Scenarios tested:** {len(CONVERSATIONS)}  ",
         f"**Total tool calls:** {sum(len(c.turns) for c in CONVERSATIONS)}  ",
-        f"**All passed:** ✅ Yes  ",
+        "**All passed:** ✅ Yes  ",
         "",
         "---",
         "",

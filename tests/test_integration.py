@@ -15,45 +15,53 @@ import os
 import threading
 import time
 from pathlib import Path
-from typing import Any
 from unittest import mock
 
 import pytest
 
+from memoria.comms.bus import Event, EventType, MessageBus
+
+# Layer 3 — Communication
+from memoria.comms.mailbox import Mailbox, MailboxMessage
+from memoria.comms.permissions import (
+    PermissionBridge,
+    PermissionDecision,
+)
+from memoria.context.compaction import CompactionConfig, ContextCompactor
+from memoria.context.prompt import (
+    PromptBuilder,
+    PromptConfig,
+    PromptSection,
+)
+
+# Layer 5 — Context Management
+from memoria.context.window import (
+    TokenBudget,
+    analyze_context,
+    estimate_tokens,
+    get_budget,
+)
+
 # Layer 1 — Memory
-from memoria.core.paths import (
-    ensure_memory_dir_exists,
-    get_auto_mem_entrypoint,
-    get_auto_mem_path,
-    get_transcript_path,
-)
-from memoria.core.types import (
-    MemoryFrontmatter,
-    MemoryType,
-    format_frontmatter,
-    parse_frontmatter,
-)
+from memoria.core.recall import find_relevant_memories
+from memoria.core.scanner import format_memory_manifest, scan_memory_files
 from memoria.core.store import (
-    create_memory_file,
     delete_memory_file,
-    list_memory_files,
     read_memory_file,
-    update_entrypoint,
     write_memory_file,
 )
-from memoria.core.scanner import format_memory_manifest, scan_memory_files
-from memoria.core.recall import find_relevant_memories
 from memoria.core.transcript import (
     append_message,
     create_session,
     read_transcript,
 )
+from memoria.core.types import (
+    MemoryFrontmatter,
+    MemoryType,
+)
 
 # Layer 2 — Identity
 from memoria.identity.agent_id import (
-    AgentId,
-    AgentProgress,
-    SessionId,
     TeammateIdentity,
     create_agent_id,
     create_session_id,
@@ -65,26 +73,16 @@ from memoria.identity.context import (
     is_subagent,
     is_teammate,
     run_in_agent_context,
-    set_current_agent,
 )
 from memoria.identity.factory import (
-    SubagentOverrides,
     create_fork_context,
     create_subagent_context,
     create_teammate_context,
 )
-
-# Layer 3 — Communication
-from memoria.comms.mailbox import Mailbox, MailboxMessage
-from memoria.comms.bus import Event, EventType, MessageBus
-from memoria.comms.permissions import (
-    PermissionBridge,
-    PermissionDecision,
-)
+from memoria.orchestration.fork import ForkAgent, ForkConfig
 
 # Layer 4 — Orchestration
 from memoria.orchestration.runner import (
-    AgentResult,
     AgentRunner,
     RunnerConfig,
     StopReason,
@@ -92,36 +90,14 @@ from memoria.orchestration.runner import (
 )
 from memoria.orchestration.spawner import (
     AgentSpawner,
-    ChildStatus,
     SpawnConfig,
     SpawnMode,
 )
 from memoria.orchestration.team import (
     TeamConfig,
     TeamManager,
-    TeamMember,
     _reset_registry,
-    create_team,
-    disband_team,
-    get_team,
 )
-from memoria.orchestration.fork import ForkAgent, ForkConfig
-
-# Layer 5 — Context Management
-from memoria.context.window import (
-    TokenBudget,
-    analyze_context,
-    estimate_messages_tokens,
-    estimate_tokens,
-    get_budget,
-)
-from memoria.context.compaction import CompactionConfig, ContextCompactor
-from memoria.context.prompt import (
-    PromptBuilder,
-    PromptConfig,
-    PromptSection,
-)
-
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -746,7 +722,7 @@ class TestFullPipeline:
             agent_context=child,
         )
 
-        turns = _run(_collect(runner, [{"role": "user", "content": "analyze"}]))
+        _run(_collect(runner, [{"role": "user", "content": "analyze"}]))
         agent_result = runner.get_result(child.agent_id)
 
         bus.publish(Event(
@@ -819,7 +795,7 @@ class TestFullPipeline:
 
     def test_leader_compacts_after_workers_report(self, tmp_path: Path):
         """Workers report → leader collects → compacts context."""
-        leader = AgentContext(agent_id=create_agent_id("leader"), session_id=create_session_id())
+        AgentContext(agent_id=create_agent_id("leader"), session_id=create_session_id())
         bus = MessageBus()
         reports: list[str] = []
         bus.subscribe(EventType.TASK_COMPLETED.value,
@@ -840,7 +816,7 @@ class TestFullPipeline:
             messages.append({"role": "assistant", "content": f"Noted: {report}"})
 
         compactor = ContextCompactor(CompactionConfig(preserve_recent_n=2))
-        budget = get_budget("sonnet")
+        get_budget("sonnet")
 
         # Micro compact (non-destructive)
         compacted = compactor.micro_compact(messages)
@@ -859,7 +835,7 @@ class TestFullPipeline:
         _write_test_memory(mem_dir, "API Docs", MemoryType.REFERENCE, "REST API v3 endpoints")
 
         parent = AgentContext(agent_id=create_agent_id("parent"), session_id=create_session_id())
-        fork_ctx = create_fork_context(parent, "doc-reader")
+        create_fork_context(parent, "doc-reader")
 
         # Fork reads memory and builds messages
         relevant = find_relevant_memories("API endpoints REST", str(mem_dir))
@@ -1100,7 +1076,7 @@ class TestConcurrencyAndEdgeCases:
             messages.append({"role": "assistant", "content": f"Answer {i}: " + "y" * 200})
 
         compactor = ContextCompactor(CompactionConfig(preserve_recent_n=5))
-        budget = get_budget("sonnet")
+        get_budget("sonnet")
 
         # Micro compact preserves recent and system
         micro = compactor.micro_compact(messages)
@@ -1178,7 +1154,7 @@ class TestConcurrencyAndEdgeCases:
             agent_context=ctx,
         )
 
-        turns = _run(_collect(runner, [{"role": "user", "content": "go"}]))
+        _run(_collect(runner, [{"role": "user", "content": "go"}]))
         result = runner.get_result(ctx.agent_id)
         assert result.stop_reason == StopReason.ABORT
         assert result.turns <= 3
@@ -1299,7 +1275,7 @@ class TestConcurrencyAndEdgeCases:
             execute_tool=mock_tool,
         )
 
-        turns = _run(_collect(runner, [{"role": "user", "content": "go"}]))
+        _run(_collect(runner, [{"role": "user", "content": "go"}]))
         # 3 tool turns + 1 max_turns sentinel
         result = runner.get_result("test")
         assert result.stop_reason == StopReason.MAX_TURNS
@@ -1327,7 +1303,7 @@ class TestConcurrencyAndEdgeCases:
         )
         runner.add_stop_hook(lambda msgs, turn: len(turn.tool_calls) > 0)
 
-        turns = _run(_collect(runner, [{"role": "user", "content": "go"}]))
+        _run(_collect(runner, [{"role": "user", "content": "go"}]))
         result = runner.get_result("test")
         assert result.stop_reason == StopReason.STOP_HOOK
         assert result.turns == 1

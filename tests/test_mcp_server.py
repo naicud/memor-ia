@@ -10,8 +10,6 @@ Requires: fastmcp (skips entire module if unavailable).
 from __future__ import annotations
 
 import json
-import shutil
-import tempfile
 
 import pytest
 
@@ -19,70 +17,69 @@ pytest.importorskip("fastmcp")
 
 import memoria.mcp.server as srv
 from memoria.mcp.server import (
-    # Core tools (1-7)
-    memoria_add,
-    memoria_search,
-    memoria_get,
-    memoria_delete,
-    memoria_suggest,
-    memoria_profile,
-    memoria_insights,
-    # Tiered / ACL / Enrichment / Sync tools (8-12)
-    memoria_add_to_tier,
-    memoria_search_tiers,
-    memoria_grant_access,
-    memoria_enrich,
-    memoria_sync,
+    consolidation_report,
+    deep_recall,
+    dream_consolidate,
+    dream_journal,
+    emotion_analyze,
+    emotion_fatigue_check,
+    episodic_end,
+    episodic_recap,
+    episodic_record,
+    episodic_search,
     # Episodic tools (13-17)
     episodic_start,
-    episodic_end,
-    episodic_record,
     episodic_timeline,
-    episodic_search,
+    estimate_difficulty,
+    get_budget,
+    get_config,
+    get_episodic_timeline,
+    get_procedural_patterns,
+    get_stats,
+    get_user_profile,
+    # Importance / Self-edit tools (22-24)
+    importance_score,
+    # Resources
+    list_memories,
+    # Core tools (1-7)
+    memoria_add,
+    # Tiered / ACL / Enrichment / Sync tools (8-12)
+    memoria_add_to_tier,
+    # Remaining tools (25-26)
+    memoria_check_access,
+    memoria_delete,
+    memoria_enrich,
+    memoria_get,
+    memoria_grant_access,
+    memoria_insights,
+    memoria_profile,
+    memoria_search,
+    memoria_search_tiers,
+    memoria_stats,
+    memoria_suggest,
+    memoria_sync,
+    memory_budget,
+    predict_next_action,
+    preference_query,
+    preference_teach,
+    procedural_add_workflow,
     # Procedural tools (18-21)
     procedural_record,
     procedural_suggest,
     procedural_workflows,
-    procedural_add_workflow,
-    # Importance / Self-edit tools (22-24)
-    importance_score,
-    self_edit,
-    memory_budget,
-    # Remaining tools (25-26)
-    memoria_check_access,
-    memoria_stats,
-    # Ultra tools (27-34)
-    user_dna_snapshot,
-    user_dna_collect,
-    dream_consolidate,
-    dream_journal,
-    preference_query,
-    preference_teach,
-    session_snapshot,
-    session_resume,
-    # Hyper tools (35-40)
-    team_share_memory,
-    team_coherence_check,
-    predict_next_action,
-    estimate_difficulty,
-    emotion_analyze,
-    emotion_fatigue_check,
-    # Resources
-    list_memories,
-    get_config,
-    get_stats,
-    get_episodic_timeline,
-    get_procedural_patterns,
-    get_budget,
-    get_user_profile,
     # Prompts
     recall_context,
+    self_edit,
+    session_resume,
+    session_snapshot,
     suggest_next,
-    deep_recall,
-    consolidation_report,
-    episodic_recap,
+    team_coherence_check,
+    # Hyper tools (35-40)
+    team_share_memory,
+    user_dna_collect,
+    # Ultra tools (27-34)
+    user_dna_snapshot,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -1036,16 +1033,16 @@ class TestMCPHyperTools:
 # ===================================================================
 
 from memoria.mcp.server import (
-    product_register,
-    product_usage_record,
-    fusion_unified_model,
+    biz_lifecycle_update,
+    biz_revenue_signal,
+    context_infer_intent,
+    context_situation,
     fusion_churn_predict,
     fusion_detect_workflows,
+    fusion_unified_model,
     habit_detect,
-    context_situation,
-    context_infer_intent,
-    biz_revenue_signal,
-    biz_lifecycle_update,
+    product_register,
+    product_usage_record,
 )
 
 
@@ -1118,12 +1115,12 @@ class TestMCPMegaTools:
 # ===================================================================
 
 from memoria.mcp.server import (
-    adversarial_scan,
     adversarial_check_consistency,
+    adversarial_scan,
     adversarial_verify_integrity,
-    cognitive_record,
     cognitive_check_overload,
     cognitive_focus_session,
+    cognitive_record,
 )
 
 

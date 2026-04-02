@@ -1,9 +1,6 @@
 """Tests for the MEMORIA Preference Engine."""
 from __future__ import annotations
 
-import time
-import pytest
-
 from memoria.preferences import (
     ConflictResolver,
     Preference,
@@ -15,7 +12,6 @@ from memoria.preferences import (
     PreferenceSource,
     PreferenceStore,
 )
-
 
 # ── 1. TestPreferenceCategory ──────────────────────────────────────────
 
@@ -764,7 +760,7 @@ class TestEndToEnd:
     def test_full_lifecycle(self):
         detector = PreferenceDetector()
         store = PreferenceStore()
-        resolver = ConflictResolver()
+        ConflictResolver()
 
         # Step 1: Detect preferences from messages
         prefs1 = detector.detect_from_message("u1", "I always use docker")

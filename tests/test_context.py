@@ -3,26 +3,9 @@
 from __future__ import annotations
 
 import asyncio
-import os
-from pathlib import Path
 from unittest import mock
 
-import pytest
-
-from memoria.context.window import (
-    CHARS_PER_TOKEN,
-    ContextAnalysis,
-    MODEL_BUDGETS,
-    TokenBudget,
-    TokenUsage,
-    analyze_context,
-    estimate_message_tokens,
-    estimate_messages_tokens,
-    estimate_tokens,
-    get_budget,
-)
 from memoria.context.compaction import (
-    CompactBoundary,
     CompactionConfig,
     ContextCompactor,
 )
@@ -33,7 +16,17 @@ from memoria.context.prompt import (
     PromptSection,
     build_system_prompt,
 )
-
+from memoria.context.window import (
+    CHARS_PER_TOKEN,
+    MODEL_BUDGETS,
+    TokenBudget,
+    TokenUsage,
+    analyze_context,
+    estimate_message_tokens,
+    estimate_messages_tokens,
+    estimate_tokens,
+    get_budget,
+)
 
 # ── helpers ──────────────────────────────────────────────────────────────
 

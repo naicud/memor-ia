@@ -7,8 +7,8 @@ import time
 import unittest
 
 from memoria.fusion import (
-    BehaviorFusion,
     BehavioralSignal,
+    BehaviorFusion,
     ChurnPrediction,
     ChurnPredictor,
     ChurnRisk,
@@ -21,7 +21,6 @@ from memoria.fusion import (
     WorkflowDetector,
     WorkflowType,
 )
-
 
 # ======================================================================
 # Types / Enums

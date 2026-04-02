@@ -4,26 +4,22 @@ from __future__ import annotations
 
 import json
 
-import pytest
-
-from memoria.graph.entities import Entity, Relation
-from memoria.graph.schema import NodeType, RelationType
-
-from memoria.extraction.providers import (
-    ExtractionProvider,
-    RegexExtractor,
-    LLMExtractor,
-    HybridExtractor,
+from memoria.extraction.conflicts import (
+    Conflict,
+    ConflictDetector,
+    ConflictType,
+    ResolutionStrategy,
 )
 from memoria.extraction.dedup import MemoryDeduplicator, jaccard_similarity
-from memoria.extraction.conflicts import (
-    ConflictType,
-    Conflict,
-    ResolutionStrategy,
-    ConflictDetector,
-)
 from memoria.extraction.enricher import MemoryCategory, MemoryEnricher
-
+from memoria.extraction.providers import (
+    ExtractionProvider,
+    HybridExtractor,
+    LLMExtractor,
+    RegexExtractor,
+)
+from memoria.graph.entities import Entity
+from memoria.graph.schema import NodeType, RelationType
 
 # ===================================================================
 # TestRegexExtractor
