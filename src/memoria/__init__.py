@@ -1914,3 +1914,105 @@ class Memoria:
             "content_length": len(result.merged_content),
             "source_ids": result.source_ids,
         }
+
+    # ------------------------------------------------------------------
+    # Templates
+    # ------------------------------------------------------------------
+
+    def _get_template_registry(self):
+        """Return (or create) the template registry."""
+        if not hasattr(self, "_template_registry"):
+            from memoria.templates.registry import TemplateRegistry
+            self._template_registry = TemplateRegistry()
+        return self._template_registry
+
+    def template_list(self, *, category: str | None = None) -> list[dict]:
+        """List available memory templates."""
+        return self._get_template_registry().list(category=category)
+
+    def template_apply(
+        self,
+        template_name: str,
+        data: dict,
+        *,
+        namespace: str | None = None,
+        user_id: str | None = None,
+        agent_id: str | None = None,
+    ) -> dict:
+        """Apply a template to create a new memory.
+
+        Validates the data against the template schema, renders the
+        content, and stores it via :meth:`add`.
+        """
+        registry = self._get_template_registry()
+        tmpl = registry.get(template_name)
+        if tmpl is None:
+            return {"error": f"Template '{template_name}' not found"}
+
+        errors = tmpl.validate(data)
+        if errors:
+            return {"error": "Validation failed", "details": errors}
+
+        content = tmpl.render(data)
+        memory_type = tmpl.default_tier
+        result = self.add(
+            content,
+            namespace=namespace or "default",
+            user_id=user_id,
+            agent_id=agent_id,
+            memory_type=memory_type,
+        )
+
+        if isinstance(result, dict):
+            result["template"] = template_name
+            return result
+        return {
+            "status": "created",
+            "id": result,
+            "template": template_name,
+            "content_length": len(content),
+        }
+
+    def template_create(
+        self,
+        name: str,
+        description: str,
+        fields: list[dict],
+        content_template: str,
+        *,
+        category: str = "custom",
+        tags: list[str] | None = None,
+        default_tier: str = "working",
+        default_importance: float = 0.5,
+    ) -> dict:
+        """Create and register a custom template."""
+        from memoria.templates.schema import FieldSpec, MemoryTemplate
+
+        field_specs = [
+            FieldSpec(
+                name=f["name"],
+                type=f.get("type", "string"),
+                required=f.get("required", False),
+                description=f.get("description", ""),
+                default=f.get("default"),
+            )
+            for f in fields
+        ]
+        tmpl = MemoryTemplate(
+            name=name,
+            description=description,
+            category=category,
+            fields=field_specs,
+            content_template=content_template,
+            tags=tags or [],
+            default_tier=default_tier,
+            default_importance=default_importance,
+            builtin=False,
+        )
+        self._get_template_registry().register(tmpl)
+        return {
+            "status": "created",
+            "name": name,
+            "fields": len(field_specs),
+            "category": category,
+        }

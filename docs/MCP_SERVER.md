@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **69 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **72 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1583,6 +1583,75 @@ Merge new content into an existing memory using the configured strategy (longer,
 {
   "memory_id": "550e8400-e29b-41d4-a716-446655440000",
   "new_content": "The project uses React 18 for the frontend with TypeScript"
+}
+```
+
+### 📋 Templates (3 tools)
+
+| Tool | Description |
+|------|-------------|
+| `template_list` | List available memory templates |
+| `template_apply` | Apply a template to create a structured memory |
+| `template_create` | Create a custom memory template |
+
+#### `template_list`
+
+List all available memory templates, optionally filtered by category.
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `category` | string | No | Filter by category (developer, engineering, collaboration, etc.) |
+
+**Returns:** List of template metadata with name, description, category, field count, tags.
+
+**Built-in templates:** `coding_preference`, `project_context`, `bug_report`, `meeting_notes`, `api_endpoint`, `design_decision`, `customer_profile`, `incident_report`, `onboarding_step`, `knowledge_article`.
+
+#### `template_apply`
+
+Apply a template to create a structured memory. Validates fields and renders content from the template.
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `template_name` | string | Yes | Name of the template to apply |
+| `data` | string (JSON) | Yes | Field data as JSON, e.g. `{"language": "Python"}` |
+| `namespace` | string | No | Target namespace (default: "default") |
+| `user_id` | string | No | User ID |
+| `agent_id` | string | No | Agent ID |
+
+**Example:**
+```json
+{
+  "template_name": "coding_preference",
+  "data": "{\"language\": \"Python\", \"framework\": \"FastAPI\", \"style_guide\": \"PEP 8\"}"
+}
+```
+
+#### `template_create`
+
+Create and register a custom memory template at runtime.
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `name` | string | Yes | Template name |
+| `description` | string | Yes | What this template is for |
+| `fields` | string (JSON) | Yes | Field definitions as JSON array |
+| `content_template` | string | Yes | Content template with `{field_name}` placeholders |
+| `category` | string | No | Category (default: "custom") |
+| `tags` | string (JSON) | No | Tags as JSON array |
+
+**Example:**
+```json
+{
+  "name": "standup_update",
+  "description": "Daily standup update",
+  "fields": "[{\"name\": \"yesterday\", \"required\": true}, {\"name\": \"today\", \"required\": true}, {\"name\": \"blockers\"}]",
+  "content_template": "Yesterday: {yesterday}\nToday: {today}\nBlockers: {blockers}"
 }
 ```
 

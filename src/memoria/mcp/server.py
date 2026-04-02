@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 69 tools, 7 resources, and 5 prompts covering:
+Provides 72 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2287,6 +2287,85 @@ async def memoria_merge_duplicates(
             namespace=namespace,
         )
         return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Template tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def template_list(category: str = "") -> str:
+    """List available memory templates.
+
+    Optionally filter by category (developer, engineering, collaboration, etc.).
+    """
+    try:
+        result = _get_memoria().template_list(
+            category=category or None,
+        )
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def template_apply(
+    template_name: str,
+    data: str,
+    namespace: str = "default",
+    user_id: str = "",
+    agent_id: str = "",
+) -> str:
+    """Apply a memory template to create a structured memory.
+
+    Pass template field data as a JSON string, e.g.
+    ``{"language": "Python", "framework": "FastAPI"}``.
+    """
+    try:
+        parsed = json.loads(data)
+        result = _get_memoria().template_apply(
+            template_name,
+            parsed,
+            namespace=namespace,
+            user_id=user_id or None,
+            agent_id=agent_id or None,
+        )
+        return json.dumps(result, indent=2)
+    except json.JSONDecodeError:
+        return json.dumps({"error": "Invalid JSON in 'data' parameter"})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def template_create(
+    name: str,
+    description: str,
+    fields: str,
+    content_template: str,
+    category: str = "custom",
+    tags: str = "[]",
+) -> str:
+    """Create a custom memory template.
+
+    *fields* and *tags* should be JSON strings.
+    """
+    try:
+        parsed_fields = json.loads(fields)
+        parsed_tags = json.loads(tags) if tags else []
+        result = _get_memoria().template_create(
+            name=name,
+            description=description,
+            fields=parsed_fields,
+            content_template=content_template,
+            category=category,
+            tags=parsed_tags,
+        )
+        return json.dumps(result, indent=2)
+    except json.JSONDecodeError:
+        return json.dumps({"error": "Invalid JSON in 'fields' or 'tags' parameter"})
     except Exception as e:
         return json.dumps({"error": str(e)})
 
