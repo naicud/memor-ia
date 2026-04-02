@@ -2185,3 +2185,84 @@ class Memoria:
             "total_attachments": store.count(),
             "disk_usage_bytes": store.disk_usage(),
         }
+
+    # ------------------------------------------------------------------
+    # Plugin System
+    # ------------------------------------------------------------------
+
+    def _get_plugin_registry(self):
+        """Return (or create) the plugin registry."""
+        if not hasattr(self, "_plugin_registry"):
+            from memoria.plugins.registry import PluginRegistry
+            self._plugin_registry = PluginRegistry()
+            self._plugin_registry.set_memoria_ref(self)
+        return self._plugin_registry
+
+    def plugin_register(self, plugin_class: type) -> dict:
+        """Register a plugin class and activate it.
+
+        Parameters
+        ----------
+        plugin_class : type
+            A class that subclasses MemoriaPlugin.
+
+        Returns
+        -------
+        dict
+            Plugin info.
+        """
+        from memoria.plugins.loader import load_plugin
+
+        plugin = load_plugin(plugin_class)
+        registry = self._get_plugin_registry()
+        registry.register(plugin)
+        registry.activate(plugin.name, self)
+        return plugin.info()
+
+    def plugin_unregister(self, name: str) -> dict:
+        """Unregister a plugin by name."""
+        registry = self._get_plugin_registry()
+        removed = registry.unregister(name)
+        return {
+            "status": "removed" if removed else "not_found",
+            "name": name,
+        }
+
+    def plugin_list(self) -> list[dict]:
+        """List all registered plugins."""
+        return self._get_plugin_registry().list_plugins()
+
+    def plugin_activate(self, name: str) -> dict:
+        """Activate a registered plugin."""
+        registry = self._get_plugin_registry()
+        ok = registry.activate(name, self)
+        return {
+            "status": "activated" if ok else "failed",
+            "name": name,
+        }
+
+    def plugin_deactivate(self, name: str) -> dict:
+        """Deactivate a plugin."""
+        registry = self._get_plugin_registry()
+        ok = registry.deactivate(name)
+        return {
+            "status": "deactivated" if ok else "not_found",
+            "name": name,
+        }
+
+    def plugin_discover(self) -> list[dict]:
+        """Discover plugins from entry points and register them."""
+        from memoria.plugins.loader import discover_plugins
+
+        registry = self._get_plugin_registry()
+        plugins = discover_plugins()
+        results = []
+        for p in plugins:
+            registered = registry.register(p)
+            registry.activate(p.name, self)
+            results.append({**p.info(), "newly_registered": registered})
+        return results
+
+    def plugin_stats(self) -> dict:
+        """Return plugin system statistics."""
+        return self._get_plugin_registry().stats()

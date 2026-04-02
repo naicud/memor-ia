@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 82 tools, 7 resources, and 5 prompts covering:
+Provides 87 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2524,6 +2524,60 @@ async def attachment_stats() -> str:
     """Return attachment storage statistics (count, disk usage)."""
     try:
         result = _get_memoria().attachment_stats()
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Plugin System Tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def plugin_list() -> str:
+    """List all registered plugins with their status."""
+    try:
+        result = _get_memoria().plugin_list()
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def plugin_discover() -> str:
+    """Discover and register plugins from Python entry points."""
+    try:
+        result = _get_memoria().plugin_discover()
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def plugin_activate(name: str) -> str:
+    """Activate a registered plugin by name."""
+    try:
+        result = _get_memoria().plugin_activate(name)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def plugin_deactivate(name: str) -> str:
+    """Deactivate a plugin by name."""
+    try:
+        result = _get_memoria().plugin_deactivate(name)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def plugin_stats() -> str:
+    """Return plugin system statistics (registered, active, names)."""
+    try:
+        result = _get_memoria().plugin_stats()
         return json.dumps(result, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})

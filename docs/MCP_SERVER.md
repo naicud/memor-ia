@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **82 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **87 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1893,4 +1893,62 @@ Return attachment storage statistics.
 Parameters: (none)
 
 Returns: { "total_attachments": N, "disk_usage_bytes": N }
+```
+
+---
+
+## Plugin System Tools
+
+### `plugin_list`
+
+List all registered plugins with their activation status.
+
+```
+Parameters: (none)
+
+Returns: Array of plugin info objects with name, version, active status, tools, backends.
+```
+
+### `plugin_discover`
+
+Discover and register plugins from Python entry points (`memoria.plugins` group).
+
+```
+Parameters: (none)
+
+Returns: Array of discovered plugins with newly_registered flag.
+
+Use: "Find and load all available plugins"
+```
+
+### `plugin_activate`
+
+Activate a registered plugin by name.
+
+```
+Parameters:
+  name: str             — Plugin name to activate
+
+Returns: { "status": "activated" | "failed", "name": "..." }
+```
+
+### `plugin_deactivate`
+
+Deactivate a plugin by name.
+
+```
+Parameters:
+  name: str             — Plugin name to deactivate
+
+Returns: { "status": "deactivated" | "not_found", "name": "..." }
+```
+
+### `plugin_stats`
+
+Return plugin system statistics.
+
+```
+Parameters: (none)
+
+Returns: { "registered": N, "active": N, "plugins": [...], "active_plugins": [...] }
 ```
