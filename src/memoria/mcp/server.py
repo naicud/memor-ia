@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 67 tools, 7 resources, and 5 prompts covering:
+Provides 69 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2237,6 +2237,54 @@ async def memoria_summarize_all(
             namespace=namespace or None,
             user_id=user_id or None,
             limit=limit,
+        )
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Deduplication tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def memoria_find_duplicates(
+    content: str,
+    limit: int = 10,
+    threshold: float | None = None,
+    user_id: str = "",
+) -> str:
+    """Find memories similar to the given content.
+
+    Returns ranked duplicate candidates with similarity scores.
+    """
+    try:
+        result = _get_memoria().find_duplicates(
+            content,
+            limit=limit,
+            user_id=user_id or None,
+            threshold=threshold,
+        )
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def memoria_merge_duplicates(
+    memory_id: str,
+    new_content: str,
+    namespace: str = "default",
+) -> str:
+    """Merge new content into an existing memory.
+
+    Uses the configured merge strategy (longer, combine, newer).
+    """
+    try:
+        result = _get_memoria().merge_duplicates(
+            memory_id,
+            new_content,
+            namespace=namespace,
         )
         return json.dumps(result, indent=2)
     except Exception as e:

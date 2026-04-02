@@ -50,8 +50,48 @@ class Memoria:
         SharedMemoryStore; otherwise the original file-based storage is
         used, preserving full backward compatibility.
 
+        If deduplication is enabled (``MEMORIA_DEDUP_ENABLED=true``), the
+        content is checked against existing memories before storing.
+        Behaviour depends on ``MEMORIA_DEDUP_MODE``:
+        - ``reject`` — refuse to store if a duplicate exists.
+        - ``merge``  — merge the new content into the existing memory.
+        - ``warn``   — store the memory but include a warning.
+
         Returns the memory id (path for file-based, UUID for namespace).
         """
+        # Dedup gate (opt-in)
+        if self._dedup_enabled:
+            try:
+                match = self._get_dedup_detector().is_duplicate(content, user_id=user_id)
+                if match:
+                    mode = self._dedup_mode
+                    if mode == "reject":
+                        return {
+                            "status": "duplicate",
+                            "existing_id": match.memory_id,
+                            "similarity": match.similarity,
+                        }
+                    if mode == "merge":
+                        return self.merge_duplicates(
+                            match.memory_id,
+                            content,
+                            namespace=namespace or "default",
+                            new_metadata={"user_id": user_id, "agent_id": agent_id}
+                            if (user_id or agent_id) else None,
+                        )
+                    # mode == "warn" — fall through, store with warning
+                    _dedup_warning = {
+                        "warning": "similar_memory_exists",
+                        "existing_id": match.memory_id,
+                        "similarity": match.similarity,
+                    }
+                else:
+                    _dedup_warning = None
+            except Exception:
+                _dedup_warning = None
+        else:
+            _dedup_warning = None
+
         if namespace is not None:
             store = self._get_namespace_store()
             metadata = {}
@@ -62,8 +102,11 @@ class Memoria:
             if memory_type:
                 mt = memory_type if isinstance(memory_type, str) else memory_type.value
                 metadata["memory_type"] = mt
-            return store.add(namespace, content, metadata=metadata or None,
+            memory_id = store.add(namespace, content, metadata=metadata or None,
                              user_id=user_id, agent_id=agent_id)
+            if _dedup_warning:
+                return {"id": memory_id, "status": "created", **_dedup_warning}
+            return memory_id
 
         import hashlib
         import time
@@ -92,7 +135,10 @@ class Memoria:
         path = self._mem_dir / filename
 
         write_memory_file(path, fm, content)
-        return str(path)
+        result = str(path)
+        if _dedup_warning:
+            return {"id": result, "status": "created", **_dedup_warning}
+        return result
 
     def search(self, query, *, user_id=None, limit=5, offset=0, namespace=None):
         """Search memories.
@@ -1725,4 +1771,146 @@ class Memoria:
             "skipped": skipped,
             "provider": summarizer.provider_name,
             "results": results,
+        }
+
+    # ------------------------------------------------------------------
+    # Deduplication
+    # ------------------------------------------------------------------
+
+    def _get_embedder(self):
+        """Return (or create) the embedding provider."""
+        if not hasattr(self, "_embedder_instance"):
+            emb = self._config.get("embedder")
+            if emb is None:
+                from memoria.vector.embeddings import TFIDFEmbedder
+                emb = TFIDFEmbedder()
+            self._embedder_instance = emb
+        return self._embedder_instance
+
+    def _get_dedup_detector(self):
+        """Return (or create) the duplicate detector."""
+        if not hasattr(self, "_dedup_detector"):
+            import os
+
+            from memoria.dedup.detector import DuplicateDetector
+            threshold = float(
+                self._config.get("dedup_threshold")
+                or os.environ.get("MEMORIA_DEDUP_THRESHOLD", "0.92")
+            )
+            self._dedup_detector = DuplicateDetector(
+                embedder=self._get_embedder(),
+                vector_client=self._get_vector_client(),
+                threshold=threshold,
+            )
+        return self._dedup_detector
+
+    def _get_dedup_merger(self):
+        """Return (or create) the memory merger."""
+        if not hasattr(self, "_dedup_merger"):
+            import os
+
+            from memoria.dedup.merger import MemoryMerger
+            strategy = (
+                self._config.get("dedup_merge_strategy")
+                or os.environ.get("MEMORIA_DEDUP_MERGE_STRATEGY", "longer")
+            )
+            self._dedup_merger = MemoryMerger(strategy=strategy)
+        return self._dedup_merger
+
+    @property
+    def _dedup_enabled(self) -> bool:
+        """Check if dedup is enabled via config or env."""
+        import os
+        val = (
+            self._config.get("dedup_enabled")
+            or os.environ.get("MEMORIA_DEDUP_ENABLED", "false")
+        )
+        return str(val).lower() in ("true", "1", "yes")
+
+    @property
+    def _dedup_mode(self) -> str:
+        """Get dedup mode: reject, merge, or warn."""
+        import os
+        return (
+            self._config.get("dedup_mode")
+            or os.environ.get("MEMORIA_DEDUP_MODE", "warn")
+        )
+
+    def find_duplicates(
+        self,
+        content: str,
+        *,
+        limit: int = 10,
+        user_id: str | None = None,
+        threshold: float | None = None,
+    ) -> list[dict]:
+        """Find memories similar to *content*.
+
+        Returns a list of duplicate candidates with similarity scores.
+        """
+        detector = self._get_dedup_detector()
+        if threshold is not None:
+            old = detector.threshold
+            detector.threshold = threshold
+
+        matches = detector.find_duplicates(content, limit=limit, user_id=user_id)
+
+        if threshold is not None:
+            detector.threshold = old
+
+        return [
+            {
+                "memory_id": m.memory_id,
+                "content": m.content,
+                "similarity": m.similarity,
+                "metadata": m.metadata,
+            }
+            for m in matches
+        ]
+
+    def merge_duplicates(
+        self,
+        memory_id: str,
+        new_content: str,
+        *,
+        namespace: str = "default",
+        new_metadata: dict | None = None,
+    ) -> dict:
+        """Merge *new_content* into an existing memory by *memory_id*.
+
+        Uses the configured merge strategy (longer, combine, newer).
+        """
+        store = self._get_namespace_store()
+        row = store._conn.execute(
+            "SELECT content, metadata FROM memories WHERE id = ?", (memory_id,)
+        ).fetchone()
+        if not row:
+            return {"error": f"Memory {memory_id} not found"}
+
+        import json
+        existing_content = row[0]
+        existing_meta = json.loads(row[1]) if row[1] else {}
+
+        merger = self._get_dedup_merger()
+        result = merger.merge(
+            existing_id=memory_id,
+            existing_content=existing_content,
+            existing_metadata=existing_meta,
+            new_content=new_content,
+            new_metadata=new_metadata,
+        )
+
+        meta_json = json.dumps(result.merged_metadata)
+        store._conn.execute(
+            "UPDATE memories SET content = ?, metadata = ?, updated_at = ? WHERE id = ?",
+            (result.merged_content, meta_json, store._now_iso(), memory_id),
+        )
+        store._conn.commit()
+
+        return {
+            "status": "merged",
+            "memory_id": memory_id,
+            "strategy": result.strategy,
+            "content_length": len(result.merged_content),
+            "source_ids": result.source_ids,
         }

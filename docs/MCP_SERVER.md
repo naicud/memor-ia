@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **67 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **69 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1530,6 +1530,59 @@ Summarize all memories stored in a given namespace.
 ```json
 {
   "namespace": "project_notes"
+}
+```
+
+### 🔍 Deduplication (2 tools)
+
+| Tool | Description |
+|------|-------------|
+| `memoria_find_duplicates` | Find memories similar to given content |
+| `memoria_merge_duplicates` | Merge new content into an existing memory |
+
+#### `memoria_find_duplicates`
+
+Find existing memories that are similar to the provided content using embedding-based cosine similarity.
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `content` | string | Yes | The text to check for duplicates |
+| `limit` | integer | No | Max results (default: 10) |
+| `threshold` | float | No | Similarity threshold override (default: 0.92) |
+| `user_id` | string | No | Filter by user |
+
+**Returns:** List of duplicate candidates with `memory_id`, `content`, `similarity`, `metadata`.
+
+**Example:**
+```json
+{
+  "content": "The project uses React for the frontend",
+  "threshold": 0.85,
+  "limit": 5
+}
+```
+
+#### `memoria_merge_duplicates`
+
+Merge new content into an existing memory using the configured strategy (longer, combine, newer).
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `memory_id` | string | Yes | ID of the existing memory to merge into |
+| `new_content` | string | Yes | New content to merge |
+| `namespace` | string | No | Namespace (default: "default") |
+
+**Returns:** Object with `status`, `memory_id`, `strategy`, `content_length`, `source_ids`.
+
+**Example:**
+```json
+{
+  "memory_id": "550e8400-e29b-41d4-a716-446655440000",
+  "new_content": "The project uses React 18 for the frontend with TypeScript"
 }
 ```
 
