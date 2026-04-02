@@ -27,10 +27,10 @@ classifiers = [
 keywords = ["ai", "memory", "agents", "mcp", "proactive", "knowledge-graph", "vector-search"]
 
 [project.urls]
-Homepage = "https://github.com/nicusornaicu/memoria"
-Repository = "https://github.com/nicusornaicu/memoria"
-Issues = "https://github.com/nicusornaicu/memoria/issues"
-Documentation = "https://github.com/nicusornaicu/memoria#readme"
+Homepage = "https://github.com/naicud/memor-ia"
+Repository = "https://github.com/naicud/memor-ia"
+Issues = "https://github.com/naicud/memor-ia/issues"
+Documentation = "https://github.com/naicud/memor-ia#readme"
 
 [project.optional-dependencies]
 graph = ["falkordb>=1.0,<2.0"]
