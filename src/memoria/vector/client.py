@@ -93,9 +93,12 @@ class VectorClient:
         )
 
         if self._use_vec:
+            # sqlite-vec virtual tables don't support INSERT OR REPLACE;
+            # delete first, then insert.
             blob = _floats_to_blob(record.embedding)
+            self.conn.execute("DELETE FROM vec_embeddings WHERE id = ?", (record.id,))
             self.conn.execute(
-                "INSERT OR REPLACE INTO vec_embeddings (id, embedding) VALUES (?, ?)",
+                "INSERT INTO vec_embeddings (id, embedding) VALUES (?, ?)",
                 (record.id, blob),
             )
         else:
@@ -126,8 +129,14 @@ class VectorClient:
         )
 
         if self._use_vec:
+            # sqlite-vec virtual tables don't support INSERT OR REPLACE;
+            # delete first, then insert.
             self.conn.executemany(
-                "INSERT OR REPLACE INTO vec_embeddings (id, embedding) VALUES (?, ?)",
+                "DELETE FROM vec_embeddings WHERE id = ?",
+                [(r.id,) for r in records],
+            )
+            self.conn.executemany(
+                "INSERT INTO vec_embeddings (id, embedding) VALUES (?, ?)",
                 [(r.id, _floats_to_blob(r.embedding)) for r in records],
             )
         else:

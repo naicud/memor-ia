@@ -287,7 +287,7 @@ class TestVectorIndex:
         stats = index.stats()
         assert stats["count"] == 1
         assert stats["dimension"] == 32
-        assert stats["backend"] == "pure-python"
+        assert stats["backend"] in ("pure-python", "sqlite-vec")
         assert stats["embedder"] == "TFIDFEmbedder"
 
     def test_reindex_all(self, index):
