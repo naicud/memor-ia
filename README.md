@@ -795,6 +795,7 @@ Comprehensive documentation in the [`docs/`](docs/) directory:
 
 | Document                                       | Description                                                                                                                  |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [**Roadmap**](docs/ROADMAP.md)                     | Feature roadmap v2.1→v3.0: 12 planned features with detailed architecture, code designs, and dependency maps             |
 | [**Industrialization**](docs/INDUSTRIALIZATION.md) | Enterprise deployment: AWS (EKS), Azure (AKS), GCP (GKE), Helm charts, CI/CD, security, cost estimates                  |
 | [**Product Overview**](docs/BUSINESS.md)       | Business overview, 8 use cases, market position, competitive landscape, licensing                                            |
 | [**Data Architecture**](docs/DATA_GUIDE.md)    | Data flow diagrams, storage format, real data examples                                                                       |
