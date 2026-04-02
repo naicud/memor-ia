@@ -5,6 +5,10 @@ from __future__ import annotations
 import math
 import re
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from memoria.cache.backend import CacheBackend
 
 
 class EmbeddingProvider(ABC):
@@ -151,45 +155,86 @@ def validate_dimension(embedder: EmbeddingProvider, expected: int) -> None:
 
 
 class CachedEmbedder(EmbeddingProvider):
-    """Wraps an embedder with an LRU content-hash cache."""
+    """Wraps an embedder with a pluggable cache backend.
 
-    def __init__(self, inner: EmbeddingProvider, max_size: int = 1024):
+    Accepts either the new :class:`~memoria.cache.CacheBackend` or
+    falls back to an internal in-memory dict for backward compatibility.
+    """
+
+    def __init__(
+        self,
+        inner: EmbeddingProvider,
+        max_size: int = 1024,
+        cache_backend: "CacheBackend | None" = None,
+    ):
         self._inner = inner
-        self._cache: dict[str, list[float]] = {}
+        self._backend = cache_backend
+        # Legacy fallback: plain dict (preserves old behaviour when no backend)
+        self._legacy_cache: dict[str, list[float]] | None = None if cache_backend else {}
         self._max_size = max_size
 
+    def _cache_key(self, text: str) -> str:
+        import hashlib
+        h = hashlib.sha256(text.encode()).hexdigest()[:16]
+        return f"embed:{h}"
+
     def embed(self, text: str) -> list[float]:
-        key = text  # use text itself as key (could use hash for large texts)
-        if key in self._cache:
-            return list(self._cache[key])
+        if self._backend is not None:
+            key = self._cache_key(text)
+            cached = self._backend.get(key)
+            if cached is not None:
+                return list(cached)
+            result = self._inner.embed(text)
+            self._backend.set(key, result, ttl=86400)  # 24h TTL
+            return list(result)
+
+        # Legacy path
+        assert self._legacy_cache is not None
+        if text in self._legacy_cache:
+            return list(self._legacy_cache[text])
         result = self._inner.embed(text)
-        if len(self._cache) >= self._max_size:
-            # Evict oldest entry
-            oldest = next(iter(self._cache))
-            del self._cache[oldest]
-        self._cache[key] = result
+        if len(self._legacy_cache) >= self._max_size:
+            oldest = next(iter(self._legacy_cache))
+            del self._legacy_cache[oldest]
+        self._legacy_cache[text] = result
         return list(result)
 
     def embed_batch(self, texts: list[str]) -> list[list[float]]:
-        results = []
-        uncached_texts = []
-        uncached_indices = []
+        results: list[list[float]] = []
+        uncached_texts: list[str] = []
+        uncached_indices: list[int] = []
+
         for i, text in enumerate(texts):
-            if text in self._cache:
-                results.append(list(self._cache[text]))
+            if self._backend is not None:
+                cached = self._backend.get(self._cache_key(text))
+                if cached is not None:
+                    results.append(list(cached))
+                else:
+                    results.append([])
+                    uncached_texts.append(text)
+                    uncached_indices.append(i)
             else:
-                results.append([])  # placeholder
-                uncached_texts.append(text)
-                uncached_indices.append(i)
+                assert self._legacy_cache is not None
+                if text in self._legacy_cache:
+                    results.append(list(self._legacy_cache[text]))
+                else:
+                    results.append([])
+                    uncached_texts.append(text)
+                    uncached_indices.append(i)
+
         if uncached_texts:
             new_embeddings = self._inner.embed_batch(uncached_texts)
             for idx, emb in zip(uncached_indices, new_embeddings):
                 results[idx] = emb
                 text = texts[idx]
-                if len(self._cache) >= self._max_size:
-                    oldest = next(iter(self._cache))
-                    del self._cache[oldest]
-                self._cache[text] = emb
+                if self._backend is not None:
+                    self._backend.set(self._cache_key(text), emb, ttl=86400)
+                else:
+                    assert self._legacy_cache is not None
+                    if len(self._legacy_cache) >= self._max_size:
+                        oldest = next(iter(self._legacy_cache))
+                        del self._legacy_cache[oldest]
+                    self._legacy_cache[text] = emb
         return results
 
     @property
@@ -197,7 +242,20 @@ class CachedEmbedder(EmbeddingProvider):
         return self._inner.dimension
 
     def clear_cache(self) -> None:
-        self._cache.clear()
+        if self._backend is not None:
+            self._backend.invalidate_pattern("embed:*")
+        elif self._legacy_cache is not None:
+            self._legacy_cache.clear()
+
+    def cache_stats(self) -> dict:
+        """Return cache statistics (backend-aware)."""
+        if self._backend is not None:
+            return self._backend.stats()
+        return {
+            "backend": "legacy_dict",
+            "size": len(self._legacy_cache) if self._legacy_cache else 0,
+            "max_size": self._max_size,
+        }
 
 
 def get_default_embedder(dimension: int = 384) -> EmbeddingProvider:

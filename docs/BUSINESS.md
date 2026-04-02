@@ -17,7 +17,7 @@ graph TB
     end
 
     subgraph "MEMORIA Server"
-        MCP["MCP Protocol Layer<br/>56 tools · 6 resources · 5 prompts"]
+        MCP["MCP Protocol Layer<br/>59 tools · 6 resources · 5 prompts"]
         subgraph "20 Subsystems"
             S1["Core Memory"]
             S2["Hybrid Recall"]
@@ -75,7 +75,7 @@ MEMORIA provides **8 layers of intelligence** over a hybrid storage backbone:
 
 | Segment | Use Case | Value Proposition |
 |---------|----------|-------------------|
-| **AI Platform Builders** | Integrate persistent memory into their AI products | Plug-and-play MCP server with 56 tools |
+| **AI Platform Builders** | Integrate persistent memory into their AI products | Plug-and-play MCP server with 59 tools |
 | **Enterprise AI Teams** | Multi-agent orchestration with shared context | Team memory sharing + coherence checking |
 | **SaaS Companies** | Understand user behavior across products | Cross-product behavioral fusion + churn prediction |
 | **Individual Developers** | Personal coding assistant with memory | Zero-config install, works with Claude/Cursor/VS Code |

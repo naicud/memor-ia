@@ -36,9 +36,10 @@ Documentation = "https://github.com/naicud/memor-ia#readme"
 graph = ["falkordb>=1.0,<2.0"]
 vector = ["sqlite-vec>=0.1.1"]
 mcp = ["fastmcp>=3.0,<4.0"]
+cache = ["redis>=5.0"]
 test = ["pytest>=7.0", "pytest-asyncio>=0.20.0"]
 dev = ["ruff>=0.4.0", "mypy>=1.0"]
-full = ["memoria[graph,vector,mcp]"]
+full = ["memoria[graph,vector,mcp,cache]"]
 all = ["memoria[full,test,dev]"]
 
 [project.scripts]

@@ -12,6 +12,7 @@ from .ranker import RankedResult, diversify_results, reciprocal_rank_fusion, wei
 from .strategies import RecallResult, RecallStrategy
 
 if TYPE_CHECKING:
+    from memoria.cache.backend import CacheBackend
     from memoria.graph.knowledge import KnowledgeGraph
     from memoria.vector.client import VectorClient
     from memoria.vector.embeddings import EmbeddingProvider
@@ -24,37 +25,94 @@ logger = logging.getLogger(__name__)
 
 
 class RecallCache:
-    """Simple TTL cache for recall results."""
+    """TTL cache for recall results — pluggable backend.
 
-    def __init__(self, ttl_seconds: float = 300.0, max_size: int = 128):
-        self._cache: dict[str, tuple[float, list[RankedResult]]] = {}
+    When *cache_backend* is provided, uses the shared :class:`CacheBackend`
+    (in-memory or Redis).  Otherwise falls back to the original internal dict.
+    """
+
+    def __init__(
+        self,
+        ttl_seconds: float = 300.0,
+        max_size: int = 128,
+        cache_backend: "CacheBackend | None" = None,
+    ):
         self._ttl = ttl_seconds
         self._max_size = max_size
+        self._backend = cache_backend
+        # Legacy fallback
+        self._legacy_cache: dict[str, tuple[float, list[RankedResult]]] | None = (
+            None if cache_backend else {}
+        )
 
     def get(self, key: str) -> list[RankedResult] | None:
-        entry = self._cache.get(key)
+        if self._backend is not None:
+            result = self._backend.get(f"recall:{key}")
+            if result is None:
+                return None
+            # Deserialize RankedResult dicts back to objects
+            return [
+                RankedResult(
+                    id=r["id"],
+                    content=r.get("content", ""),
+                    final_score=r.get("final_score", 0.0),
+                    sources=r.get("sources", []),
+                    strategy_scores=r.get("strategy_scores", {}),
+                    metadata=r.get("metadata", {}),
+                )
+                for r in result
+            ]
+
+        # Legacy path
+        assert self._legacy_cache is not None
+        entry = self._legacy_cache.get(key)
         if entry is None:
             return None
         ts, results = entry
         import time
         if time.time() - ts > self._ttl:
-            del self._cache[key]
+            del self._legacy_cache[key]
             return None
         return results
 
     def put(self, key: str, results: list[RankedResult]) -> None:
+        if self._backend is not None:
+            serializable = [
+                {
+                    "id": r.id,
+                    "content": r.content,
+                    "final_score": r.final_score,
+                    "sources": r.sources,
+                    "strategy_scores": r.strategy_scores,
+                    "metadata": r.metadata,
+                }
+                for r in results
+            ]
+            self._backend.set(f"recall:{key}", serializable, ttl=int(self._ttl))
+            return
+
+        # Legacy path
+        assert self._legacy_cache is not None
         import time
-        if len(self._cache) >= self._max_size:
-            # Evict oldest
-            oldest_key = min(self._cache, key=lambda k: self._cache[k][0])
-            del self._cache[oldest_key]
-        self._cache[key] = (time.time(), results)
+        if len(self._legacy_cache) >= self._max_size:
+            oldest_key = min(self._legacy_cache, key=lambda k: self._legacy_cache[k][0])  # type: ignore[union-attr]
+            del self._legacy_cache[oldest_key]
+        self._legacy_cache[key] = (time.time(), results)
 
     def invalidate(self, key: str | None = None) -> None:
+        if self._backend is not None:
+            if key is None:
+                self._backend.invalidate_pattern("recall:*")
+            else:
+                self._backend.delete(f"recall:{key}")
+            return
+
+        # Legacy path
+        assert self._legacy_cache is not None
         if key is None:
-            self._cache.clear()
+            self._legacy_cache.clear()
         else:
-            self._cache.pop(key, None)
+            self._legacy_cache.pop(key, None)
 
 
 # ---------------------------------------------------------------------------

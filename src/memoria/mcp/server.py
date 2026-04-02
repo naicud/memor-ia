@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 56 tools, 7 resources, and 5 prompts covering:
+Provides 59 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2028,6 +2028,59 @@ async def cognitive_focus_session(action: str = "start", session_id: str = "") -
             state = fo.detect_focus_state(session_id)
             stats = fo.get_session_stats(session_id)
             return json.dumps({"focus_state": _to_dict(state), "stats": _to_dict(stats)}, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Cache management tools (v2.1)
+# ---------------------------------------------------------------------------
+
+
+def _get_cache():
+    """Return the global cache backend (lazy init)."""
+    from memoria.cache import create_cache
+    global _cache_backend
+    if "_cache_backend" not in globals() or _cache_backend is None:
+        _cache_backend = create_cache()
+    return _cache_backend
+
+
+@mcp.tool()
+async def cache_stats() -> str:
+    """Get cache statistics: hits, misses, hit rate, backend type, size."""
+    try:
+        return json.dumps(_get_cache().stats(), default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def cache_clear(pattern: str = "") -> str:
+    """Clear cache entries. Pass a glob pattern to selectively invalidate, or empty for full flush."""
+    try:
+        cache = _get_cache()
+        if pattern:
+            count = cache.invalidate_pattern(pattern)
+            return json.dumps({"cleared": count, "pattern": pattern})
+        cache.clear()
+        return json.dumps({"cleared": "all"})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def cache_warmup(queries: str = "[]") -> str:
+    """Pre-warm the cache with a list of common search queries (JSON array of strings)."""
+    try:
+        import json as _json
+        query_list = _json.loads(queries) if queries else []
+        m = _get_memoria()
+        warmed = 0
+        for q in query_list:
+            m.search(str(q), limit=5)
+            warmed += 1
+        return json.dumps({"warmed": warmed, "queries": query_list})
     except Exception as e:
         return json.dumps({"error": str(e)})
 

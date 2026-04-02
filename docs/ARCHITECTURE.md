@@ -356,7 +356,7 @@ src/memoria/
 ├── orchestration/           # Orchestration layer (optional)
 ├── namespace/               # Namespace management
 ├── versioning/              # Memory versioning
-└── mcp/                     # MCP server (56 tools)
+└── mcp/                     # MCP server (59 tools)
     └── server.py            # FastMCP 3.0+ server
 ```
 

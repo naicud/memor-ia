@@ -36,6 +36,7 @@ class Memoria:
         self._cwd = project_dir or os.getcwd()
         self._config = config or {}
         self._mem_dir = ensure_memory_dir_exists(self._cwd)
+        self._cache_backend = self._config.get("cache_backend")
 
     # ------------------------------------------------------------------
     # Core CRUD (v1 — backward compatible)
@@ -1387,5 +1388,47 @@ class Memoria:
             else:
                 session = fo.start_session()
                 return {"session_id": session.session_id, "started_at": session.started_at}
+        except Exception as e:
+            return {"error": str(e)}
+
+    # ------------------------------------------------------------------
+    # Cache management (v2.1)
+    # ------------------------------------------------------------------
+
+    def _get_cache(self):
+        """Return (or create) the cache backend."""
+        if self._cache_backend is None:
+            from memoria.cache import create_cache
+            self._cache_backend = create_cache()
+        return self._cache_backend
+
+    def cache_stats(self) -> dict:
+        """Return cache statistics."""
+        try:
+            return self._get_cache().stats()
+        except Exception as e:
+            return {"error": str(e)}
+
+    def cache_clear(self, pattern: str | None = None) -> dict:
+        """Clear cache entries. If *pattern* is given, only matching keys."""
+        try:
+            cache = self._get_cache()
+            if pattern:
+                count = cache.invalidate_pattern(pattern)
+                return {"cleared": count, "pattern": pattern}
+            cache.clear()
+            return {"cleared": "all"}
+        except Exception as e:
+            return {"error": str(e)}
+
+    def cache_warmup(self, queries: list[str] | None = None) -> dict:
+        """Warm the cache by pre-running common searches."""
+        try:
+            warmed = 0
+            if queries:
+                for q in queries:
+                    self.search(q, limit=5)
+                    warmed += 1
+            return {"warmed": warmed}
         except Exception as e:
             return {"error": str(e)}

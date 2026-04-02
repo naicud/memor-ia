@@ -14,7 +14,7 @@ graph TB
         JSONRPC["JSON-RPC over stdio/HTTP"]
     end
 
-    subgraph "MEMORIA MCP Server (56 tools)"
+    subgraph "MEMORIA MCP Server (59 tools)"
         TOOLS["Tool Dispatch"]
 
         subgraph "Core Memory"
@@ -75,7 +75,7 @@ Uses FalkorDB for graph, SQLite+sqlite-vec for vectors.
 ```
 memory/
 ├── b66f1415.md  →  "Daniel created memor-ia using Python 3.12..."  (project)
-├── 6978c5e6.md  →  "Alice maintains the MCP server with 56 tools"  (project)
+├── 6978c5e6.md  →  "Alice maintains the MCP server with 59 tools"  (project)
 ├── e59c1502.md  →  "The CI/CD uses GitHub Actions + Docker..."      (project)
 ├── b9547f1b.md  →  "sqlite-vec doesn't support INSERT OR REPLACE"  (user)
 └── 81e87d32.md  →  "Use ruff for linting, pytest for testing..."   (user)
@@ -352,7 +352,7 @@ python -m pytest tests/test_e2e_mcp_client.py -v -s
 python -m pytest tests/ -q
 ```
 
-## Tool Reference (56 tools)
+## Tool Reference (59 tools)
 
 | Category | Tools | Count |
 |----------|-------|-------|

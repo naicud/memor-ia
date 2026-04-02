@@ -50,6 +50,16 @@ When `MEMORIA_GRAPH_HOST` is not set, MEMORIA uses InMemoryGraph (pure Python, n
 | `MEMORIA_VECTOR_DB` | SQLite database path | _(in-memory)_ | `/data/vectors.db` |
 | `MEMORIA_EMBEDDING_DIM` | Embedding dimension | `384` | `128` |
 
+### Cache Backend (v2.1)
+
+| Variable | Description | Default | Example |
+|----------|-------------|---------|---------|
+| `MEMORIA_CACHE_BACKEND` | Cache type | `memory` | `redis` |
+| `MEMORIA_REDIS_URL` | Redis connection string | `redis://localhost:6379/0` | `redis://cache:6379/1` |
+| `MEMORIA_CACHE_PREFIX` | Key prefix for namespacing | `memoria:` | `myapp:memoria:` |
+| `MEMORIA_CACHE_MAX_SIZE` | Max entries (in-memory only) | `1024` | `4096` |
+| `MEMORIA_CACHE_TTL` | Default TTL in seconds | _(none for memory, 3600 for redis)_ | `600` |
+
 ### Shell Configuration
 
 ```bash
@@ -63,6 +73,11 @@ export MEMORIA_GRAPH_PORT=6379
 # With persistent vector DB
 export MEMORIA_VECTOR_DB=/data/vectors.db
 export MEMORIA_EMBEDDING_DIM=384
+
+# With Redis cache (multi-pod deployments)
+export MEMORIA_CACHE_BACKEND=redis
+export MEMORIA_REDIS_URL=redis://cache:6379/0
+export MEMORIA_CACHE_TTL=3600
 
 # HTTP transport
 export MEMORIA_TRANSPORT=http
@@ -210,7 +225,7 @@ export MEMORIA_EMBEDDING_DIM=64    # minimal
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    MCP Server (56 tools)                 │
+│                    MCP Server (59 tools)                 │
 ├─────────────────────────────────────────────────────────┤
 │                  Memoria Core API                       │
 ├─────────────┬───────────────┬───────────────────────────┤

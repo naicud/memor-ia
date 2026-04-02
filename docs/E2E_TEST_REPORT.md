@@ -240,7 +240,7 @@ python -m pytest tests/ -q
 
 ```
 ┌─────────────────────────────────────────────────┐
-│              MCP Tool Layer (56 tools)           │
+│              MCP Tool Layer (59 tools)           │
 │   memoria_* │ episodic_* │ procedural_* │ ...    │
 ├─────────────┼────────────┼──────────────┼────────┤
 │  Memoria    │  Episodic  │  Procedural  │ ...    │

@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **56 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **59 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1289,6 +1289,53 @@ Parameters:
 
 Returns: str (JSON)
   { "session_id": "focus_001", "status": "active", "duration": 0, "topic": "..." }
+```
+
+---
+
+### 🗄️ Cache Management (v2.1)
+
+| Tool | Description |
+|------|-------------|
+| `cache_stats` | Get cache statistics: hits, misses, hit rate, backend type, size |
+| `cache_clear` | Clear cache entries (full flush or pattern-based invalidation) |
+| `cache_warmup` | Pre-warm the cache with common search queries |
+
+#### `cache_stats`
+
+Get cache statistics.
+
+```
+Parameters: (none)
+
+Returns: str (JSON)
+  { "backend": "memory", "size": 42, "max_size": 1024,
+    "hits": 150, "misses": 23, "hit_rate": 0.8671, "default_ttl": null }
+```
+
+#### `cache_clear`
+
+Clear cache entries.
+
+```
+Parameters:
+  pattern: str        — Glob pattern (default: "" = flush all). Example: "embed:*"
+
+Returns: str (JSON)
+  { "cleared": 12, "pattern": "embed:*" }
+  or { "cleared": "all" }
+```
+
+#### `cache_warmup`
+
+Pre-warm the cache with common queries.
+
+```
+Parameters:
+  queries: str        — JSON array of search strings (default: "[]")
+
+Returns: str (JSON)
+  { "warmed": 3, "queries": ["python", "react", "testing"] }
 ```
 
 ---
