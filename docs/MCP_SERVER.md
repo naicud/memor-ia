@@ -39,6 +39,8 @@ MEMORIA exposes **97 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.
   - [Business Intelligence (2)](#business-intelligence-2-tools)
   - [Adversarial Protection (3)](#adversarial-protection-3-tools)
   - [Cognitive Load (3)](#cognitive-load-3-tools)
+  - [Web Dashboard (5)](#web-dashboard-tools)
+  - [Federation Protocol (5)](#federation-protocol-tools)
 - [Resources Reference](#resources-reference)
 - [Prompts Reference](#prompts-reference)
 
@@ -1951,4 +1953,133 @@ Return plugin system statistics.
 Parameters: (none)
 
 Returns: { "registered": N, "active": N, "plugins": [...], "active_plugins": [...] }
+```
+
+---
+
+## Web Dashboard Tools
+
+### `start_dashboard`
+
+Start the embedded web dashboard server.
+
+```
+Parameters:
+  host: str              — Bind address (default: "127.0.0.1")
+  port: int              — Port number (default: 8080)
+
+Returns: { "status": "started", "url": "http://127.0.0.1:8080" }
+
+Use: "Start the MEMORIA dashboard on port 9090"
+→ start_dashboard(host="0.0.0.0", port=9090)
+```
+
+### `stop_dashboard`
+
+Stop the dashboard server.
+
+```
+Parameters: (none)
+
+Returns: { "status": "stopped" }
+```
+
+### `dashboard_status`
+
+Check if the dashboard is currently running.
+
+```
+Parameters: (none)
+
+Returns: { "running": true | false }
+```
+
+### `dashboard_url`
+
+Get the current dashboard URL.
+
+```
+Parameters: (none)
+
+Returns: { "url": "http://127.0.0.1:8080" }
+```
+
+### `dashboard_config`
+
+Get dashboard configuration.
+
+```
+Parameters: (none)
+
+Returns: { "host": "...", "port": N, "running": true | false, "features": [...] }
+```
+
+---
+
+## Federation Protocol Tools
+
+### `federation_connect`
+
+Connect to a federated peer MEMORIA instance.
+
+```
+Parameters:
+  endpoint: str          — Peer MCP endpoint URL
+  instance_id: str       — Unique identifier for this peer
+  shared_namespaces: list — Namespaces to synchronize
+  direction: str         — "push" | "pull" | "bidirectional"
+
+Returns: { "instance_id": "...", "status": "connected", "shared_namespaces": [...] }
+
+Use: "Connect to a remote MEMORIA peer for bidirectional sync"
+→ federation_connect(endpoint="https://peer.example.com/mcp", instance_id="peer-1",
+                     shared_namespaces=["shared"], direction="bidirectional")
+```
+
+### `federation_disconnect`
+
+Disconnect from a federated peer.
+
+```
+Parameters:
+  peer_id: str           — Instance ID of the peer to disconnect
+
+Returns: { "disconnected": true, "instance_id": "..." }
+```
+
+### `federation_trust`
+
+Manage PKI trust level for a peer instance. Trust levels: untrusted, standard, elevated, full.
+
+```
+Parameters:
+  instance_id: str       — Peer instance ID
+  trust_level: str       — One of: untrusted, standard, elevated, full
+
+Returns: { "instance_id": "...", "trust_level": "..." }
+
+Use: "Elevate trust for peer-1"
+→ federation_trust(instance_id="peer-1", trust_level="elevated")
+```
+
+### `federation_sync`
+
+Trigger synchronization with a federated peer.
+
+```
+Parameters:
+  peer_id: str           — Instance ID to sync with
+  namespace: str         — Namespace to synchronize (optional)
+
+Returns: { "pushed": N, "pulled": N, "conflicts_resolved": N }
+```
+
+### `federation_status`
+
+Get overall federation protocol status.
+
+```
+Parameters: (none)
+
+Returns: { "protocol": { "total_peers": N }, "trust": { "valid": N }, "sync": { ... } }
 ```

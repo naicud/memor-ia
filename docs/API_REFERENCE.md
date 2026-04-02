@@ -20,6 +20,16 @@ Complete Python API reference for the MEMORIA framework.
 - [Embedding](#embedding)
 - [Types](#types)
 - [Public Imports](#public-imports)
+- [Platform Services API](#platform-services-api)
+  - [GDPR & Audit](#gdpr--audit)
+  - [Webhooks](#webhooks)
+  - [Summarization & Dedup](#summarization--dedup)
+  - [Templates](#templates)
+  - [Streaming](#streaming)
+  - [Attachments](#attachments)
+  - [Plugins](#plugins)
+  - [Dashboard](#dashboard)
+  - [Federation](#federation)
 
 ---
 
@@ -582,3 +592,247 @@ from memoria.graph.client import GraphClient
 from memoria.graph.knowledge import KnowledgeGraph
 from memoria.extraction.types import Entity, NodeType
 ```
+
+---
+
+## Platform Services API
+
+All platform methods are accessed through the `Memoria` class.
+
+### GDPR & Audit
+
+```python
+m = Memoria()
+
+# Right to be forgotten — erases all user data
+result = m.gdpr_forget(user_id="user-123")
+# → {"status": "completed", "files_deleted": 12, "vectors_deleted": 8, ...}
+
+# Export all user data (DSAR)
+export = m.gdpr_export(user_id="user-123")
+# → {"memories": [...], "preferences": {...}, "episodic": [...]}
+
+# Query audit trail
+logs = m.audit_query(event_type="memory_created", limit=10)
+# → [{"event": "memory_created", "timestamp": "...", "actor": "..."}]
+
+# Audit statistics
+stats = m.audit_stats()
+# → {"total_events": 1234, "by_type": {"memory_created": 500, ...}}
+```
+
+### Webhooks
+
+```python
+# Register a webhook
+result = m.webhook_register(
+    url="https://hooks.example.com/memoria",
+    events=["memory_created", "memory_deleted"],
+    secret="hmac-secret",
+    description="Slack notification"
+)
+# → {"webhook_id": "wh_abc123", "url": "...", "active": true}
+
+# List webhooks
+hooks = m.webhook_list(active_only=True)
+# → [{"webhook_id": "wh_abc123", "url": "...", "events": [...]}]
+
+# Unregister
+m.webhook_unregister(webhook_id="wh_abc123")
+```
+
+### Summarization & Dedup
+
+```python
+# Summarize text
+summary = m.summarize(
+    content="Long text to summarize...",
+    max_tokens=100
+)
+# → {"summary": "...", "key_facts": [...], "compression_ratio": 0.7}
+
+# Summarize all memories for a user
+result = m.summarize_all(user_id="user-123", limit=50)
+# → {"summarized": 12, "results": [...]}
+
+# Scan for duplicates
+dupes = m.dedup_scan(threshold=0.85, namespace="default")
+# → {"groups": [{"ids": ["a", "b"], "similarity": 0.92}]}
+
+# Merge duplicates
+m.dedup_merge(memory_ids=["a", "b"], strategy="best")
+```
+
+### Templates
+
+```python
+# Create a structured template
+m.template_create(
+    name="bug-report",
+    description="Bug report template",
+    fields=[
+        {"name": "title", "type": "string", "required": True},
+        {"name": "steps", "type": "string", "required": True},
+        {"name": "expected", "type": "string", "required": False},
+    ],
+    content_template="Bug: {title}\nSteps: {steps}\nExpected: {expected}",
+    category="engineering"
+)
+
+# List templates
+templates = m.template_list(category="engineering")
+# → [{"name": "bug-report", "fields": 3, "category": "engineering"}]
+
+# Apply a template
+result = m.template_apply(
+    template_name="bug-report",
+    data={"title": "Login fails", "steps": "Click login → 500 error"}
+)
+# → Creates a structured memory from the template
+```
+
+### Streaming
+
+```python
+# Subscribe to real-time events
+channel = m.stream_subscribe(
+    channel_type="sse",
+    event_types=["memory_created", "memory_updated"],
+    namespaces=["dev"]
+)
+# → {"channel_id": "abc123", "type": "sse", "filter": {...}}
+
+# Broadcast an event
+m.stream_broadcast(
+    event_type="memory_created",
+    data={"memory_id": "m-123", "content": "..."}
+)
+
+# List active channels
+channels = m.stream_list_channels()
+
+# Statistics
+stats = m.stream_stats()
+# → {"total_channels": 3, "sse_channels": 2, "ws_channels": 1}
+
+# Unsubscribe
+m.stream_unsubscribe(channel_id="abc123")
+```
+
+### Attachments
+
+```python
+# Attach a file to a memory
+result = m.add_attachment(
+    memory_id="memory-abc",
+    data=b"\x89PNG...",  # raw bytes
+    filename="diagram.png",
+    mime_type="image/png",
+    description="Architecture diagram"
+)
+# → {"attachment_id": "att_xyz", "filename": "diagram.png", "size": 1234}
+
+# List attachments
+attachments = m.list_attachments(memory_id="memory-abc")
+
+# Get attachment metadata
+meta = m.get_attachment(attachment_id="att_xyz")
+
+# Get attachment binary data
+data = m.get_attachment_data(attachment_id="att_xyz")
+# → b"\x89PNG..."
+
+# Delete
+m.delete_attachment(attachment_id="att_xyz")
+
+# Statistics
+stats = m.attachment_stats()
+# → {"total_attachments": 15, "disk_usage_bytes": 1048576}
+```
+
+### Plugins
+
+```python
+# Discover available plugins
+discovered = m.plugin_discover()
+
+# List registered plugins
+plugins = m.plugin_list()
+# → [{"name": "my-plugin", "active": false, "version": "1.0.0"}]
+
+# Activate / deactivate
+m.plugin_activate(name="my-plugin")
+m.plugin_deactivate(name="my-plugin")
+
+# Statistics
+stats = m.plugin_stats()
+# → {"registered": 3, "active": 1}
+
+# Register a custom plugin
+from memoria.plugins import PluginBase
+class MyPlugin(PluginBase):
+    name = "my-plugin"
+    version = "1.0.0"
+
+m.plugin_register(MyPlugin)
+```
+
+### Dashboard
+
+```python
+# Start the web dashboard
+m.dashboard_start(host="127.0.0.1", port=8080)
+
+# Get dashboard URL
+url = m.dashboard_url()
+# → "http://127.0.0.1:8080"
+
+# Check status
+status = m.dashboard_status()
+# → {"running": true, "host": "127.0.0.1", "port": 8080}
+
+# Stop
+m.dashboard_stop()
+```
+
+The dashboard provides:
+- 📊 Memory explorer with filtering and search
+- 🕸️ D3.js knowledge graph visualization
+- 📋 Audit log viewer
+- ⚙️ Settings and configuration
+
+### Federation
+
+```python
+# Connect to a peer instance
+peer = m.federation_connect(
+    endpoint="https://team-b.example.com/mcp",
+    instance_id="team-b",
+    shared_namespaces=["shared", "dev"],
+    direction="bidirectional"
+)
+# → {"instance_id": "team-b", "status": "connected"}
+
+# Configure trust
+m.federation_trust_add(
+    instance_id="team-b",
+    trust_level="elevated"  # untrusted|standard|elevated|full
+)
+
+# Synchronize a namespace
+result = m.federation_sync(peer_id="team-b", namespace="shared")
+# → {"pushed": 5, "pulled": 3, "conflicts_resolved": 1}
+
+# Check federation status
+status = m.federation_status()
+# → {"protocol": {"total_peers": 2}, "trust": {"valid": 2}, "sync": {...}}
+
+# Disconnect
+m.federation_disconnect(peer_id="team-b")
+```
+
+Federation features:
+- 🔐 PKI trust registry with 4 trust levels
+- 🔄 CRDT vector clock conflict resolution (LWW, merge, local-first, remote-first)
+- 📡 Selective namespace synchronization (push/pull/bidirectional)
+- 🤝 Peer-to-peer message exchange protocol

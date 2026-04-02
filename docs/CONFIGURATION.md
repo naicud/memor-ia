@@ -60,6 +60,53 @@ When `MEMORIA_GRAPH_HOST` is not set, MEMORIA uses InMemoryGraph (pure Python, n
 | `MEMORIA_CACHE_MAX_SIZE` | Max entries (in-memory only) | `1024` | `4096` |
 | `MEMORIA_CACHE_TTL` | Default TTL in seconds | _(none for memory, 3600 for redis)_ | `600` |
 
+### Platform Services (v2.1–v3.0)
+
+#### Webhooks
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMORIA_WEBHOOK_TIMEOUT` | `10` | HTTP request timeout for webhook delivery (seconds) |
+| `MEMORIA_WEBHOOK_RETRY` | `3` | Number of retries for failed deliveries |
+
+#### Streaming
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMORIA_STREAM_MAX_CHANNELS` | `100` | Maximum concurrent channels |
+| `MEMORIA_STREAM_BUFFER_SIZE` | `1000` | Event buffer size per channel |
+
+#### Dashboard
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMORIA_DASHBOARD_HOST` | `127.0.0.1` | Dashboard bind address |
+| `MEMORIA_DASHBOARD_PORT` | `8080` | Dashboard port |
+| `MEMORIA_DASHBOARD_ENABLED` | `false` | Enable dashboard at startup |
+
+#### Federation
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMORIA_FEDERATION_ENDPOINT` | _(not set)_ | This instance's advertised endpoint URL |
+| `MEMORIA_FEDERATION_INSTANCE_ID` | _(not set)_ | Unique instance identifier for federation |
+| `MEMORIA_FEDERATION_DEFAULT_TRUST` | `standard` | Default trust level for new peers |
+| `MEMORIA_FEDERATION_SYNC_INTERVAL` | `300` | Auto-sync interval in seconds |
+
+#### Attachments
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMORIA_ATTACHMENT_MAX_SIZE` | `10485760` | Maximum attachment size in bytes (10 MB) |
+| `MEMORIA_ATTACHMENT_STORE_PATH` | `.memoria/attachments` | Path for attachment file storage |
+
+#### Plugins
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMORIA_PLUGIN_DIR` | `.memoria/plugins` | Directory to scan for plugins |
+| `MEMORIA_PLUGIN_AUTOLOAD` | `false` | Auto-load discovered plugins |
+
 ### Shell Configuration
 
 ```bash

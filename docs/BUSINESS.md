@@ -148,6 +148,21 @@ FALKORDB_HOST=your-server \
 memoria-mcp --transport http --port 8080
 ```
 
+### Platform Services (v2.1–v3.0)
+
+| Service | Description | Key Capabilities |
+|---------|-------------|-----------------|
+| **GDPR & Audit** | Enterprise compliance | Right-to-be-forgotten, data export, audit trail, consent management |
+| **Webhooks** | External integrations | HTTP callbacks, HMAC verification, retry with backoff |
+| **Summarization** | Intelligent compression | LLM-powered summaries, key-fact extraction, bulk summarization |
+| **Deduplication** | Memory hygiene | Semantic similarity detection, merge strategies, dedup history |
+| **Templates** | Structured creation | Field-validated templates, category organization, template-to-memory |
+| **Streaming** | Real-time events | SSE/WebSocket channels, pub/sub, event filtering |
+| **Attachments** | Multi-modal storage | Binary file associations, MIME-typed, per-memory attachments |
+| **Plugins** | Extensibility | Dynamic registry, lifecycle management, auto-discovery |
+| **Dashboard** | Visual management | D3.js graph visualization, memory explorer, audit log viewer |
+| **Federation** | Multi-instance sync | PKI trust, CRDT conflict resolution, selective namespace sync |
+
 ## Use Cases
 
 ### 🛠️ 1. Developer Tooling — AI Coding Assistant with Memory
@@ -355,21 +370,20 @@ graph TB
 
 | Metric | Value |
 |--------|-------|
-| **Version** | 2.0.0 |
-| **Test suite** | 4,181 tests |
+| **Version** | 3.0.0 |
+| **Test suite** | 4,700+ tests |
 | **Test coverage** | 90% |
-| **E2E tests** | 22 conversation + 12 real MCP protocol |
-| **Production checks** | 54/54 passing |
+| **E2E tests** | 23 MCP protocol conversations (150+ tool calls with real JSON data) |
+| **Production checks** | All passing |
 | **Lint** | 0 errors (ruff) |
-| **Tools exposed** | 56 MCP tools |
-| **Resources** | 6 MCP resources |
+| **Tools exposed** | 97 MCP tools |
+| **Resources** | 7 MCP resources |
 | **Prompts** | 5 MCP prompts |
-| **Subsystems** | 20 |
-| **Architecture layers** | 8 |
+| **Subsystems** | 28 |
+| **Architecture layers** | 9 |
 | **External deps (core)** | 0 |
 | **Python versions** | 3.11 – 3.14 |
 | **Docker** | One-click deploy |
-| **MCP verification time** | <0.2s for all 54 checks |
 
 ## Licensing
 

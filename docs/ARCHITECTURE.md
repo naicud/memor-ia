@@ -16,6 +16,7 @@ Deep dive into MEMORIA's 8-layer architecture, 20+ subsystems, and data flow.
 - [Layer 6: Behavioral Prediction](#layer-6-behavioral-prediction)
 - [Layer 7: Emotional Intelligence](#layer-7-emotional-intelligence)
 - [Layer 8: Cross-Product Intelligence](#layer-8-cross-product-intelligence)
+- [Layer 9: Platform Services](#layer-9-platform-services)
 - [Data Flow](#data-flow)
 - [Module Map](#module-map)
 - [Recall Pipeline](#recall-pipeline)
@@ -38,6 +39,10 @@ MEMORIA is organized as 8 stacked layers, each building on the layers below. The
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
+│  Layer 9: Platform Services                                  │
+│  GDPR & audit │ webhooks │ summarization │ templates         │
+│  streaming │ attachments │ plugins │ dashboard │ federation  │
+├─────────────────────────────────────────────────────────────┤
 │  Layer 8: Cross-Product Intelligence                        │
 │  product tracking │ behavioral fusion │ habit intelligence   │
 │  contextual engine │ business intelligence                  │
@@ -250,6 +255,54 @@ Analytics across multiple products in a user's ecosystem.
 | `habits/` | Habit detection from repeated patterns |
 | `contextual/` | Situation awareness, intent inference |
 | `biz_intel/` | Revenue signals, lifecycle tracking |
+
+---
+
+## Layer 9: Platform Services
+
+Infrastructure services added in v2.1–v3.0 that run alongside Layers 1–8, providing compliance, extensibility, real-time streaming, and federation capabilities.
+
+| Subsystem | Purpose |
+|-----------|---------|
+| `gdpr/` | Right-to-be-forgotten cascade delete across all stores, audit trail logging, consent management |
+| `webhooks/` | HTTP webhook registry for external event notifications (`memory_created`, `memory_deleted`, etc.) |
+| `summarization/` | LLM-powered text summarization with key-fact extraction, semantic deduplication with configurable similarity thresholds |
+| `templates/` | Structured memory templates with field validation, content templates, category organization |
+| `streaming/` | Real-time event channels via SSE/WebSocket, pub/sub pattern, event filtering by type/namespace/user |
+| `attachments/` | Multi-modal binary attachment store, MIME-typed file associations per memory |
+| `plugins/` | Dynamic plugin registry with activation/deactivation lifecycle, discovery mechanism |
+| `dashboard/` | Embedded web dashboard with D3.js graph visualization, audit log viewer, memory explorer |
+| `federation/` | Peer-to-peer instance federation with PKI trust registry (4 trust levels), CRDT vector clock conflict resolution, selective namespace sync |
+
+### Platform Services Architecture
+
+```
+                    ┌───────────────────────────────────┐
+                    │      Layer 9: Platform Services    │
+                    │                                    │
+  ┌──────────┐      │  ┌─────────┐  ┌──────────────┐    │
+  │ GDPR &   │◄────►│  │Webhooks │  │Summarization │    │
+  │ Audit    │      │  │         │  │& Dedup       │    │
+  └──────────┘      │  └─────────┘  └──────────────┘    │
+                    │  ┌─────────┐  ┌──────────────┐    │
+  ┌──────────┐      │  │Templates│  │  Streaming   │    │
+  │Dashboard │◄────►│  │         │  │ (SSE/WS)     │    │
+  │ (D3.js)  │      │  └─────────┘  └──────────────┘    │
+  └──────────┘      │  ┌─────────┐  ┌──────────────┐    │
+                    │  │Attach-  │  │   Plugins    │    │
+  ┌──────────┐      │  │ments    │  │  (registry)  │    │
+  │Federation│◄────►│  └─────────┘  └──────────────┘    │
+  │ (P2P/PKI)│      │                                    │
+  └──────────┘      └──────────────┬────────────────────┘
+                                   │
+                    ┌──────────────┼──────────────┐
+                    ▼              ▼              ▼
+             ┌───────────┐ ┌───────────┐ ┌───────────┐
+             │ Layers 1–4│ │ Layers 5–6│ │ Layers 7–8│
+             │ Core &    │ │ Multi-Agent│ │ Emotional &│
+             │ Storage   │ │ & Predict │ │ Product   │
+             └───────────┘ └───────────┘ └───────────┘
+```
 
 ---
 

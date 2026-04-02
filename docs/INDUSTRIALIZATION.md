@@ -726,6 +726,89 @@ analyticsWorker:
 
 ---
 
+## Platform Services Deployment
+
+### Dashboard Deployment
+
+The embedded web dashboard can be exposed via:
+
+**Direct exposure (development):**
+```yaml
+# docker-compose.yml addition
+services:
+  memoria:
+    ports:
+      - "8080:8080"  # Dashboard UI
+    environment:
+      MEMORIA_DASHBOARD_ENABLED: "true"
+      MEMORIA_DASHBOARD_HOST: "0.0.0.0"
+      MEMORIA_DASHBOARD_PORT: "8080"
+```
+
+**Production (behind ingress):**
+```yaml
+# Kubernetes Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: memoria-dashboard
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: memoria-dashboard-auth
+spec:
+  rules:
+    - host: memoria-dashboard.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memoria
+                port:
+                  number: 8080
+```
+
+### Federation Deployment
+
+Federation requires:
+1. **Network connectivity** between MEMORIA instances (peer-to-peer or hub-spoke)
+2. **Unique instance IDs** per deployment
+3. **PKI trust configuration** for secure peer communication
+
+```yaml
+# Multi-instance federation setup
+services:
+  memoria-primary:
+    environment:
+      MEMORIA_FEDERATION_INSTANCE_ID: "primary"
+      MEMORIA_FEDERATION_ENDPOINT: "http://memoria-primary:8000"
+      MEMORIA_FEDERATION_DEFAULT_TRUST: "standard"
+  
+  memoria-secondary:
+    environment:
+      MEMORIA_FEDERATION_INSTANCE_ID: "secondary"
+      MEMORIA_FEDERATION_ENDPOINT: "http://memoria-secondary:8000"
+```
+
+Trust levels for production:
+| Level       | Permissions                                    |
+|-------------|-----------------------------------------------|
+| `untrusted` | No sync, metadata only                        |
+| `standard`  | Read-only sync, filtered namespaces           |
+| `elevated`  | Bidirectional sync, all shared namespaces     |
+| `full`      | Full sync including private data, admin access |
+
+### Webhook Reliability
+
+For production webhook delivery:
+- Configure retry with exponential backoff
+- Set up a dead letter queue for failed deliveries
+- Monitor delivery success rate via `webhook_list` stats
+- Use HMAC secrets for payload verification
+
+---
+
 ## CI/CD Pipeline
 
 ```mermaid
@@ -895,6 +978,11 @@ spec:
 | `memoria_active_episodes` | Gauge | Current open episodes |
 | `memoria_cognitive_load` | Gauge | Current cognitive load score |
 | `memoria_churn_risk_score` | Gauge | Latest churn prediction |
+| `memoria_webhooks_delivered_total` | Counter | Total webhooks delivered |
+| `memoria_webhooks_failed_total` | Counter | Failed webhook deliveries |
+| `memoria_stream_active_channels` | Gauge | Currently active streaming channels |
+| `memoria_federation_sync_total` | Counter | Federation sync operations |
+| `memoria_dashboard_requests_total` | Counter | Dashboard HTTP requests |
 
 ### Grafana Dashboard Layout
 

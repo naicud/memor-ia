@@ -6,8 +6,8 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: BSL 1.1](https://img.shields.io/badge/License-BSL_1.1-orange.svg)](LICENSE)
-[![MCP Tools: 56](https://img.shields.io/badge/MCP_Tools-56-purple.svg)](docs/MCP_SERVER.md)
-[![Tests: 4000+](https://img.shields.io/badge/Tests-4000%2B-brightgreen.svg)](#tests)
+[![MCP Tools: 97](https://img.shields.io/badge/MCP_Tools-97-purple.svg)](docs/MCP_SERVER.md)
+[![Tests: 4700+](https://img.shields.io/badge/Tests-4700%2B-brightgreen.svg)](#tests)
 
 ---
 
@@ -25,6 +25,9 @@
 | Memories become stale over time         | Dream consolidation auto-promotes/forgets       |
 | Need to detect injection attacks        | Adversarial protection layer                    |
 | Want to predict user behavior           | Markov chain action prediction                  |
+| Need real-time event notifications      | Streaming (SSE/WebSocket) + webhooks            |
+| Want multi-instance collaboration       | Federation protocol with CRDT sync              |
+| Need visual memory exploration          | Built-in web dashboard with D3.js graph         |
 
 ## Install
 
@@ -74,7 +77,7 @@ profile = m.profile(user_id="daniel")
 insights = m.insights(user_id="daniel")
 ```
 
-## Architecture (8 Layers, 20 Subsystems)
+## Architecture (8 Layers, 28 Subsystems)
 
 ```mermaid
 mindmap
@@ -122,6 +125,16 @@ mindmap
       Habit Intelligence
       Contextual Engine
       Business Intelligence
+    Platform Services
+      GDPR Compliance & Audit Trail
+      Webhooks & Event Notifications
+      Summarization & Deduplication
+      Structured Memory Templates
+      Real-time Streaming SSE/WS
+      Multi-modal Attachments
+      Plugin Extensibility
+      Web Dashboard D3.js
+      Federation Protocol CRDT
 ```
 
 ### Data Flow
@@ -170,14 +183,23 @@ graph TB
     R --> FK
     R --> MD
     
-    subgraph "56 MCP Tools"
+    subgraph "97 MCP Tools"
         T1[Core CRUD 7]
         T2[Tiered & ACL 5]
         T3[Episodic 5]
         T4[Procedural 4]
         T5[Intelligence 20]
         T6[Defensive 6]
-        T7[Resources 7 + Prompts 5]
+        T7[GDPR & Audit 5]
+        T8[Webhooks 3]
+        T9[Summarization & Dedup 6]
+        T10[Templates 3]
+        T11[Streaming 5]
+        T12[Attachments 5]
+        T13[Plugins 5]
+        T14[Dashboard 5]
+        T15[Federation 5]
+        T16[Resources 7 + Prompts 5]
     end
 ```
 
@@ -247,6 +269,19 @@ graph TB
 - 🛡️ Adversarial Memory Protection (poison detection, hallucination guards, consistency verification, tamper proofing)
 - 🧩 Cognitive Load Management (load tracking, overload prevention, complexity adaptation, focus optimization)
 
+### Platform Services (v2.1–v3.0)
+
+- 🔒 **GDPR Compliance** — Right-to-be-forgotten, data export, consent tracking, full audit trail
+- 🔔 **Webhooks** — Event-driven HTTP notifications with HMAC signing and retry logic
+- 📝 **Summarization** — Extractive text summarization with key fact extraction
+- 🧹 **Deduplication** — Similarity-based duplicate detection and smart merge
+- 📋 **Templates** — Structured memory creation with predefined schemas (10 built-in + custom)
+- 📡 **Real-time Streaming** — SSE and WebSocket channels with filtered subscriptions
+- 📎 **Multi-modal Attachments** — Binary file storage (images, documents, code) linked to memories
+- 🔌 **Plugin System** — Extensible architecture with discover/register/activate lifecycle
+- 🖥️ **Web Dashboard** — Built-in SPA with D3.js knowledge graph visualization, memory explorer, audit log
+- 🌐 **Federation Protocol** — Peer-to-peer multi-instance sync with PKI trust and CRDT conflict resolution
+
 ## Key Differentiators vs Mem0
 
 | Feature                               | Mem0 | MEMORIA |
@@ -260,7 +295,7 @@ graph TB
 | Communication layer                   | ❌   | ✅      |
 | Context management                    | ❌   | ✅      |
 | Zero-config default                   | ❌   | ✅      |
-| MCP Server                            | ❌   | ✅      |
+| MCP Server (97 tools)                 | ❌   | ✅      |
 | Behavioral fingerprinting (User DNA)  | ❌   | ✅      |
 | Dream-like consolidation cycles       | ❌   | ✅      |
 | Cross-session resurrection            | ❌   | ✅      |
@@ -272,8 +307,17 @@ graph TB
 | Cross-product behavioral intelligence | ❌   | ✅      |
 | Adversarial memory protection         | ❌   | ✅      |
 | Cognitive load management             | ❌   | ✅      |
+| GDPR compliance & audit trail         | ❌   | ✅      |
+| Webhooks & event notifications        | ❌   | ✅      |
+| AI summarization & deduplication      | ❌   | ✅      |
+| Structured memory templates           | ❌   | ✅      |
+| Real-time streaming (SSE/WebSocket)   | ❌   | ✅      |
+| Multi-modal attachments               | ❌   | ✅      |
+| Plugin extensibility                  | ❌   | ✅      |
+| Web dashboard with graph viz          | ❌   | ✅      |
+| Federation protocol (CRDT sync)       | ❌   | ✅      |
 
-## Feature Matrix (20 Subsystems)
+## Feature Matrix (28 Subsystems)
 
 | Subsystem               | Key Capabilities                                       | Module                  |
 | ----------------------- | ------------------------------------------------------ | ----------------------- |
@@ -297,6 +341,15 @@ graph TB
 | Business Intelligence   | Revenue signals, segmentation, lifecycle, value        | `memoria.biz_intel`     |
 | Adversarial Protection  | Poison detection, hallucination guards, tamper proof   | `memoria.adversarial`   |
 | Cognitive Load          | Load tracking, overload prevention, focus optimization | `memoria.cognitive`     |
+| GDPR & Audit            | Right-to-forget, data export, consent, audit trail     | `memoria.gdpr`          |
+| Webhooks                | HTTP event notifications, HMAC signing, retry          | `memoria.webhooks`      |
+| Summarization & Dedup   | Extractive summarization, duplicate detection & merge  | `memoria.summarizer`    |
+| Templates               | Structured schemas, 10 built-in + custom templates     | `memoria.templates`     |
+| Streaming               | SSE/WebSocket channels, filtered subscriptions         | `memoria.streaming`     |
+| Multi-modal             | Binary attachments, metadata extraction                | `memoria.multimodal`    |
+| Plugin System           | Discover/register/activate extensibility               | `memoria.plugins`       |
+| Web Dashboard           | SPA, D3.js graph viz, REST API, memory explorer        | `memoria.dashboard`     |
+| Federation              | P2P sync, PKI trust, CRDT conflict resolution          | `memoria.federation`    |
 
 ## Examples
 
@@ -355,7 +408,7 @@ docker compose up -d
 # FalkorDB on localhost:6379
 ```
 
-### Available Tools (56)
+### Available Tools (97)
 
 #### Core CRUD (7)
 
@@ -513,6 +566,93 @@ docker compose up -d
 | `cognitive_prevent_overload` | Prevent cognitive overload           |
 | `cognitive_optimize_focus`   | Optimize focus and reduce complexity |
 
+#### GDPR & Audit (5)
+
+| Tool             | Description                          |
+| ---------------- | ------------------------------------ |
+| `gdpr_forget`    | Right-to-be-forgotten (erase user)   |
+| `gdpr_export`    | Export all user data (DSAR)          |
+| `audit_log`      | Query the audit trail                |
+| `audit_stats`    | Get audit statistics                 |
+| `consent_manage` | Manage user consent records          |
+
+#### Webhooks (3)
+
+| Tool                 | Description                             |
+| -------------------- | --------------------------------------- |
+| `webhook_register`   | Register an HTTP webhook endpoint       |
+| `webhook_list`       | List all registered webhooks            |
+| `webhook_unregister` | Remove a webhook                        |
+
+#### Summarization & Dedup (6)
+
+| Tool                    | Description                            |
+| ----------------------- | -------------------------------------- |
+| `memoria_summarize`     | Summarize text with key fact extraction |
+| `memoria_summarize_all` | Summarize all memories for a user      |
+| `dedup_scan`            | Scan for duplicate memories            |
+| `dedup_merge`           | Merge duplicate memories               |
+| `dedup_history`         | View deduplication history             |
+| `dedup_stats`           | Get deduplication statistics           |
+
+#### Templates (3)
+
+| Tool              | Description                        |
+| ----------------- | ---------------------------------- |
+| `template_create` | Create a structured memory template |
+| `template_list`   | List available templates           |
+| `template_apply`  | Apply a template to create memory  |
+
+#### Streaming (5)
+
+| Tool                 | Description                           |
+| -------------------- | ------------------------------------- |
+| `stream_subscribe`   | Subscribe to real-time event channels |
+| `stream_unsubscribe` | Unsubscribe from a channel            |
+| `stream_broadcast`   | Broadcast an event to channels        |
+| `stream_list`        | List active channels                  |
+| `stream_stats`       | Get streaming statistics              |
+
+#### Attachments (5)
+
+| Tool               | Description                         |
+| ------------------ | ----------------------------------- |
+| `add_attachment`   | Attach a file to a memory           |
+| `get_attachment`   | Get attachment metadata             |
+| `list_attachments` | List attachments for a memory       |
+| `delete_attachment`| Delete an attachment                |
+| `attachment_stats` | Get attachment statistics           |
+
+#### Plugins (5)
+
+| Tool                | Description                   |
+| ------------------- | ----------------------------- |
+| `plugin_discover`   | Discover available plugins    |
+| `plugin_list`       | List registered plugins       |
+| `plugin_activate`   | Activate a plugin             |
+| `plugin_deactivate` | Deactivate a plugin           |
+| `plugin_stats`      | Get plugin statistics         |
+
+#### Web Dashboard (5)
+
+| Tool               | Description                     |
+| ------------------ | ------------------------------- |
+| `start_dashboard`  | Start the web dashboard server  |
+| `stop_dashboard`   | Stop the dashboard server       |
+| `dashboard_status` | Check dashboard running status  |
+| `dashboard_url`    | Get dashboard URL               |
+| `dashboard_config` | Get dashboard configuration     |
+
+#### Federation (5)
+
+| Tool                    | Description                          |
+| ----------------------- | ------------------------------------ |
+| `federation_connect`    | Connect to a federated peer instance |
+| `federation_disconnect` | Disconnect from a peer               |
+| `federation_trust`      | Manage PKI trust for a peer          |
+| `federation_sync`       | Synchronize memories with a peer     |
+| `federation_status`     | Get federation protocol status       |
+
 ### Resources (7)
 
 | URI                             | Description                  |
@@ -538,11 +678,14 @@ docker compose up -d
 ## Tests
 
 ```bash
-# Full suite (4000+ tests, ~15s)
+# Full suite (4700+ tests, ~30s)
 python3 -m pytest tests/ -q
 
 # With coverage
 python3 -m pytest tests/ --cov=memoria
+
+# E2E MCP protocol tests (real JSON-RPC conversations)
+python3 -m pytest tests/test_e2e_mcp_client.py tests/test_e2e_comprehensive.py -v -s
 
 # E2E backend tests (local — no FalkorDB needed)
 python3 -m pytest tests/test_e2e_backends.py -q
@@ -550,6 +693,10 @@ python3 -m pytest tests/test_e2e_backends.py -q
 # E2E with FalkorDB (requires: docker compose up falkordb)
 python3 -m pytest tests/test_e2e_backends.py -q --run-falkordb
 ```
+
+The E2E MCP tests generate detailed reports with real request/response data:
+- [`docs/E2E_USER_REPORT.md`](docs/E2E_USER_REPORT.md) — 11 conversation scenarios, 81 tool calls
+- [`docs/E2E_COMPREHENSIVE_REPORT.md`](docs/E2E_COMPREHENSIVE_REPORT.md) — 10 conversations covering all 9 feature areas, 69 tool calls
 
 Or with Make:
 
@@ -793,17 +940,18 @@ docker compose up -d
 
 Comprehensive documentation in the [`docs/`](docs/) directory:
 
-| Document                                       | Description                                                                                                                  |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [**Roadmap**](docs/ROADMAP.md)                     | Feature roadmap v2.1→v3.0: 12 planned features with detailed architecture, code designs, and dependency maps             |
-| [**Industrialization**](docs/INDUSTRIALIZATION.md) | Enterprise deployment: AWS (EKS), Azure (AKS), GCP (GKE), Helm charts, CI/CD, security, cost estimates                  |
-| [**Product Overview**](docs/BUSINESS.md)       | Business overview, 8 use cases, market position, competitive landscape, licensing                                            |
-| [**Data Architecture**](docs/DATA_GUIDE.md)    | Data flow diagrams, storage format, real data examples                                                                       |
-| [**E2E Test Report**](docs/E2E_USER_REPORT.md) | Auto-generated report with real MCP request/response data                                                                    |
-| [**MCP Server Guide**](docs/MCP_SERVER.md)     | Complete MCP reference: 97 tools, 6 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
-| [**Configuration**](docs/CONFIGURATION.md)     | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets                                                |
-| [**API Reference**](docs/API_REFERENCE.md)     | Python API: Memoria class, VectorClient, GraphClient, types                                                                  |
-| [**Architecture**](docs/ARCHITECTURE.md)       | 8-layer deep dive, data flow, module map, recall pipeline                                                                    |
+| Document                                                       | Description                                                                                                                  |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [**Roadmap**](docs/ROADMAP.md)                                 | Feature roadmap v2.1→v3.0: 12 planned features with detailed architecture, code designs, and dependency maps             |
+| [**Industrialization**](docs/INDUSTRIALIZATION.md)              | Enterprise deployment: AWS (EKS), Azure (AKS), GCP (GKE), Helm charts, CI/CD, security, cost estimates                  |
+| [**Product Overview**](docs/BUSINESS.md)                       | Business overview, 8 use cases, market position, competitive landscape, licensing                                            |
+| [**Data Architecture**](docs/DATA_GUIDE.md)                    | Data flow diagrams, storage format, real data examples                                                                       |
+| [**E2E Test Report**](docs/E2E_USER_REPORT.md)                 | Auto-generated report: 11 real MCP conversation scenarios with JSON request/response data                                    |
+| [**E2E Comprehensive Report**](docs/E2E_COMPREHENSIVE_REPORT.md) | Auto-generated report: 10 conversations covering streaming, attachments, plugins, templates, webhooks, dashboard, federation |
+| [**MCP Server Guide**](docs/MCP_SERVER.md)                     | Complete MCP reference: 97 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
+| [**Configuration**](docs/CONFIGURATION.md)                     | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets                                                |
+| [**API Reference**](docs/API_REFERENCE.md)                     | Python API: Memoria class, VectorClient, GraphClient, types                                                                  |
+| [**Architecture**](docs/ARCHITECTURE.md)                       | 8-layer deep dive, data flow, module map, recall pipeline                                                                    |
 
 ## License
 
