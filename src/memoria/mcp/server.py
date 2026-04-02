@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 59 tools, 7 resources, and 5 prompts covering:
+Provides 62 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2088,6 +2088,58 @@ async def cache_warmup(queries: str = "[]") -> str:
             m.search(str(q), limit=5)
             warmed += 1
         return json.dumps({"warmed": warmed, "queries": query_list})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# GDPR operations (v2.1)
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def gdpr_forget_user(user_id: str) -> str:
+    """Delete ALL data for a user across every subsystem (GDPR right to erasure).
+
+    Returns a deletion certificate documenting what was removed.
+
+    ⚠️  This action is **irreversible**. All memories, preferences, DNA profile,
+    episodic events, audit logs, and ACL grants for the user will be permanently
+    deleted.
+    """
+    try:
+        m = _get_memoria()
+        result = m.gdpr_forget(user_id)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def gdpr_export_data(user_id: str) -> str:
+    """Export all data for a user as a portable JSON bundle (GDPR right to portability).
+
+    Returns all memories, preferences, and profile data associated with
+    the given user_id.
+    """
+    try:
+        m = _get_memoria()
+        result = m.gdpr_export(user_id)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def gdpr_scan_pii(content: str) -> str:
+    """Scan text for personally identifiable information (PII).
+
+    Detects: email addresses, phone numbers, SSNs, credit card numbers,
+    and IP addresses. Returns matches and a redacted version of the text.
+    """
+    try:
+        m = _get_memoria()
+        result = m.gdpr_scan_pii(content)
+        return json.dumps(result, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})
 

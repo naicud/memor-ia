@@ -1396,6 +1396,93 @@ class Memoria:
             return {"error": str(e)}
 
     # ------------------------------------------------------------------
+    # GDPR operations (v2.1)
+    # ------------------------------------------------------------------
+
+    def _get_vector_client(self):
+        """Return (or create) the vector client."""
+        if not hasattr(self, "_vector_client_instance"):
+            vc = self._config.get("vector_client")
+            if vc is None:
+                from memoria.vector.client import VectorClient
+                vc = VectorClient(db_path=self._mem_dir / "vectors.db")
+            self._vector_client_instance = vc
+        return self._vector_client_instance
+
+    def _get_memory_dir(self):
+        """Return the memory directory as a ``Path``."""
+        from pathlib import Path
+        return Path(self._mem_dir)
+
+    def _get_audit_trail(self):
+        """Return (or create) the audit trail."""
+        if not hasattr(self, "_audit_trail"):
+            from memoria.versioning.audit import AuditTrail
+            self._audit_trail = AuditTrail(db_path=self._mem_dir / "audit.db")
+        return self._audit_trail
+
+    def _get_gdpr_manager(self):
+        """Return (or create) the GDPR manager."""
+        if not hasattr(self, "_gdpr_manager"):
+            from memoria.gdpr.manager import GDPRManager
+            self._gdpr_manager = GDPRManager(self)
+        return self._gdpr_manager
+
+    def gdpr_forget(self, user_id: str) -> dict:
+        """Delete all data associated with *user_id* (GDPR right to erasure).
+
+        Returns a deletion certificate as a dict.
+        """
+        mgr = self._get_gdpr_manager()
+        cert = mgr.forget_user(user_id)
+        return {
+            "certificate_id": cert.certificate_id,
+            "user_id": cert.user_id,
+            "requested_at": cert.requested_at,
+            "completed_at": cert.completed_at,
+            "items_deleted": cert.items_deleted,
+            "total_deleted": cert.total_deleted,
+            "subsystems_cleared": cert.subsystems_cleared,
+            "errors": cert.errors,
+        }
+
+    def gdpr_export(self, user_id: str) -> dict:
+        """Export all data for *user_id* (GDPR right to portability).
+
+        Returns an export bundle as a dict.
+        """
+        mgr = self._get_gdpr_manager()
+        bundle = mgr.export_user_data(user_id)
+        return {
+            "user_id": bundle.user_id,
+            "exported_at": bundle.exported_at,
+            "total_items": bundle.total_items,
+            "data": bundle.data,
+        }
+
+    def gdpr_scan_pii(self, content: str) -> dict:
+        """Scan text for PII (personally identifiable information).
+
+        Returns detected PII matches.
+        """
+        from memoria.gdpr.pii import PIIScanner
+        scanner = PIIScanner()
+        matches = scanner.scan(content)
+        return {
+            "has_pii": len(matches) > 0,
+            "matches": [
+                {
+                    "type": m.pii_type.value,
+                    "value": m.value,
+                    "start": m.start,
+                    "end": m.end,
+                }
+                for m in matches
+            ],
+            "redacted": scanner.redact(content) if matches else content,
+        }
+
+    # ------------------------------------------------------------------
     # Cache management (v2.1)
     # ------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **59 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **62 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1341,6 +1341,78 @@ Parameters:
 
 Returns: str (JSON)
   { "warmed": 3, "queries": ["python", "react", "testing"] }
+```
+
+---
+
+### 🛡️ GDPR & Privacy (3 tools)
+
+| Tool | Description |
+|------|-------------|
+| `gdpr_forget_user` | Delete ALL data for a user across every subsystem (right to erasure) |
+| `gdpr_export_data` | Export all user data as portable JSON bundle (right to portability) |
+| `gdpr_scan_pii` | Scan text for personally identifiable information (PII) |
+
+#### `gdpr_forget_user`
+
+⚠️ **Irreversible.** Cascade deletes all data for a user across every subsystem: namespace memories, vector embeddings, file-based memories, version history, audit trail, preferences, user DNA, episodic events, recall items, and ACL grants.
+
+```
+Parameters:
+  user_id: str      — The user ID to delete all data for (required)
+
+Returns: str (JSON)
+  {
+    "certificate_id": "uuid-...",
+    "user_id": "user-42",
+    "requested_at": "2024-01-15T10:30:00+00:00",
+    "completed_at": "2024-01-15T10:30:01+00:00",
+    "items_deleted": { "namespace_memories": 5, "vector_embeddings": 3, "preferences": 2 },
+    "total_deleted": 10,
+    "subsystems_cleared": ["namespace_store", "vector_store", "preferences"],
+    "errors": []
+  }
+```
+
+#### `gdpr_export_data`
+
+Export all data associated with a user for portability (GDPR Article 20).
+
+```
+Parameters:
+  user_id: str      — The user ID to export data for (required)
+
+Returns: str (JSON)
+  {
+    "user_id": "user-42",
+    "exported_at": "2024-01-15T10:30:00+00:00",
+    "total_items": 8,
+    "data": {
+      "namespace_memories": [...],
+      "vector_memories": [...],
+      "preferences": [...],
+      "user_dna": [...]
+    }
+  }
+```
+
+#### `gdpr_scan_pii`
+
+Detect PII in arbitrary text. Identifies: email addresses, phone numbers, SSNs, credit card numbers, and IP addresses.
+
+```
+Parameters:
+  content: str      — Text to scan for PII (required)
+
+Returns: str (JSON)
+  {
+    "has_pii": true,
+    "matches": [
+      { "type": "email", "value": "john@example.com", "start": 10, "end": 28 },
+      { "type": "phone", "value": "+1-555-0123", "start": 45, "end": 56 }
+    ],
+    "redacted": "Contact me at [EMAIL_REDACTED] or call [PHONE_REDACTED]"
+  }
 ```
 
 ---
