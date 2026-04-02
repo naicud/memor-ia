@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+# Store
+from .store import ProceduralMemory
+
 # Types
 from .types import (
     Procedure,
@@ -10,9 +13,6 @@ from .types import (
     WorkflowStep,
     WorkflowTemplate,
 )
-
-# Store
-from .store import ProceduralMemory
 
 __all__ = [
     # types

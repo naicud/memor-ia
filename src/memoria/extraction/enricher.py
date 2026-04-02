@@ -8,7 +8,6 @@ from typing import Optional
 
 from .providers import ExtractionProvider, RegexExtractor
 
-
 # ---------------------------------------------------------------------------
 # Memory categories
 # ---------------------------------------------------------------------------

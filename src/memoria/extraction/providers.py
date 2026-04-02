@@ -10,7 +10,11 @@ from typing import Callable, Optional
 from memoria.graph.entities import (
     Entity,
     Relation,
+)
+from memoria.graph.entities import (
     extract_entities as regex_extract_entities,
+)
+from memoria.graph.entities import (
     extract_relations as regex_extract_relations,
 )
 from memoria.graph.schema import NodeType, RelationType

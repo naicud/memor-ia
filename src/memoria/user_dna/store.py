@@ -7,7 +7,7 @@ import threading
 import time
 from dataclasses import asdict
 
-from memoria.user_dna.types import ExpertiseSnapshot, UserDNA
+from memoria.user_dna.types import UserDNA
 
 
 class UserDNAStore:

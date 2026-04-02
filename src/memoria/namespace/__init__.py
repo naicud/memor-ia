@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from .hierarchy import MemoryNamespace, NamespaceLevel
-from .store import SharedMemoryStore
 from .resolver import (
     find_shared_ancestor,
     resolve_namespace,
@@ -11,6 +10,7 @@ from .resolver import (
     walk_ancestors,
 )
 from .scopes import ScopeFilter, normalize_path, validate_namespace_path, validate_part
+from .store import SharedMemoryStore
 
 __all__ = [
     # hierarchy

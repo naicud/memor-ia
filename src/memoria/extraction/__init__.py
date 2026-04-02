@@ -1,9 +1,9 @@
 """Extraction module — entity extraction providers, deduplication, conflict detection, and enrichment."""
 
-from .providers import ExtractionProvider, RegexExtractor, LLMExtractor, HybridExtractor
+from .conflicts import Conflict, ConflictDetector, ConflictType, ResolutionStrategy
 from .dedup import MemoryDeduplicator
-from .conflicts import ConflictType, Conflict, ResolutionStrategy, ConflictDetector
 from .enricher import MemoryCategory, MemoryEnricher
+from .providers import ExtractionProvider, HybridExtractor, LLMExtractor, RegexExtractor
 
 __all__ = [
     # providers

@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-import time
 import threading
+import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
-    from memoria.comms.bus import MessageBus, Event
+    from memoria.comms.bus import Event, MessageBus
 
 
 # ---------------------------------------------------------------------------

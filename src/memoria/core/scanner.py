@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-from .types import MemoryType, parse_frontmatter
 from .paths import AUTO_MEM_ENTRYPOINT_NAME
+from .types import MemoryType, parse_frontmatter
 
 # ---------------------------------------------------------------------------
 # Constants

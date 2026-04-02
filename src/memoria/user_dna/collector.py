@@ -6,7 +6,6 @@ import re
 import threading
 import time
 
-
 # ---------------------------------------------------------------------------
 # Regex patterns
 # ---------------------------------------------------------------------------
@@ -160,7 +159,7 @@ class PassiveCollector:
         # Type hints
         lines = code.split("\n")
         total_lines = max(len(lines), 1)
-        func_defs = [l for l in lines if re.match(r"\s*def ", l)]
+        func_defs = [line for line in lines if re.match(r"\s*def ", line)]
         type_hint_count = len(_TYPE_HINT_RE.findall(code))
         func_count = len(func_defs)
         type_hint_ratio = min(1.0, type_hint_count / max(func_count * 2, 1))
@@ -192,15 +191,15 @@ class PassiveCollector:
         avg_func_len = sum(func_lengths) / max(len(func_lengths), 1) if func_lengths else 0.0
 
         # Comment density (comments per 100 LOC)
-        comment_lines = sum(1 for l in lines if l.strip().startswith("#") or l.strip().startswith("//"))
+        comment_lines = sum(1 for line in lines if line.strip().startswith("#") or line.strip().startswith("//"))
         comment_density = (comment_lines / total_lines) * 100.0
 
         # Import style
-        import_lines = [l.strip() for l in lines if l.strip().startswith("import ") or l.strip().startswith("from ")]
+        import_lines = [line.strip() for line in lines if line.strip().startswith("import ") or line.strip().startswith("from ")]
         import_style = "unknown"
         if import_lines:
-            import_indices = [i for i, l in enumerate(lines)
-                              if l.strip().startswith("import ") or l.strip().startswith("from ")]
+            import_indices = [i for i, line in enumerate(lines)
+                              if line.strip().startswith("import ") or line.strip().startswith("from ")]
             has_gap = any(
                 import_indices[j + 1] - import_indices[j] > 1
                 for j in range(len(import_indices) - 1)

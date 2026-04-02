@@ -10,10 +10,10 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from .types import (
-    EmpathyAction,
-    EmpathyTrigger,
     EmotionReading,
     EmotionType,
+    EmpathyAction,
+    EmpathyTrigger,
 )
 
 # Default trigger set

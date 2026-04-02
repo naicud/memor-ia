@@ -4,13 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Optional
 
 from memoria.namespace.store import SharedMemoryStore
 
-from .conflicts import ConflictStrategy, SyncConflictResolver
+from .conflicts import SyncConflictResolver
 from .transport import SyncTransport
-
 
 # ---------------------------------------------------------------------------
 # Data classes

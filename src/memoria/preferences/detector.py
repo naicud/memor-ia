@@ -188,7 +188,7 @@ class PreferenceDetector:
 
         # Semicolons
         lines = code.strip().split('\n')
-        semicolon_lines = sum(1 for l in lines if l.rstrip().endswith(';'))
+        semicolon_lines = sum(1 for line in lines if line.rstrip().endswith(';'))
         if semicolon_lines > len(lines) * 0.5:
             _add("semicolons", "semicolons")
         elif len(lines) > 2 and semicolon_lines == 0:

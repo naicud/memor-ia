@@ -2,6 +2,13 @@
 
 from __future__ import annotations
 
+# Importance scoring
+from .importance import (
+    ImportanceScorer,
+    ImportanceSignals,
+    ImportanceTracker,
+)
+
 # Paths
 from .paths import (
     AUTO_MEM_DIRNAME,
@@ -20,14 +27,28 @@ from .paths import (
     is_auto_memory_enabled,
 )
 
-# Memory types
-from .types import (
-    MEMORY_TYPE_DESCRIPTIONS,
-    MemoryFrontmatter,
-    MemoryType,
-    format_frontmatter,
-    parse_frontmatter,
-    parse_memory_type,
+# Recall
+from .recall import (
+    MAX_RELEVANT,
+    RelevantMemory,
+    find_relevant_memories,
+)
+
+# Scanner
+from .scanner import (
+    FRONTMATTER_MAX_LINES,
+    MAX_MEMORY_FILES,
+    MemoryHeader,
+    format_memory_manifest,
+    scan_memory_files,
+)
+
+# Self-editing memory
+from .self_edit import (
+    EditAction,
+    EditDecision,
+    MemoryBudget,
+    SelfEditingMemory,
 )
 
 # Memory store
@@ -43,22 +64,6 @@ from .store import (
     write_memory_file,
 )
 
-# Scanner
-from .scanner import (
-    FRONTMATTER_MAX_LINES,
-    MAX_MEMORY_FILES,
-    MemoryHeader,
-    format_memory_manifest,
-    scan_memory_files,
-)
-
-# Recall
-from .recall import (
-    MAX_RELEVANT,
-    RelevantMemory,
-    find_relevant_memories,
-)
-
 # Session transcript
 from .transcript import (
     SessionInfo,
@@ -71,19 +76,14 @@ from .transcript import (
     read_transcript,
 )
 
-# Importance scoring
-from .importance import (
-    ImportanceScorer,
-    ImportanceSignals,
-    ImportanceTracker,
-)
-
-# Self-editing memory
-from .self_edit import (
-    EditAction,
-    EditDecision,
-    MemoryBudget,
-    SelfEditingMemory,
+# Memory types
+from .types import (
+    MEMORY_TYPE_DESCRIPTIONS,
+    MemoryFrontmatter,
+    MemoryType,
+    format_frontmatter,
+    parse_frontmatter,
+    parse_memory_type,
 )
 
 __all__ = [

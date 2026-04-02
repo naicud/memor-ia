@@ -3,18 +3,17 @@
 from __future__ import annotations
 
 import threading
-import time
 import uuid
 from collections import defaultdict
 from typing import Any, Dict, List, Optional
 
+from memoria.sharing.broadcaster import MemoryBroadcaster
 from memoria.sharing.types import (
     CoherenceReport,
     ConflictStrategy,
     SharedMemoryEvent,
     TeamMemoryView,
 )
-from memoria.sharing.broadcaster import MemoryBroadcaster
 from memoria.sharing.watcher import MemoryWatcher
 
 

@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import re
+import threading
 import time
 from collections import Counter
-from dataclasses import dataclass, field, asdict, fields
+from dataclasses import asdict, dataclass, field, fields
 from typing import TYPE_CHECKING
-
-import threading
 
 if TYPE_CHECKING:
     from memoria.graph.knowledge import KnowledgeGraph

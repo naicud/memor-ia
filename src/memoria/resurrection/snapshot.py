@@ -14,7 +14,6 @@ from .types import (
     WorkItem,
 )
 
-
 _FRUSTRATION_KEYWORDS = {
     "broken", "error", "fail", "failed", "bug", "crash", "wrong",
     "doesn't work", "does not work", "not working", "impossible",

@@ -1,5 +1,10 @@
 """MEMORIA orchestration — agent runners, spawning, teams, and forks."""
 
+from memoria.orchestration.fork import (
+    ForkAgent,
+    ForkConfig,
+    ForkResult,
+)
 from memoria.orchestration.runner import (
     AgentResult,
     AgentRunner,
@@ -13,11 +18,6 @@ from memoria.orchestration.spawner import (
     SpawnConfig,
     SpawnMode,
     SpawnResult,
-)
-from memoria.orchestration.fork import (
-    ForkAgent,
-    ForkConfig,
-    ForkResult,
 )
 from memoria.orchestration.team import (
     TeamConfig,

@@ -248,8 +248,9 @@ def kill_dream_task(task_id: str) -> None:
     prior_mtime = getattr(task, "prior_mtime", 0.0)
     if prior_mtime > 0.0:
         try:
-            from memoria.consolidation.lock import rollback_consolidation_lock
             import os
+
+            from memoria.consolidation.lock import rollback_consolidation_lock
 
             lock_dir = os.path.expanduser("~/.claude")
             rollback_consolidation_lock(lock_dir, prior_mtime)

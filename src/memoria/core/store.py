@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
-from .types import MemoryFrontmatter, MemoryType, format_frontmatter, parse_frontmatter
 from .paths import ensure_memory_dir_exists, get_auto_mem_entrypoint, get_auto_mem_path
+from .types import MemoryFrontmatter, MemoryType, format_frontmatter, parse_frontmatter
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -95,7 +93,7 @@ def truncate_entrypoint(
     """Truncate entrypoint content to fit within limits."""
     lines = content.splitlines(keepends=True)
     total_lines = len(lines)
-    total_bytes = len(content.encode("utf-8"))
+    _total_bytes = len(content.encode("utf-8"))
 
     was_line_truncated = total_lines > max_lines
     if was_line_truncated:

@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 from .schema import NodeType, RelationType
 
@@ -171,7 +170,7 @@ def extract_entities(text: str) -> list[Entity]:
         _add(m.group(1), NodeType.PERSON, 0.9, m.group(0))
 
     # --- Tools ---
-    text_lower = text.lower()
+    _text_lower = text.lower()
     for tool in _KNOWN_TOOLS:
         # Match whole-word only
         pattern = re.compile(rf"\b{re.escape(tool)}\b", re.IGNORECASE)

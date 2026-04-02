@@ -7,7 +7,6 @@ branded-type pattern translated to Python's ``NewType``.
 
 from __future__ import annotations
 
-import os
 import re
 import secrets
 import time

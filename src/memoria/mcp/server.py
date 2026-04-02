@@ -36,7 +36,7 @@ import json
 import os
 from typing import Any, Optional
 
-from fastmcp import FastMCP, Context
+from fastmcp import FastMCP
 
 # ---------------------------------------------------------------------------
 # Global state & lazy singletons
@@ -170,7 +170,7 @@ _fatigue_detector = None
 def _get_user_dna():
     global _user_dna_store, _dna_collector, _dna_analyzer
     if _user_dna_store is None:
-        from memoria.user_dna import UserDNAStore, PassiveCollector, DNAAnalyzer
+        from memoria.user_dna import DNAAnalyzer, PassiveCollector, UserDNAStore
         _user_dna_store = UserDNAStore()
         _dna_collector = PassiveCollector()
         _dna_analyzer = DNAAnalyzer()
@@ -188,7 +188,7 @@ def _get_dream():
 def _get_preferences():
     global _preference_store, _pref_detector
     if _preference_store is None:
-        from memoria.preferences import PreferenceStore, PreferenceDetector
+        from memoria.preferences import PreferenceDetector, PreferenceStore
         _preference_store = PreferenceStore()
         _pref_detector = PreferenceDetector()
     return _preference_store
@@ -1668,7 +1668,7 @@ def dream_journal(limit: int = 10) -> dict:
 def preference_query(user_id: str, category: str = "", min_confidence: float = 0.3) -> dict:
     """Query learned user preferences by category and confidence."""
     try:
-        from memoria.preferences import PreferenceQuery, PreferenceCategory
+        from memoria.preferences import PreferenceCategory, PreferenceQuery
         store = _get_preferences()
         cat = PreferenceCategory(category) if category else None
         q = PreferenceQuery(user_id=user_id, category=cat, min_confidence=min_confidence)

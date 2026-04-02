@@ -1,9 +1,9 @@
 """Behavioral Prediction Engine — data types."""
 
+import time
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Tuple
-import time
 
 
 class PredictionType(Enum):

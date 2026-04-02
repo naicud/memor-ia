@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import hashlib
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from memoria.proactive.profiler import Profiler
     from memoria.proactive.analyzer import PatternAnalyzer
+    from memoria.proactive.profiler import Profiler
     from memoria.recall.pipeline import RecallPipeline
 
 

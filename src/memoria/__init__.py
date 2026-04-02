@@ -2,18 +2,25 @@
 
 __version__ = "2.0.0"
 
-from memoria.core.types import MemoryType, MemoryFrontmatter
-from memoria.core.store import (
-    read_memory_file, write_memory_file, create_memory_file,
-    delete_memory_file, list_memory_files, read_entrypoint, update_entrypoint,
-)
 from memoria.core.paths import (
-    get_claude_config_home, get_project_dir, get_auto_mem_path,
     ensure_memory_dir_exists,
+    get_auto_mem_path,
+    get_claude_config_home,
+    get_project_dir,
 )
-from memoria.core.scanner import scan_memory_files, format_memory_manifest
 from memoria.core.recall import find_relevant_memories
-from memoria.core.transcript import create_session, append_message, read_transcript
+from memoria.core.scanner import format_memory_manifest, scan_memory_files
+from memoria.core.store import (
+    create_memory_file,
+    delete_memory_file,
+    list_memory_files,
+    read_entrypoint,
+    read_memory_file,
+    update_entrypoint,
+    write_memory_file,
+)
+from memoria.core.transcript import append_message, create_session, read_transcript
+from memoria.core.types import MemoryFrontmatter, MemoryType
 
 
 class Memoria:
@@ -57,9 +64,10 @@ class Memoria:
             return store.add(namespace, content, metadata=metadata or None,
                              user_id=user_id, agent_id=agent_id)
 
-        from memoria.core.types import MemoryFrontmatter, MemoryType, format_frontmatter
         import hashlib
         import time
+
+        from memoria.core.types import format_frontmatter
 
         mt = MemoryType.USER
         if memory_type is not None:
@@ -82,7 +90,6 @@ class Memoria:
         filename = f"{slug}.md"
         path = self._mem_dir / filename
 
-        from memoria.core.store import write_memory_file
         write_memory_file(path, fm, content)
         return str(path)
 
@@ -108,8 +115,8 @@ class Memoria:
                 })
             return out
 
-        from memoria.recall.pipeline import RecallPipeline
         from memoria.recall.context_filter import RecallContext
+        from memoria.recall.pipeline import RecallPipeline
 
         pipeline = RecallPipeline.create_default(
             memory_dir=self._mem_dir,
@@ -141,7 +148,6 @@ class Memoria:
         Returns a dict with the memory content and metadata, or None.
         """
         from pathlib import Path
-        from memoria.core.store import read_memory_file
 
         p = Path(memory_id)
         if not p.exists():
@@ -260,7 +266,7 @@ class Memoria:
 
     def _get_policy_engine(self):
         if not hasattr(self, "_policy_engine"):
-            from memoria.acl import PolicyEngine, GrantStore
+            from memoria.acl import GrantStore, PolicyEngine
             self._grant_store = GrantStore()
             self._policy_engine = PolicyEngine(grant_store=self._grant_store)
         return self._policy_engine
@@ -283,7 +289,7 @@ class Memoria:
 
     def _get_knowledge_graph_v2(self):
         if not hasattr(self, "_graph_traverser"):
-            from memoria.reasoning import GraphTraverser, ExplanationBuilder
+            from memoria.reasoning import ExplanationBuilder, GraphTraverser
             kg = self._config.get("knowledge_graph")
             if kg is None:
                 from memoria.graph.client import GraphClient
@@ -421,7 +427,7 @@ class Memoria:
         ``resolved``, and ``errors``.
         """
         if not hasattr(self, "_sync_protocol"):
-            from memoria.sync import SyncProtocol, InMemoryTransport
+            from memoria.sync import InMemoryTransport, SyncProtocol
             store = self._get_namespace_store()
             transport = self._config.get("sync_transport") or InMemoryTransport()
             self._sync_protocol = SyncProtocol(
@@ -608,7 +614,7 @@ class Memoria:
 
     def _get_user_dna_store(self):
         if not hasattr(self, '_user_dna_store'):
-            from memoria.user_dna import UserDNAStore, PassiveCollector, DNAAnalyzer
+            from memoria.user_dna import DNAAnalyzer, PassiveCollector, UserDNAStore
             self._user_dna_store = UserDNAStore()
             self._dna_collector = PassiveCollector()
             self._dna_analyzer = DNAAnalyzer()
@@ -622,7 +628,7 @@ class Memoria:
 
     def _get_preference_store(self):
         if not hasattr(self, '_preference_store'):
-            from memoria.preferences import PreferenceStore, PreferenceDetector
+            from memoria.preferences import PreferenceDetector, PreferenceStore
             self._preference_store = PreferenceStore()
             self._pref_detector = PreferenceDetector()
         return self._preference_store
@@ -818,7 +824,7 @@ class Memoria:
         """Get current UserDNA snapshot."""
         try:
             store = self._get_user_dna_store()
-            dna = store.get(user_id)
+            _dna = store.get(user_id)
             return store.export(user_id)
         except Exception as e:
             return {"error": str(e)}
@@ -915,7 +921,7 @@ class Memoria:
     def preference_get(self, user_id, category=None, min_confidence=0.3):
         """Get user preferences."""
         try:
-            from memoria.preferences import PreferenceQuery, PreferenceCategory
+            from memoria.preferences import PreferenceCategory, PreferenceQuery
             store = self._get_preference_store()
             cat = PreferenceCategory(category) if category else None
             q = PreferenceQuery(user_id=user_id, category=cat, min_confidence=min_confidence)
@@ -1148,7 +1154,7 @@ class Memoria:
             tracker = self._get_product_tracker()
             from memoria.product_intel import ProductCategory
             cat = ProductCategory(category) if isinstance(category, str) else category
-            info = tracker.register_product(product_id, name, cat, version=version, features=features or [])
+            _info = tracker.register_product(product_id, name, cat, version=version, features=features or [])
             return {"status": "registered", "product_id": product_id, "name": name, "category": cat.value}
         except Exception as e:
             return {"error": str(e)}
@@ -1157,7 +1163,7 @@ class Memoria:
         """Record a product usage event."""
         try:
             profiler = self._get_usage_profiler()
-            event = profiler.record_event(product_id, feature, action, duration=duration, session_id=session_id)
+            _event = profiler.record_event(product_id, feature, action, duration=duration, session_id=session_id)
             return {"status": "recorded", "product_id": product_id, "feature": feature, "action": action}
         except Exception as e:
             return {"error": str(e)}
@@ -1184,7 +1190,7 @@ class Memoria:
         """Ingest a behavioral signal from any product."""
         try:
             fusion = self._get_behavior_fusion()
-            signal = fusion.ingest_signal(source_product, signal_type, name, value, confidence=confidence)
+            _signal = fusion.ingest_signal(source_product, signal_type, name, value, confidence=confidence)
             return {"status": "ingested", "source": source_product, "signal": name}
         except Exception as e:
             return {"error": str(e)}

@@ -5,7 +5,6 @@ from __future__ import annotations
 import threading
 import time
 import uuid
-from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
 
 from .types import Routine, RoutineStatus

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -52,7 +51,7 @@ class InsightGenerator:
             return insights
 
         try:
-            stats = self._kg.stats()
+            _stats = self._kg.stats()
         except Exception:
             return insights
 

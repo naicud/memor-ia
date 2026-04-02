@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import math
 import statistics
 import threading
 import time
 import uuid
-from collections import Counter, defaultdict
+from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 

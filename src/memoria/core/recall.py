@@ -9,8 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-from .scanner import MemoryHeader, scan_memory_files
 from .paths import AUTO_MEM_ENTRYPOINT_NAME
+from .scanner import MemoryHeader, scan_memory_files
 
 # ---------------------------------------------------------------------------
 # Constants

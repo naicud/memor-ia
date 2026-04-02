@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import time
-from typing import Any, Optional
+from typing import Any
 
 from .client import GraphClient, InMemoryGraph
 from .entities import Entity, Relation, extract_entities, extract_relations
-from .schema import NodeType, RelationType, validate_node_props
+from .schema import NodeType, RelationType
 
 # ---------------------------------------------------------------------------
 # KnowledgeGraph

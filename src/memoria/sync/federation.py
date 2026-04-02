@@ -12,7 +12,6 @@ from memoria.namespace.store import SharedMemoryStore
 from .protocol import SyncProtocol, SyncResult
 from .transport import SyncTransport
 
-
 # ---------------------------------------------------------------------------
 # Data classes
 # ---------------------------------------------------------------------------

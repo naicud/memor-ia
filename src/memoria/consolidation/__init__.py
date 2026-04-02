@@ -1,5 +1,13 @@
 """MEMORIA consolidation — lock, prompt templates, auto-dream, and dream task."""
 
+from .auto import (
+    SESSION_SCAN_INTERVAL,
+    AutoDreamConfig,
+    execute_auto_dream,
+    get_dream_config,
+    init_auto_dream,
+    is_auto_dream_enabled,
+)
 from .lock import (
     HOLDER_STALE_S,
     LOCK_FILE_NAME,
@@ -14,14 +22,6 @@ from .prompt_template import (
     MAX_ENTRYPOINT_BYTES,
     MAX_ENTRYPOINT_LINES,
     build_consolidation_prompt,
-)
-from .auto import (
-    SESSION_SCAN_INTERVAL,
-    AutoDreamConfig,
-    execute_auto_dream,
-    get_dream_config,
-    init_auto_dream,
-    is_auto_dream_enabled,
 )
 
 __all__ = [

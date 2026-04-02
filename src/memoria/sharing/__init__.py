@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from memoria.sharing.broadcaster import MemoryBroadcaster
+from memoria.sharing.coordinator import MemoryCoordinator
+from memoria.sharing.team_dna import TeamDNASync
 from memoria.sharing.types import (
     BroadcastPolicy,
     CoherenceReport,
@@ -12,10 +15,7 @@ from memoria.sharing.types import (
     TeamDNAProfile,
     TeamMemoryView,
 )
-from memoria.sharing.broadcaster import MemoryBroadcaster
 from memoria.sharing.watcher import MemoryWatcher
-from memoria.sharing.team_dna import TeamDNASync
-from memoria.sharing.coordinator import MemoryCoordinator
 
 __all__ = [
     # types / enums

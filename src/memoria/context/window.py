@@ -6,9 +6,7 @@ window analysis to drive compaction decisions.
 
 from __future__ import annotations
 
-import re
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 # Approximate token estimation (4 chars ≈ 1 token)
 CHARS_PER_TOKEN = 4

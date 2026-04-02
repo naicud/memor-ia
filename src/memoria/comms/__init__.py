@@ -1,6 +1,5 @@
 """MEMORIA comms — mailbox, message bus, and permission bridge."""
 
-from memoria.comms.mailbox import Mailbox, MailboxMessage
 from memoria.comms.bus import (
     Event,
     EventType,
@@ -9,6 +8,7 @@ from memoria.comms.bus import (
     publish,
     subscribe,
 )
+from memoria.comms.mailbox import Mailbox, MailboxMessage
 from memoria.comms.permissions import (
     PermissionBridge,
     PermissionDecision,

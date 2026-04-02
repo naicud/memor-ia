@@ -1,4 +1,4 @@
-# MEMORIA 🧠
+# MEMOR-IA 🧠
 
 **Proactive Memory Framework for AI Agents**
 
@@ -17,14 +17,14 @@
 
 ## Why MEMORIA?
 
-| Need | MEMORIA Solution |
-|------|------------------|
-| Agent needs to remember across sessions | Persistent markdown + vector + graph storage |
-| Context window is limited | Proactive suggestions surface relevant memories |
-| Multiple agents need shared knowledge | Team sharing with coherence checking |
-| Memories become stale over time | Dream consolidation auto-promotes/forgets |
-| Need to detect injection attacks | Adversarial protection layer |
-| Want to predict user behavior | Markov chain action prediction |
+| Need                                    | MEMORIA Solution                                |
+| --------------------------------------- | ----------------------------------------------- |
+| Agent needs to remember across sessions | Persistent markdown + vector + graph storage    |
+| Context window is limited               | Proactive suggestions surface relevant memories |
+| Multiple agents need shared knowledge   | Team sharing with coherence checking            |
+| Memories become stale over time         | Dream consolidation auto-promotes/forgets       |
+| Need to detect injection attacks        | Adversarial protection layer                    |
+| Want to predict user behavior           | Markov chain action prediction                  |
 
 ## Install
 
@@ -109,6 +109,7 @@ insights = m.insights(user_id="daniel")
 ## Features
 
 ### Core
+
 - 📁 File-based persistent memory (Markdown + YAML frontmatter)
 - 🎭 Agent identity & context isolation (contextvars)
 - 🔗 Inter-agent communication (Mailbox, MessageBus, Permissions)
@@ -117,12 +118,14 @@ insights = m.insights(user_id="daniel")
 - 🎯 Agent orchestration (teams, spawn, fork)
 
 ### Storage
+
 - 🔮 Knowledge graph (FalkorDB or zero-dep InMemoryGraph fallback)
 - 🧲 Semantic vector search (sqlite-vec or pure Python cosine fallback)
 - 📝 Entity extraction (regex-based, no LLM dependency)
 - 📊 Temporal tracking (trending concepts, confidence decay)
 
 ### Intelligence
+
 - 🧠 Proactive suggestion engine with cooldowns
 - 📈 Pattern detection (repetition, sequence, temporal)
 - 👤 Client profiling (expertise map, working patterns)
@@ -130,6 +133,7 @@ insights = m.insights(user_id="daniel")
 - 💡 Cross-database insight generation
 
 ### Recall
+
 - 🔄 Hybrid recall pipeline (3 strategies in parallel)
 - 🏆 Reciprocal Rank Fusion (RRF) for result merging
 - 🎯 Context filtering and deduplication
@@ -137,22 +141,26 @@ insights = m.insights(user_id="daniel")
 - 🔌 MCP Server (Claude Desktop, Cursor integration)
 
 ### Episodic & Procedural
+
 - 📖 Episodic memory (session timelines, event recording, temporal search)
 - ⚙️ Procedural memory (workflow recording, pattern extraction, step suggestions)
 - ✏️ Memory self-editing (importance scoring, budget management)
 
 ### User DNA & Cognitive
+
 - 🧬 User DNA (behavioral fingerprinting, coding style, communication profile)
 - 💤 Dream Engine (6-phase consolidation cycles, memory replay, insight synthesis)
 - 🎛️ Preference Engine (structured preference learning, conflict resolution, confidence evolution)
 - 🔄 Context Resurrection (session snapshots, thread tracking, perfect resumption)
 
 ### Multi-Agent & Prediction
+
 - 📡 Multi-Agent Sharing (memory broadcasting, team coherence, DNA sync)
 - 🔮 Behavioral Prediction (Markov chain action prediction, anomaly detection, timing optimization)
 - 💜 Emotional Intelligence (12-emotion analysis, empathy triggers, fatigue/burnout detection)
 
 ### Cross-Product Intelligence
+
 - 🏢 Product Ecosystem Intelligence (product tracking, usage profiling, adoption analysis)
 - 🔀 Cross-Domain Behavioral Fusion (behavior correlation, workflow detection, churn prediction)
 - 🔄 Habit & Routine Intelligence (habit tracking, routine optimization, disruption alerts)
@@ -160,59 +168,60 @@ insights = m.insights(user_id="daniel")
 - 💰 Business Intelligence Memory (revenue signals, segment classification, lifecycle tracking)
 
 ### Defensive Intelligence
+
 - 🛡️ Adversarial Memory Protection (poison detection, hallucination guards, consistency verification, tamper proofing)
 - 🧩 Cognitive Load Management (load tracking, overload prevention, complexity adaptation, focus optimization)
 
 ## Key Differentiators vs Mem0
 
-| Feature | Mem0 | MEMORIA |
-|---------|------|---------|
-| Memory storage | ✅ | ✅ |
-| Vector search | ✅ | ✅ |
-| Knowledge graph | ✅ | ✅ |
-| Agent orchestration | ❌ | ✅ |
-| Proactive suggestions | ❌ | ✅ |
-| Dream consolidation | ❌ | ✅ |
-| Communication layer | ❌ | ✅ |
-| Context management | ❌ | ✅ |
-| Zero-config default | ❌ | ✅ |
-| MCP Server | ❌ | ✅ |
-| Behavioral fingerprinting (User DNA) | ❌ | ✅ |
-| Dream-like consolidation cycles | ❌ | ✅ |
-| Cross-session resurrection | ❌ | ✅ |
-| Multi-agent memory sharing | ❌ | ✅ |
-| Behavioral prediction | ❌ | ✅ |
-| Emotional intelligence | ❌ | ✅ |
-| Episodic & procedural memory | ❌ | ✅ |
-| Memory self-editing | ❌ | ✅ |
-| Cross-product behavioral intelligence | ❌ | ✅ |
-| Adversarial memory protection | ❌ | ✅ |
-| Cognitive load management | ❌ | ✅ |
+| Feature                               | Mem0 | MEMORIA |
+| ------------------------------------- | ---- | ------- |
+| Memory storage                        | ✅   | ✅      |
+| Vector search                         | ✅   | ✅      |
+| Knowledge graph                       | ✅   | ✅      |
+| Agent orchestration                   | ❌   | ✅      |
+| Proactive suggestions                 | ❌   | ✅      |
+| Dream consolidation                   | ❌   | ✅      |
+| Communication layer                   | ❌   | ✅      |
+| Context management                    | ❌   | ✅      |
+| Zero-config default                   | ❌   | ✅      |
+| MCP Server                            | ❌   | ✅      |
+| Behavioral fingerprinting (User DNA)  | ❌   | ✅      |
+| Dream-like consolidation cycles       | ❌   | ✅      |
+| Cross-session resurrection            | ❌   | ✅      |
+| Multi-agent memory sharing            | ❌   | ✅      |
+| Behavioral prediction                 | ❌   | ✅      |
+| Emotional intelligence                | ❌   | ✅      |
+| Episodic & procedural memory          | ❌   | ✅      |
+| Memory self-editing                   | ❌   | ✅      |
+| Cross-product behavioral intelligence | ❌   | ✅      |
+| Adversarial memory protection         | ❌   | ✅      |
+| Cognitive load management             | ❌   | ✅      |
 
 ## Feature Matrix (20 Subsystems)
 
-| Subsystem | Key Capabilities | Module |
-|-----------|-----------------|--------|
-| Core Memory | CRUD, hybrid search, RRF fusion | `memoria.core` |
-| Knowledge Graph | Entity extraction, relation mapping | `memoria.graph` |
-| Proactive Intelligence | Suggestions, profiling, insights | `memoria.intelligence` |
-| Tiered Storage | Working/recall/archival tiers, ACL | `memoria.tiered` |
-| Episodic Memory | Session timelines, event recording | `memoria.episodic` |
-| Procedural Memory | Workflow patterns, step suggestions | `memoria.procedural` |
-| User DNA | Behavioral fingerprinting, digital twin | `memoria.user_dna` |
-| Dream Engine | 6-phase cognitive consolidation | `memoria.dream` |
-| Preference Engine | Preference learning, conflict resolution | `memoria.preferences` |
-| Context Resurrection | Session snapshots, perfect resumption | `memoria.resurrection` |
-| Multi-Agent Sharing | Broadcasting, team coherence, DNA sync | `memoria.sharing` |
-| Behavioral Prediction | Action prediction, anomaly detection | `memoria.prediction` |
-| Emotional Intelligence | 12-emotion analysis, empathy, fatigue | `memoria.emotional` |
-| Product Intelligence | Product tracking, usage profiling, adoption | `memoria.product_intel` |
-| Behavioral Fusion | Cross-product correlation, workflow detection | `memoria.fusion` |
-| Habit Intelligence | Habit tracking, routine optimization, anchors | `memoria.habits` |
-| Contextual Intelligence | Situation awareness, intent inference, proactive | `memoria.contextual` |
-| Business Intelligence | Revenue signals, segmentation, lifecycle, value | `memoria.biz_intel` |
-| Adversarial Protection | Poison detection, hallucination guards, tamper proof | `memoria.adversarial` |
-| Cognitive Load | Load tracking, overload prevention, focus optimization | `memoria.cognitive` |
+| Subsystem               | Key Capabilities                                       | Module                  |
+| ----------------------- | ------------------------------------------------------ | ----------------------- |
+| Core Memory             | CRUD, hybrid search, RRF fusion                        | `memoria.core`          |
+| Knowledge Graph         | Entity extraction, relation mapping                    | `memoria.graph`         |
+| Proactive Intelligence  | Suggestions, profiling, insights                       | `memoria.intelligence`  |
+| Tiered Storage          | Working/recall/archival tiers, ACL                     | `memoria.tiered`        |
+| Episodic Memory         | Session timelines, event recording                     | `memoria.episodic`      |
+| Procedural Memory       | Workflow patterns, step suggestions                    | `memoria.procedural`    |
+| User DNA                | Behavioral fingerprinting, digital twin                | `memoria.user_dna`      |
+| Dream Engine            | 6-phase cognitive consolidation                        | `memoria.dream`         |
+| Preference Engine       | Preference learning, conflict resolution               | `memoria.preferences`   |
+| Context Resurrection    | Session snapshots, perfect resumption                  | `memoria.resurrection`  |
+| Multi-Agent Sharing     | Broadcasting, team coherence, DNA sync                 | `memoria.sharing`       |
+| Behavioral Prediction   | Action prediction, anomaly detection                   | `memoria.prediction`    |
+| Emotional Intelligence  | 12-emotion analysis, empathy, fatigue                  | `memoria.emotional`     |
+| Product Intelligence    | Product tracking, usage profiling, adoption            | `memoria.product_intel` |
+| Behavioral Fusion       | Cross-product correlation, workflow detection          | `memoria.fusion`        |
+| Habit Intelligence      | Habit tracking, routine optimization, anchors          | `memoria.habits`        |
+| Contextual Intelligence | Situation awareness, intent inference, proactive       | `memoria.contextual`    |
+| Business Intelligence   | Revenue signals, segmentation, lifecycle, value        | `memoria.biz_intel`     |
+| Adversarial Protection  | Poison detection, hallucination guards, tamper proof   | `memoria.adversarial`   |
+| Cognitive Load          | Load tracking, overload prevention, focus optimization | `memoria.cognitive`     |
 
 ## Examples
 
@@ -275,181 +284,181 @@ docker compose up -d
 
 #### Core CRUD (7)
 
-| Tool | Description |
-|------|-------------|
-| `memoria_add` | Store a new memory |
-| `memoria_search` | Hybrid search (keyword + vector + graph) |
-| `memoria_get` | Retrieve a memory by ID |
-| `memoria_delete` | Delete a memory |
-| `memoria_suggest` | Generate proactive suggestions |
-| `memoria_profile` | Get user profile |
-| `memoria_insights` | Generate cross-database insights |
+| Tool               | Description                              |
+| ------------------ | ---------------------------------------- |
+| `memoria_add`      | Store a new memory                       |
+| `memoria_search`   | Hybrid search (keyword + vector + graph) |
+| `memoria_get`      | Retrieve a memory by ID                  |
+| `memoria_delete`   | Delete a memory                          |
+| `memoria_suggest`  | Generate proactive suggestions           |
+| `memoria_profile`  | Get user profile                         |
+| `memoria_insights` | Generate cross-database insights         |
 
 #### Tiered & ACL (5)
 
-| Tool | Description |
-|------|-------------|
-| `memoria_add_to_tier` | Store memory in a specific tier |
-| `memoria_search_tiers` | Search across memory tiers |
-| `memoria_grant_access` | Grant access to a namespace |
-| `memoria_check_access` | Check access permissions |
-| `memoria_enrich` | Enrich memory with graph data |
+| Tool                   | Description                     |
+| ---------------------- | ------------------------------- |
+| `memoria_add_to_tier`  | Store memory in a specific tier |
+| `memoria_search_tiers` | Search across memory tiers      |
+| `memoria_grant_access` | Grant access to a namespace     |
+| `memoria_check_access` | Check access permissions        |
+| `memoria_enrich`       | Enrich memory with graph data   |
 
 #### Sync & Stats (2)
 
-| Tool | Description |
-|------|-------------|
-| `memoria_sync` | Synchronize memories across instances |
-| `memoria_stats` | Get memory statistics |
+| Tool            | Description                           |
+| --------------- | ------------------------------------- |
+| `memoria_sync`  | Synchronize memories across instances |
+| `memoria_stats` | Get memory statistics                 |
 
 #### Episodic Memory (5)
 
-| Tool | Description |
-|------|-------------|
-| `episodic_start` | Start an episodic session |
-| `episodic_end` | End an episodic session |
-| `episodic_record` | Record an event in the current episode |
-| `episodic_timeline` | View episode timeline |
-| `episodic_search` | Search episodic memories |
+| Tool                | Description                            |
+| ------------------- | -------------------------------------- |
+| `episodic_start`    | Start an episodic session              |
+| `episodic_end`      | End an episodic session                |
+| `episodic_record`   | Record an event in the current episode |
+| `episodic_timeline` | View episode timeline                  |
+| `episodic_search`   | Search episodic memories               |
 
 #### Procedural Memory (4)
 
-| Tool | Description |
-|------|-------------|
-| `procedural_record` | Record a procedural step |
-| `procedural_suggest` | Get workflow step suggestions |
-| `procedural_workflows` | List recorded workflows |
-| `procedural_add_workflow` | Add a complete workflow |
+| Tool                      | Description                   |
+| ------------------------- | ----------------------------- |
+| `procedural_record`       | Record a procedural step      |
+| `procedural_suggest`      | Get workflow step suggestions |
+| `procedural_workflows`    | List recorded workflows       |
+| `procedural_add_workflow` | Add a complete workflow       |
 
 #### Importance & Self-Edit (3)
 
-| Tool | Description |
-|------|-------------|
-| `importance_score` | Score memory importance |
-| `self_edit` | Self-edit memory content |
-| `memory_budget` | Manage memory budget |
+| Tool               | Description              |
+| ------------------ | ------------------------ |
+| `importance_score` | Score memory importance  |
+| `self_edit`        | Self-edit memory content |
+| `memory_budget`    | Manage memory budget     |
 
 #### User DNA (2)
 
-| Tool | Description |
-|------|-------------|
-| `user_dna_snapshot` | Get user behavioral fingerprint |
-| `user_dna_collect` | Collect behavioral data passively |
+| Tool                | Description                       |
+| ------------------- | --------------------------------- |
+| `user_dna_snapshot` | Get user behavioral fingerprint   |
+| `user_dna_collect`  | Collect behavioral data passively |
 
 #### Dream Engine (2)
 
-| Tool | Description |
-|------|-------------|
+| Tool                | Description                   |
+| ------------------- | ----------------------------- |
 | `dream_consolidate` | Run dream consolidation cycle |
-| `dream_journal` | View dream journal entries |
+| `dream_journal`     | View dream journal entries    |
 
 #### Preferences (2)
 
-| Tool | Description |
-|------|-------------|
+| Tool               | Description            |
+| ------------------ | ---------------------- |
 | `preference_query` | Query user preferences |
 | `preference_teach` | Teach a new preference |
 
 #### Resurrection (2)
 
-| Tool | Description |
-|------|-------------|
-| `session_snapshot` | Capture session snapshot |
-| `session_resume` | Resume from a previous session |
+| Tool               | Description                    |
+| ------------------ | ------------------------------ |
+| `session_snapshot` | Capture session snapshot       |
+| `session_resume`   | Resume from a previous session |
 
 #### Sharing (2)
 
-| Tool | Description |
-|------|-------------|
-| `team_share_memory` | Share memory with team agents |
-| `team_coherence_check` | Check team memory coherence |
+| Tool                   | Description                   |
+| ---------------------- | ----------------------------- |
+| `team_share_memory`    | Share memory with team agents |
+| `team_coherence_check` | Check team memory coherence   |
 
 #### Prediction (2)
 
-| Tool | Description |
-|------|-------------|
+| Tool                  | Description              |
+| --------------------- | ------------------------ |
 | `predict_next_action` | Predict next user action |
 | `estimate_difficulty` | Estimate task difficulty |
 
 #### Emotional (2)
 
-| Tool | Description |
-|------|-------------|
-| `emotion_analyze` | Analyze emotional state |
+| Tool                    | Description               |
+| ----------------------- | ------------------------- |
+| `emotion_analyze`       | Analyze emotional state   |
 | `emotion_fatigue_check` | Check for fatigue/burnout |
 
 #### Product Intelligence (2)
 
-| Tool | Description |
-|------|-------------|
+| Tool            | Description                      |
+| --------------- | -------------------------------- |
 | `product_track` | Track product usage and adoption |
-| `product_graph` | View product ecosystem graph |
+| `product_graph` | View product ecosystem graph     |
 
 #### Behavioral Fusion (2)
 
-| Tool | Description |
-|------|-------------|
-| `fusion_correlate` | Correlate cross-product behaviors |
-| `fusion_detect_workflow` | Detect cross-product workflows |
+| Tool                     | Description                       |
+| ------------------------ | --------------------------------- |
+| `fusion_correlate`       | Correlate cross-product behaviors |
+| `fusion_detect_workflow` | Detect cross-product workflows    |
 
 #### Habit Intelligence (2)
 
-| Tool | Description |
-|------|-------------|
-| `habit_track` | Track user habits and routines |
+| Tool             | Description                          |
+| ---------------- | ------------------------------------ |
+| `habit_track`    | Track user habits and routines       |
 | `habit_optimize` | Get routine optimization suggestions |
 
 #### Contextual Intelligence (2)
 
-| Tool | Description |
-|------|-------------|
-| `context_situation` | Assess current user situation |
+| Tool                   | Description                    |
+| ---------------------- | ------------------------------ |
+| `context_situation`    | Assess current user situation  |
 | `context_infer_intent` | Infer user intent from context |
 
 #### Business Intelligence (2)
 
-| Tool | Description |
-|------|-------------|
-| `biz_revenue_signals` | Detect revenue opportunity signals |
+| Tool                   | Description                          |
+| ---------------------- | ------------------------------------ |
+| `biz_revenue_signals`  | Detect revenue opportunity signals   |
 | `biz_segment_classify` | Classify user into business segments |
 
 #### Adversarial Protection (3)
 
-| Tool | Description |
-|------|-------------|
-| `adversarial_detect_poison` | Detect memory poisoning attempts |
-| `adversarial_verify_consistency` | Verify memory consistency and integrity |
+| Tool                              | Description                             |
+| --------------------------------- | --------------------------------------- |
+| `adversarial_detect_poison`       | Detect memory poisoning attempts        |
+| `adversarial_verify_consistency`  | Verify memory consistency and integrity |
 | `adversarial_guard_hallucination` | Guard against hallucination in memories |
 
 #### Cognitive Load (3)
 
-| Tool | Description |
-|------|-------------|
-| `cognitive_track_load` | Track cognitive load levels |
-| `cognitive_prevent_overload` | Prevent cognitive overload |
-| `cognitive_optimize_focus` | Optimize focus and reduce complexity |
+| Tool                         | Description                          |
+| ---------------------------- | ------------------------------------ |
+| `cognitive_track_load`       | Track cognitive load levels          |
+| `cognitive_prevent_overload` | Prevent cognitive overload           |
+| `cognitive_optimize_focus`   | Optimize focus and reduce complexity |
 
 ### Resources (7)
 
-| URI | Description |
-|-----|-------------|
-| `memoria://memories` | List all stored memories |
-| `memoria://config` | Current configuration |
-| `memoria://profile/{user_id}` | User profile data |
-| `memoria://stats` | Memory statistics |
-| `memoria://episodic/timeline` | Episodic session timeline |
+| URI                             | Description                  |
+| ------------------------------- | ---------------------------- |
+| `memoria://memories`            | List all stored memories     |
+| `memoria://config`              | Current configuration        |
+| `memoria://profile/{user_id}`   | User profile data            |
+| `memoria://stats`               | Memory statistics            |
+| `memoria://episodic/timeline`   | Episodic session timeline    |
 | `memoria://procedural/patterns` | Procedural workflow patterns |
-| `memoria://budget` | Memory budget status |
+| `memoria://budget`              | Memory budget status         |
 
 ### Prompts (5)
 
-| Prompt | Description |
-|--------|-------------|
-| `recall_context` | Inject relevant memories as context |
-| `suggest_next` | Generate proactive suggestions prompt |
-| `deep_recall` | Deep multi-strategy memory recall |
-| `consolidation_report` | Dream consolidation summary |
-| `episodic_recap` | Episodic session recap |
+| Prompt                 | Description                           |
+| ---------------------- | ------------------------------------- |
+| `recall_context`       | Inject relevant memories as context   |
+| `suggest_next`         | Generate proactive suggestions prompt |
+| `deep_recall`          | Deep multi-strategy memory recall     |
+| `consolidation_report` | Dream consolidation summary           |
+| `episodic_recap`       | Episodic session recap                |
 
 ## Tests
 
@@ -480,13 +489,13 @@ make test-cov        # With coverage report
 
 Five runnable examples in [`examples/`](examples/):
 
-| Example | Description |
-|---------|-------------|
-| [`01_basic_memory.py`](examples/01_basic_memory.py) | CRUD operations — add, search, get, delete |
+| Example                                                   | Description                                             |
+| --------------------------------------------------------- | ------------------------------------------------------- |
+| [`01_basic_memory.py`](examples/01_basic_memory.py)       | CRUD operations — add, search, get, delete              |
 | [`02_knowledge_graph.py`](examples/02_knowledge_graph.py) | Entity extraction, graph building, relationship queries |
-| [`03_semantic_search.py`](examples/03_semantic_search.py) | Vector similarity search, TF-IDF embeddings |
+| [`03_semantic_search.py`](examples/03_semantic_search.py) | Vector similarity search, TF-IDF embeddings             |
 | [`04_proactive_agent.py`](examples/04_proactive_agent.py) | User profiling, pattern analysis, proactive suggestions |
-| [`05_full_pipeline.py`](examples/05_full_pipeline.py) | All layers end-to-end in a multi-session demo |
+| [`05_full_pipeline.py`](examples/05_full_pipeline.py)     | All layers end-to-end in a multi-session demo           |
 
 ```bash
 python examples/01_basic_memory.py
@@ -496,15 +505,15 @@ python examples/01_basic_memory.py
 
 Comprehensive documentation in the [`docs/`](docs/) directory:
 
-| Document | Description |
-|----------|-------------|
-| [**Product Overview**](docs/BUSINESS.md) | Business overview, market position, use cases, licensing |
-| [**Data Architecture**](docs/DATA_GUIDE.md) | Data flow diagrams, storage format, real data examples |
-| [**E2E Test Report**](docs/E2E_USER_REPORT.md) | Auto-generated report with real MCP request/response data |
-| [**MCP Server Guide**](docs/MCP_SERVER.md) | Complete MCP reference: 56 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
-| [**Configuration**](docs/CONFIGURATION.md) | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets |
-| [**API Reference**](docs/API_REFERENCE.md) | Python API: Memoria class, VectorClient, GraphClient, types |
-| [**Architecture**](docs/ARCHITECTURE.md) | 8-layer deep dive, data flow, module map, recall pipeline |
+| Document                                       | Description                                                                                                                  |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [**Product Overview**](docs/BUSINESS.md)       | Business overview, market position, use cases, licensing                                                                     |
+| [**Data Architecture**](docs/DATA_GUIDE.md)    | Data flow diagrams, storage format, real data examples                                                                       |
+| [**E2E Test Report**](docs/E2E_USER_REPORT.md) | Auto-generated report with real MCP request/response data                                                                    |
+| [**MCP Server Guide**](docs/MCP_SERVER.md)     | Complete MCP reference: 56 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
+| [**Configuration**](docs/CONFIGURATION.md)     | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets                                                |
+| [**API Reference**](docs/API_REFERENCE.md)     | Python API: Memoria class, VectorClient, GraphClient, types                                                                  |
+| [**Architecture**](docs/ARCHITECTURE.md)       | 8-layer deep dive, data flow, module map, recall pipeline                                                                    |
 
 ## License
 

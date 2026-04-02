@@ -135,7 +135,7 @@ class ChurnPredictor:
                         usage_minor_decrease = True
 
             # ---- Determine risk ----
-            threshold_secs = self._inactivity_threshold * 86400.0
+            _threshold_secs = self._inactivity_threshold * 86400.0
 
             risk = ChurnRisk.NONE
             probability = 0.0

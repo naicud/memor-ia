@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from .working import WorkingMemory
-from .recall_mem import RecallMemory
 from .archival import ArchivalMemory
+from .recall_mem import RecallMemory
+from .working import WorkingMemory
 
 _DEFAULT_CONFIG: dict = {
     "auto_promote_working_to_recall": True,

@@ -10,8 +10,8 @@ import threading
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
+from .agent_id import AgentId, TeammateIdentity, create_agent_id
 from .context import AgentContext
-from .agent_id import AgentId, SessionId, TeammateIdentity, create_agent_id
 
 # ---------------------------------------------------------------------------
 # Override spec

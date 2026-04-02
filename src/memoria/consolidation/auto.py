@@ -193,9 +193,10 @@ def _run_auto_dream(
         register_dream_task,
     )
     try:
-        from src.utils.task_framework import get_task, update_task
+        from src.utils.task_framework import get_task as _get_task
+        from src.utils.task_framework import update_task
     except ImportError:
-        get_task = None  # type: ignore[assignment]
+        _get_task = None  # type: ignore[assignment]
         update_task = None  # type: ignore[assignment]
 
     abort_event = threading.Event()

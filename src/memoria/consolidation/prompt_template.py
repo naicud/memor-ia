@@ -9,7 +9,6 @@ Ported from ``src_origin/src/tasks/DreamTask/consolidationPrompt.ts``.
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Constants

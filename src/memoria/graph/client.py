@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 # ---------------------------------------------------------------------------
 # Optional FalkorDB import
@@ -191,7 +191,7 @@ class GraphClient:
         if host:
             self._db = _FalkorDB(host=host, port=port or 6379)
         else:
-            path = str(db_path or Path.home() / ".memoria" / "graph.db")
+            _path = str(db_path or Path.home() / ".memoria" / "graph.db")
             self._db = _FalkorDB(host="localhost", port=6379)
 
     # -- public API ---------------------------------------------------------

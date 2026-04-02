@@ -5,10 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from .working import WorkingMemory
-from .recall_mem import RecallMemory
 from .archival import ArchivalMemory
 from .promoter import TierPromoter
+from .recall_mem import RecallMemory
+from .working import WorkingMemory
 
 
 class TieredMemoryManager:

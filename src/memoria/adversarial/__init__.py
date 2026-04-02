@@ -1,5 +1,8 @@
 """Adversarial Memory Protection module for MEMORIA."""
 
+from .detector import PoisonDetector
+from .hallucination import HallucinationGuard
+from .tamper import TamperProof
 from .types import (
     AnomalyReport,
     ConsistencyReport,
@@ -10,10 +13,7 @@ from .types import (
     ThreatType,
     VerificationStatus,
 )
-from .detector import PoisonDetector
-from .hallucination import HallucinationGuard
 from .verifier import ConsistencyVerifier
-from .tamper import TamperProof
 
 __all__ = [
     # Types / enums

@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from .context_filter import RecallContext, deduplicate, filter_by_context
-from .ranker import RankedResult, reciprocal_rank_fusion, weighted_score_fusion, diversify_results
+from .ranker import RankedResult, diversify_results, reciprocal_rank_fusion, weighted_score_fusion
 from .strategies import RecallResult, RecallStrategy
 
 if TYPE_CHECKING:

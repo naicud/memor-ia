@@ -15,7 +15,6 @@ from memoria.user_dna.types import (
     UserDNA,
 )
 
-
 _MAX_EXPERTISE_DOMAINS = 50
 
 
@@ -289,7 +288,7 @@ class DNAAnalyzer:
         """Update interaction fingerprint totals."""
         msg_signals = [s for s in all_signals if s.get("type") == "message"]
         session_signals = [s for s in all_signals if s.get("type") == "session"]
-        code_signals = [s for s in all_signals if s.get("type") == "code"]
+        _code_signals = [s for s in all_signals if s.get("type") == "code"]
 
         fp.total_interactions += len(msg_signals)
         fp.total_sessions += len(session_signals)

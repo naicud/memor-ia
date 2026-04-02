@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import heapq
 from collections import deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Optional
 
 from memoria.graph.client import GraphClient, InMemoryGraph

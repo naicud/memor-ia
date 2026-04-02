@@ -6,7 +6,7 @@ import threading
 import time
 import uuid
 from collections import Counter
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from .types import RevenueSignal, RevenueSignalType
 

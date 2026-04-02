@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 import threading
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 try:
     from src.task import TaskStatus, is_terminal_task_status
@@ -22,7 +22,7 @@ from memoria.comms import (
     get_message_bus,
     get_permission_bridge,
 )
-from memoria.comms.permissions import PermissionDecision
+
 try:
     from src.utils.task_framework import TaskManager
 except ImportError:

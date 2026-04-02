@@ -5,10 +5,10 @@ sentiment scoring, emotional arc tracking, empathy triggers, and
 fatigue detection.
 """
 
+import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional
-import time
+from typing import Any, Dict, List
 
 
 class EmotionType(Enum):

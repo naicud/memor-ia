@@ -9,12 +9,12 @@ from .empathy import EmpathyEngine
 from .fatigue import FatigueDetector
 from .tracker import EmotionalArcTracker
 from .types import (
-    EmpathyAction,
-    EmpathyTrigger,
     EmotionalArc,
     EmotionalProfile,
     EmotionReading,
     EmotionType,
+    EmpathyAction,
+    EmpathyTrigger,
     FatigueScore,
     IntensityLevel,
     SentimentScore,

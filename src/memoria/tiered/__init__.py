@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from .working import WorkingMemory
-from .recall_mem import RecallMemory
 from .archival import ArchivalMemory
-from .promoter import TierPromoter
 from .manager import TieredMemoryManager
+from .promoter import TierPromoter
+from .recall_mem import RecallMemory
+from .working import WorkingMemory
 
 __all__ = [
     "WorkingMemory",

@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from collections import Counter
 from datetime import datetime, timedelta, timezone
-from typing import Any, Optional
+from typing import Any
 
 from memoria.graph.client import InMemoryGraph
 from memoria.graph.knowledge import KnowledgeGraph

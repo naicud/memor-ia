@@ -6,7 +6,6 @@ import uuid
 
 from .types import ThreadStatus, WorkThread
 
-
 _MAX_SESSION_IDS = 200
 _MAX_RELATED_FILES = 100
 

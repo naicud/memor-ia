@@ -34,25 +34,6 @@ except ImportError:
     generate_task_id = None  # type: ignore[assignment]
 
 # Layer 1 — memory
-from memoria.core import (
-    MemoryType,
-    create_memory_file,
-    find_relevant_memories,
-    read_memory_file,
-    write_memory_file,
-)
-from memoria.core.types import MemoryFrontmatter
-
-# Layer 2 — agent identity & context
-from memoria.identity import (
-    AgentContext,
-    AgentId,
-    SessionId,
-    create_agent_id,
-    create_session_id,
-    create_subagent_context,
-)
-
 # Layer 3 — comms
 from memoria.comms import (
     Event,
@@ -63,17 +44,6 @@ from memoria.comms import (
     get_permission_bridge,
 )
 
-# Layer 4 — orchestration
-from memoria.orchestration import (
-    AgentSpawner,
-    SpawnConfig,
-    TeamConfig,
-    TeamManager,
-    create_team,
-    disband_team,
-    get_team,
-)
-
 # Layer 5 — context management
 from memoria.context import (
     CompactionConfig,
@@ -81,6 +51,26 @@ from memoria.context import (
     TokenBudget,
     analyze_context,
     get_budget,
+)
+from memoria.core import (
+    MemoryType,
+    create_memory_file,
+    find_relevant_memories,
+)
+
+# Layer 2 — agent identity & context
+from memoria.identity import (
+    AgentContext,
+    create_agent_id,
+    create_session_id,
+    create_subagent_context,
+)
+
+# Layer 4 — orchestration
+from memoria.orchestration import (
+    TeamConfig,
+    TeamManager,
+    create_team,
 )
 
 # Task framework

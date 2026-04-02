@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 from .grants import GrantStore
 from .roles import Role, role_can_admin, role_can_read, role_can_write, role_inherits
-
 
 # ── Data ─────────────────────────────────────────────────────────
 

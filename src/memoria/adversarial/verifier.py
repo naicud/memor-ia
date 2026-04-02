@@ -4,7 +4,7 @@ import re
 import threading
 import time
 from collections import deque
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .types import VerificationStatus
 

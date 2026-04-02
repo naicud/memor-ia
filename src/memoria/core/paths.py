@@ -7,7 +7,6 @@ import os
 import re
 from datetime import date
 from pathlib import Path
-from typing import Optional
 
 # Constants
 AUTO_MEM_DIRNAME = "memory"

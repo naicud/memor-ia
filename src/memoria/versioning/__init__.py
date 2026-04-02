@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from .history import VersionEntry, VersionHistory
-from .diff import DiffEntry, MemoryDiff
 from .audit import AuditEvent, AuditTrail
+from .diff import DiffEntry, MemoryDiff
+from .history import VersionEntry, VersionHistory
 from .snapshots import Snapshot, SnapshotStore
 
 __all__ = [

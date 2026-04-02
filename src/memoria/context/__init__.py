@@ -1,17 +1,5 @@
 """MEMORIA context — token budgeting, compaction, and prompt building."""
 
-from .window import (
-    CHARS_PER_TOKEN,
-    ContextAnalysis,
-    MODEL_BUDGETS,
-    TokenBudget,
-    TokenUsage,
-    analyze_context,
-    estimate_message_tokens,
-    estimate_messages_tokens,
-    estimate_tokens,
-    get_budget,
-)
 from .compaction import (
     CompactBoundary,
     CompactionConfig,
@@ -23,6 +11,18 @@ from .prompt import (
     PromptConfig,
     PromptSection,
     build_system_prompt,
+)
+from .window import (
+    CHARS_PER_TOKEN,
+    MODEL_BUDGETS,
+    ContextAnalysis,
+    TokenBudget,
+    TokenUsage,
+    analyze_context,
+    estimate_message_tokens,
+    estimate_messages_tokens,
+    estimate_tokens,
+    get_budget,
 )
 
 __all__ = [
