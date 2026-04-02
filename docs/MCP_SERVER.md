@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **77 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **82 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1826,4 +1826,71 @@ Returns: { "sse_channels": N, "ws_channels": N, "total_channels": N,
            "total_events_dispatched": N, "bus_attached": true|false }
 
 Use: "How many streaming channels are active?"
+```
+
+---
+
+## Multi-modal Memory Tools
+
+### `add_attachment`
+
+Attach a binary file (image, audio, document) to a memory.
+
+```
+Parameters:
+  memory_id: str        — ID of the parent memory
+  data_base64: str      — Base64-encoded binary content
+  filename: str         — Original filename (e.g., "diagram.png")
+  mime_type: str        — MIME type (default: "application/octet-stream")
+  description: str      — Human-readable description
+
+Returns: Attachment metadata with attachment_id, sha256, size, extracted metadata.
+
+Use: "Attach this screenshot to memory m123"
+→ add_attachment(memory_id="m123", data_base64="...", filename="screenshot.png", mime_type="image/png")
+```
+
+### `get_attachment`
+
+Get attachment metadata by ID.
+
+```
+Parameters:
+  attachment_id: str    — ID of the attachment
+
+Returns: Full attachment metadata or error if not found.
+```
+
+### `list_attachments`
+
+List attachments, optionally filtered by memory_id.
+
+```
+Parameters:
+  memory_id: str        — Filter by parent memory (optional)
+  limit: int            — Max results (default: 100)
+  offset: int           — Skip first N results (default: 0)
+
+Returns: Array of attachment metadata objects.
+```
+
+### `delete_attachment`
+
+Delete an attachment by ID.
+
+```
+Parameters:
+  attachment_id: str    — ID to delete
+
+Returns: { "status": "deleted" | "not_found", "attachment_id": "..." }
+```
+
+### `attachment_stats`
+
+Return attachment storage statistics.
+
+```
+Parameters: (none)
+
+Returns: { "total_attachments": N, "disk_usage_bytes": N }
 ```

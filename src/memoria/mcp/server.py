@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 77 tools, 7 resources, and 5 prompts covering:
+Provides 82 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2443,6 +2443,87 @@ async def stream_stats() -> str:
     """Return streaming manager statistics (channel counts, events dispatched)."""
     try:
         result = _get_memoria().stream_stats()
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Multi-modal Memory Tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def add_attachment(
+    memory_id: str,
+    data_base64: str,
+    filename: str,
+    mime_type: str = "application/octet-stream",
+    description: str = "",
+) -> str:
+    """Attach a binary file (image, audio, document) to a memory.
+
+    *data_base64*: base64-encoded binary content.
+    """
+    import base64
+    try:
+        raw = base64.b64decode(data_base64)
+        result = _get_memoria().add_attachment(
+            memory_id=memory_id,
+            data=raw,
+            filename=filename,
+            mime_type=mime_type,
+            description=description,
+        )
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def get_attachment(attachment_id: str) -> str:
+    """Get attachment metadata by ID."""
+    try:
+        result = _get_memoria().get_attachment(attachment_id)
+        if result is None:
+            return json.dumps({"error": "Attachment not found"})
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def list_attachments(
+    memory_id: str = "",
+    limit: int = 100,
+    offset: int = 0,
+) -> str:
+    """List attachments, optionally filtered by memory_id."""
+    try:
+        result = _get_memoria().list_attachments(
+            memory_id=memory_id or None,
+            limit=limit,
+            offset=offset,
+        )
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def delete_attachment(attachment_id: str) -> str:
+    """Delete an attachment by ID."""
+    try:
+        result = _get_memoria().delete_attachment(attachment_id)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def attachment_stats() -> str:
+    """Return attachment storage statistics (count, disk usage)."""
+    try:
+        result = _get_memoria().attachment_stats()
         return json.dumps(result, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})

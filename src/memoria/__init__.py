@@ -2085,3 +2085,103 @@ class Memoria:
     def stream_stats(self) -> dict:
         """Return streaming manager statistics."""
         return self._get_stream_manager().stats()
+
+    # ------------------------------------------------------------------
+    # Multi-modal Memory (Attachments)
+    # ------------------------------------------------------------------
+
+    def _get_attachment_store(self):
+        """Return (or create) the attachment store."""
+        if not hasattr(self, "_attachment_store"):
+            from memoria.multimodal.storage import AttachmentStore
+            att_dir = self._get_memory_dir().parent / "attachments"
+            self._attachment_store = AttachmentStore(str(att_dir))
+        return self._attachment_store
+
+    def add_attachment(
+        self,
+        memory_id: str,
+        data: bytes,
+        filename: str,
+        *,
+        mime_type: str = "application/octet-stream",
+        description: str = "",
+    ) -> dict:
+        """Attach a binary file to a memory.
+
+        Parameters
+        ----------
+        memory_id : str
+            ID of the parent memory.
+        data : bytes
+            Raw binary content.
+        filename : str
+            Original filename.
+        mime_type : str
+            MIME content type.
+        description : str
+            Human-readable description.
+
+        Returns
+        -------
+        dict
+            Attachment metadata including ``attachment_id``.
+        """
+        from memoria.multimodal.metadata import extract_metadata
+
+        store = self._get_attachment_store()
+        meta = extract_metadata(data, filename, mime_type)
+        att = store.store(
+            data,
+            memory_id=memory_id,
+            filename=filename,
+            mime_type=mime_type,
+            description=description,
+            extra_metadata=meta,
+        )
+        return att.to_dict()
+
+    def get_attachment(self, attachment_id: str) -> dict | None:
+        """Get attachment metadata by ID."""
+        store = self._get_attachment_store()
+        att = store.get_metadata(attachment_id)
+        if att is None:
+            return None
+        return att.to_dict()
+
+    def get_attachment_data(self, attachment_id: str) -> bytes | None:
+        """Get attachment binary content by ID."""
+        store = self._get_attachment_store()
+        return store.get_blob(attachment_id)
+
+    def list_attachments(
+        self,
+        memory_id: str | None = None,
+        *,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[dict]:
+        """List attachments, optionally filtered by memory_id."""
+        store = self._get_attachment_store()
+        if memory_id:
+            atts = store.list_by_memory(memory_id)
+            return [a.to_dict() for a in atts[offset : offset + limit]]
+        atts = store.list_all(limit=limit, offset=offset)
+        return [a.to_dict() for a in atts]
+
+    def delete_attachment(self, attachment_id: str) -> dict:
+        """Delete an attachment by ID."""
+        store = self._get_attachment_store()
+        removed = store.delete(attachment_id)
+        return {
+            "status": "deleted" if removed else "not_found",
+            "attachment_id": attachment_id,
+        }
+
+    def attachment_stats(self) -> dict:
+        """Return attachment storage statistics."""
+        store = self._get_attachment_store()
+        return {
+            "total_attachments": store.count(),
+            "disk_usage_bytes": store.disk_usage(),
+        }
