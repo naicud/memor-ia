@@ -415,9 +415,9 @@ class TestAutoDreamGates:
         cfg = AutoDreamConfig(enabled=True, min_hours=0, min_sessions=1)
 
         # Mock the dream task system since src.task is not available
-        with mock.patch("memoria.consolidation.auto.register_dream_task", return_value="d-test-1"), \
-             mock.patch("memoria.consolidation.auto.complete_dream_task"), \
-             mock.patch("memoria.consolidation.auto.fail_dream_task"):
+        with mock.patch("memoria.consolidation.dream.register_dream_task", return_value="d-test-1"), \
+             mock.patch("memoria.consolidation.dream.complete_dream_task"), \
+             mock.patch("memoria.consolidation.dream.fail_dream_task"):
             result = execute_auto_dream(
                 runner,
                 lock_dir=str(tmp_path),
@@ -443,9 +443,9 @@ class TestAutoDreamGates:
 
         cfg = AutoDreamConfig(enabled=True, min_hours=0, min_sessions=1)
 
-        with mock.patch("memoria.consolidation.auto.register_dream_task", return_value="d-test-2"), \
-             mock.patch("memoria.consolidation.auto.complete_dream_task"), \
-             mock.patch("memoria.consolidation.auto.fail_dream_task"):
+        with mock.patch("memoria.consolidation.dream.register_dream_task", return_value="d-test-2"), \
+             mock.patch("memoria.consolidation.dream.complete_dream_task"), \
+             mock.patch("memoria.consolidation.dream.fail_dream_task"):
             result = execute_auto_dream(
                 runner,
                 lock_dir=str(tmp_path),
@@ -473,9 +473,9 @@ class TestAutoDreamGates:
 
         cfg = AutoDreamConfig(enabled=True, min_hours=0, min_sessions=1)
 
-        with mock.patch("memoria.consolidation.auto.register_dream_task", return_value="d-test-3"), \
-             mock.patch("memoria.consolidation.auto.complete_dream_task"), \
-             mock.patch("memoria.consolidation.auto.fail_dream_task"):
+        with mock.patch("memoria.consolidation.dream.register_dream_task", return_value="d-test-3"), \
+             mock.patch("memoria.consolidation.dream.complete_dream_task"), \
+             mock.patch("memoria.consolidation.dream.fail_dream_task"):
             result = execute_auto_dream(
                 runner,
                 lock_dir=str(tmp_path),
