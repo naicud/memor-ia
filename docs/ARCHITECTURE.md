@@ -271,7 +271,7 @@ Infrastructure services added in v2.1–v3.0 that run alongside Layers 1–8, pr
 | `streaming/` | Real-time event channels via SSE/WebSocket, pub/sub pattern, event filtering by type/namespace/user |
 | `attachments/` | Multi-modal binary attachment store, MIME-typed file associations per memory |
 | `plugins/` | Dynamic plugin registry with activation/deactivation lifecycle, discovery mechanism |
-| `dashboard/` | Embedded web dashboard with D3.js graph visualization, audit log viewer, memory explorer |
+| `dashboard/` | React SPA dashboard (Vite + TypeScript + Tailwind + Recharts), canvas-based knowledge graph, memory CRUD, audit log viewer |
 | `federation/` | Peer-to-peer instance federation with PKI trust registry (4 trust levels), CRDT vector clock conflict resolution, selective namespace sync |
 
 ### Platform Services Architecture
@@ -287,7 +287,7 @@ Infrastructure services added in v2.1–v3.0 that run alongside Layers 1–8, pr
                     │  ┌─────────┐  ┌──────────────┐    │
   ┌──────────┐      │  │Templates│  │  Streaming   │    │
   │Dashboard │◄────►│  │         │  │ (SSE/WS)     │    │
-  │ (D3.js)  │      │  └─────────┘  └──────────────┘    │
+  │ (React)  │      │  └─────────┘  └──────────────┘    │
   └──────────┘      │  ┌─────────┐  ┌──────────────┐    │
                     │  │Attach-  │  │   Plugins    │    │
   ┌──────────┐      │  │ments    │  │  (registry)  │    │

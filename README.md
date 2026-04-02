@@ -27,7 +27,7 @@
 | Want to predict user behavior           | Markov chain action prediction                  |
 | Need real-time event notifications      | Streaming (SSE/WebSocket) + webhooks            |
 | Want multi-instance collaboration       | Federation protocol with CRDT sync              |
-| Need visual memory exploration          | Built-in web dashboard with D3.js graph         |
+| Need visual memory exploration          | Built-in React dashboard with interactive graph  |
 
 ## Install
 
@@ -348,7 +348,7 @@ graph TB
 | Streaming               | SSE/WebSocket channels, filtered subscriptions         | `memoria.streaming`     |
 | Multi-modal             | Binary attachments, metadata extraction                | `memoria.multimodal`    |
 | Plugin System           | Discover/register/activate extensibility               | `memoria.plugins`       |
-| Web Dashboard           | SPA, D3.js graph viz, REST API, memory explorer        | `memoria.dashboard`     |
+| Web Dashboard           | React SPA, Recharts, canvas graph, REST API, CRUD     | `memoria.dashboard`     |
 | Federation              | P2P sync, PKI trust, CRDT conflict resolution          | `memoria.federation`    |
 
 ## Examples
