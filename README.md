@@ -795,10 +795,11 @@ Comprehensive documentation in the [`docs/`](docs/) directory:
 
 | Document                                       | Description                                                                                                                  |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [**Product Overview**](docs/BUSINESS.md)       | Business overview, market position, use cases, licensing                                                                     |
+| [**Industrialization**](docs/INDUSTRIALIZATION.md) | Enterprise deployment: AWS (EKS), Azure (AKS), GCP (GKE), Helm charts, CI/CD, security, cost estimates                  |
+| [**Product Overview**](docs/BUSINESS.md)       | Business overview, 8 use cases, market position, competitive landscape, licensing                                            |
 | [**Data Architecture**](docs/DATA_GUIDE.md)    | Data flow diagrams, storage format, real data examples                                                                       |
 | [**E2E Test Report**](docs/E2E_USER_REPORT.md) | Auto-generated report with real MCP request/response data                                                                    |
-| [**MCP Server Guide**](docs/MCP_SERVER.md)     | Complete MCP reference: 56 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
+| [**MCP Server Guide**](docs/MCP_SERVER.md)     | Complete MCP reference: 56 tools, 6 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
 | [**Configuration**](docs/CONFIGURATION.md)     | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets                                                |
 | [**API Reference**](docs/API_REFERENCE.md)     | Python API: Memoria class, VectorClient, GraphClient, types                                                                  |
 | [**Architecture**](docs/ARCHITECTURE.md)       | 8-layer deep dive, data flow, module map, recall pipeline                                                                    |
