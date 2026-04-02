@@ -11,7 +11,7 @@
 
 ---
 
-**Table of Contents:** [Install](#install) · [Quick Start](#quick-start) · [MCP Server](#mcp-server) · [Architecture](#architecture-8-layers-20-subsystems) · [Features](#features) · [Examples](#examples) · [Documentation](#documentation) · [Tests](#tests)
+**Table of Contents:** [Install](#install) · [Quick Start](#quick-start) · [MCP Server](#mcp-server) · [Architecture](#architecture-8-layers-20-subsystems) · [Features](#features) · [Use Cases](#use-cases--scenarios) · [Examples](#examples) · [Documentation](#documentation) · [Tests](#tests)
 
 ---
 
@@ -575,6 +575,219 @@ Five runnable examples in [`examples/`](examples/):
 ```bash
 python examples/01_basic_memory.py
 ```
+
+## Use Cases & Scenarios
+
+Real-world examples showing how MEMORIA works across different domains and contexts.
+
+### 🛠️ Developer Tooling — IDE Coding Assistant
+
+An AI coding assistant that remembers your project context, preferences, and past decisions across sessions.
+
+```python
+from memoria import Memoria
+
+m = Memoria(project_dir="/projects/my-app")
+
+# Session 1: The AI learns about the developer
+m.add("User prefers TypeScript strict mode with Zod validation", user_id="dev")
+m.add("Project uses Next.js 14 App Router with RSC", user_id="dev")
+m.preference_teach(user_id="dev", category="framework", key="frontend", value="Next.js")
+m.preference_teach(user_id="dev", category="style", key="formatting", value="Prettier + ESLint")
+
+# Record a debugging session
+m.episodic_start(session_id="debug-auth")
+m.episodic_record(content="OAuth redirect loop caused by missing NEXTAUTH_URL env var",
+                  event_type="insight", importance=0.9)
+m.procedural_record(tool_name="next-dev", input_data="npm run dev",
+                    result="Fixed after adding .env.local", success=True)
+
+# Session 2: Next day, AI recalls everything
+prefs = m.preference_query(user_id="dev", category="framework")
+# → {"primary": {"value": "Next.js", "confidence": 1.0}}
+
+results = m.search("authentication problems", user_id="dev")
+# → Returns the OAuth insight from yesterday
+
+suggestions = m.suggest(context="setting up deployment", user_id="dev")
+# → "Remember to set NEXTAUTH_URL in production environment variables"
+```
+
+### 📊 SaaS Product Analytics — Churn Prevention
+
+Track product usage patterns, detect churn signals, and predict expansion opportunities.
+
+```python
+from memoria import Memoria
+
+m = Memoria()
+
+# Register products in your portfolio
+m.product_register(product_id="analytics-pro", name="Analytics Pro", category="analytics")
+m.product_register(product_id="dashboard-hub", name="Dashboard Hub", category="project_management")
+
+# Track real usage events
+m.product_usage_record(product_id="analytics-pro", feature="custom_reports", action="create")
+m.product_usage_record(product_id="analytics-pro", feature="api_access", action="query")
+m.product_usage_record(product_id="dashboard-hub", feature="team_boards", action="create")
+
+# Lifecycle tracking
+m.biz_lifecycle_update(product_id="analytics-pro",
+                       days_active=90, total_events=1500,
+                       feature_count=8, engagement_score=0.85,
+                       usage_trend="growing", is_expanding=True)
+
+# Revenue signals
+m.biz_revenue_signal(signal_type="upsell_opportunity",
+                     product_id="analytics-pro",
+                     description="User hitting API rate limits, candidate for Enterprise tier",
+                     impact=0.9, confidence=0.8)
+
+# Predict churn risk
+churn = m.fusion_churn_predict(product_id="analytics-pro")
+# → {"churn_risk": 0.12, "factors": ["high_engagement", "growing_usage"]}
+
+# Unified intelligence model
+model = m.fusion_unified_model()
+# → Cross-product insights, workflow detection, habit analysis
+```
+
+### 🤖 Multi-Agent Team — Shared Knowledge Base
+
+Multiple AI agents collaborating on a project with shared memory and coherence checking.
+
+```python
+from memoria import Memoria
+
+m = Memoria()
+
+# Agent 1 (Code Review Bot) shares knowledge
+m.sharing_share(agent_id="reviewer-bot", namespace="project-alpha",
+                key="coding-standards", value="All functions must have type annotations and docstrings")
+
+# Agent 2 (Test Writer Bot) reads shared knowledge
+m.sharing_share(agent_id="test-bot", namespace="project-alpha",
+                key="test-patterns", value="Use pytest fixtures, minimum 80% branch coverage")
+
+# Access control
+m.acl_grant(agent_id="reviewer-bot", namespace="project-alpha", role="writer")
+m.acl_grant(agent_id="test-bot", namespace="project-alpha", role="reader")
+m.acl_check(agent_id="test-bot", namespace="project-alpha", operation="read")
+# → {"allowed": True, "role": "reader"}
+
+# Coherence check — detect contradictions between agents
+coherence = m.sharing_coherence(team_id="project-alpha")
+# → {"is_coherent": True, "conflicts": [], "shared_keys": 2}
+```
+
+### 🎓 Educational Platform — Adaptive Learning
+
+An AI tutor that tracks cognitive load, adapts difficulty, and remembers learning patterns.
+
+```python
+from memoria import Memoria
+
+m = Memoria()
+
+# Track student's cognitive state
+m.cognitive_record(topic="linear_algebra", complexity=0.8)
+m.cognitive_record(topic="probability", complexity=0.5)
+
+# Check if the student is overloaded
+overload = m.cognitive_check_overload()
+# → {"is_overloaded": False, "load_score": 0.45, "recommendation": "can_continue"}
+
+# Emotional state tracking
+emotion = m.emotion_analyze(text="I finally understand eigenvalues! This is amazing!")
+# → {"dominant": "joy", "confidence": 0.92, "valence": 0.95}
+
+fatigue = m.emotion_fatigue_check()
+# → {"is_fatigued": False, "session_duration": 45, "recommendation": "continue"}
+
+# Predict what the student will study next
+prediction = m.predict_next_action()
+# → {"predicted_action": "study_probability", "confidence": 0.7}
+
+# Difficulty estimation for new content
+diff = m.estimate_difficulty(description="Introduction to Bayesian inference")
+# → {"difficulty": 0.65, "estimated_time": "45min", "prerequisites": [...]}
+```
+
+### 🏥 Healthcare AI Assistant — Patient Context Memory
+
+A medical AI that maintains patient interaction history with full audit trail.
+
+```python
+from memoria import Memoria
+
+m = Memoria()
+
+# Episodic memory for patient interactions
+m.episodic_start(session_id="patient-consultation-2024")
+m.episodic_record(content="Patient reports persistent headaches for 2 weeks",
+                  event_type="observation", importance=0.8)
+m.episodic_record(content="Recommended MRI scan based on symptom duration",
+                  event_type="decision", importance=0.9)
+
+# Adversarial protection — prevent hallucinated medical data
+scan = m.adversarial_scan(content="Patient has no known allergies")
+# → {"is_safe": True, "risk_score": 0.01, "threats": []}
+
+# Consistency check against known facts
+check = m.adversarial_check_consistency(
+    content="Patient has penicillin allergy",
+    existing_facts=["Patient has no known allergies"]
+)
+# → {"is_consistent": False, "contradictions": ["allergy_conflict"], ...}
+
+# Integrity verification — audit trail
+m.adversarial_verify_integrity(content="MRI ordered on 2024-03-15", content_id="order-123")
+
+# Session snapshot for handoff to next doctor
+m.resurrection_capture(user_id="dr-smith", session_id="patient-consultation-2024")
+# Next doctor resumes context
+context = m.resurrection_resume(user_id="dr-smith")
+```
+
+### 🔌 MCP Integration — Any AI Client
+
+All examples above work through the MCP server with **any compatible client** (Claude Desktop, Cursor, VS Code, custom apps):
+
+```bash
+# Start the MCP server
+memoria-mcp --transport http --port 8080
+
+# Or via Docker (recommended for production)
+docker compose up -d
+```
+
+```json
+// MCP tool call example (from any client)
+{
+  "method": "tools/call",
+  "params": {
+    "name": "memoria_add",
+    "arguments": {
+      "content": "User prefers dark mode and vim keybindings",
+      "user_id": "daniel"
+    }
+  }
+}
+```
+
+```json
+// Response
+{
+  "content": [{
+    "type": "text",
+    "text": "{\"status\": \"created\", \"id\": \"~/.memoria/projects/.../memory/a1b2c3d4.md\"}"
+  }]
+}
+```
+
+> 📖 **Full MCP reference with all 56 tools:** [docs/MCP_SERVER.md](docs/MCP_SERVER.md)
+
+---
 
 ## Documentation
 
