@@ -4,14 +4,50 @@
 
 > Inspired by [Mem0](https://github.com/mem0ai/mem0) — extended with agent orchestration, proactive intelligence, and dream consolidation.
 
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![MCP Tools: 56](https://img.shields.io/badge/MCP_Tools-56-purple.svg)](docs/MCP_SERVER.md)
+[![Tests: 4000+](https://img.shields.io/badge/Tests-4000%2B-brightgreen.svg)](#tests)
+
+---
+
+**Table of Contents:** [Install](#install) · [Quick Start](#quick-start) · [MCP Server](#mcp-server) · [Architecture](#architecture-8-layers-20-subsystems) · [Features](#features) · [Examples](#examples) · [Documentation](#documentation) · [Tests](#tests)
+
+---
+
+## Why MEMORIA?
+
+| Need | MEMORIA Solution |
+|------|------------------|
+| Agent needs to remember across sessions | Persistent markdown + vector + graph storage |
+| Context window is limited | Proactive suggestions surface relevant memories |
+| Multiple agents need shared knowledge | Team sharing with coherence checking |
+| Memories become stale over time | Dream consolidation auto-promotes/forgets |
+| Need to detect injection attacks | Adversarial protection layer |
+| Want to predict user behavior | Markov chain action prediction |
+
 ## Install
 
+**Requirements:** Python ≥ 3.11
+
 ```bash
+# Core only (zero dependencies)
 pip install -e .
+
+# With MCP server (recommended)
+pip install -e ".[mcp]"
+
 # With graph support (FalkorDB):
 pip install -e ".[graph]"
+
 # Full install (all optional deps):
 pip install -e ".[full]"
+```
+
+With [UV](https://github.com/astral-sh/uv) (recommended):
+
+```bash
+uv pip install -e ".[full]"
 ```
 
 ## Quick Start
@@ -190,8 +226,9 @@ python3 examples/05_full_pipeline.py     # All layers end-to-end
 
 ## MCP Server
 
-MEMORIA includes a Model Context Protocol (MCP) server for integration
-with LLM clients like Claude Desktop, Cursor, and any MCP-compatible tool.
+MEMORIA exposes **56 tools**, **7 resources**, and **5 prompts** via [Model Context Protocol](https://modelcontextprotocol.io/) for integration with Claude Desktop, Cursor, VS Code, and any MCP-compatible client.
+
+> 📖 **Full reference:** [docs/MCP_SERVER.md](docs/MCP_SERVER.md) — complete tool signatures, parameters, examples, client configs, and Docker deployment.
 
 ### Quick Start
 
@@ -199,11 +236,39 @@ with LLM clients like Claude Desktop, Cursor, and any MCP-compatible tool.
 # Install with MCP support
 pip install -e ".[mcp]"
 
-# Run the server
-python -m memoria.mcp.server
+# Start in stdio mode (for Claude Desktop, Cursor)
+memoria-mcp
 
-# Or install in Claude Desktop
-fastmcp install claude-desktop src/memoria/mcp/server.py
+# Start in HTTP mode (for testing, web apps)
+memoria-mcp --transport http --port 8080
+```
+
+### Claude Desktop Configuration
+
+Add to your Claude Desktop config:
+
+```json
+{
+  "mcpServers": {
+    "memoria": {
+      "command": "memoria-mcp",
+      "args": [],
+      "env": {
+        "MEMORIA_PROJECT_DIR": "/path/to/your/project"
+      }
+    }
+  }
+}
+```
+
+### Docker
+
+```bash
+# Start MEMORIA + FalkorDB
+docker compose up -d
+
+# MEMORIA MCP on http://localhost:8080
+# FalkorDB on localhost:6379
 ```
 
 ### Available Tools (56)
@@ -389,15 +454,54 @@ fastmcp install claude-desktop src/memoria/mcp/server.py
 ## Tests
 
 ```bash
-python3 -m pytest tests/ -q    # 3258 tests, ~3s
+# Full suite (4000+ tests, ~15s)
+python3 -m pytest tests/ -q
+
+# With coverage
+python3 -m pytest tests/ --cov=memoria
+
+# E2E backend tests (local — no FalkorDB needed)
+python3 -m pytest tests/test_e2e_backends.py -q
+
+# E2E with FalkorDB (requires: docker compose up falkordb)
+python3 -m pytest tests/test_e2e_backends.py -q --run-falkordb
+```
+
+Or with Make:
+
+```bash
+make test            # Quick test run
+make test-verbose    # Verbose output
+make test-e2e        # E2E backend tests
+make test-cov        # With coverage report
+```
+
+## Examples
+
+Five runnable examples in [`examples/`](examples/):
+
+| Example | Description |
+|---------|-------------|
+| [`01_basic_memory.py`](examples/01_basic_memory.py) | CRUD operations — add, search, get, delete |
+| [`02_knowledge_graph.py`](examples/02_knowledge_graph.py) | Entity extraction, graph building, relationship queries |
+| [`03_semantic_search.py`](examples/03_semantic_search.py) | Vector similarity search, TF-IDF embeddings |
+| [`04_proactive_agent.py`](examples/04_proactive_agent.py) | User profiling, pattern analysis, proactive suggestions |
+| [`05_full_pipeline.py`](examples/05_full_pipeline.py) | All layers end-to-end in a multi-session demo |
+
+```bash
+python examples/01_basic_memory.py
 ```
 
 ## Documentation
 
-Architecture documentation with Mermaid diagrams is available in the companion `docs/` directory. Key documents:
+Comprehensive documentation in the [`docs/`](docs/) directory:
 
-- **MEMORIA Framework Architecture** — 36 Mermaid diagrams covering 8 layers and 20 subsystems
-- **MCP Server Reference** — 56 tools, 7 resources, 5 prompts with usage examples
+| Document | Description |
+|----------|-------------|
+| [**MCP Server Guide**](docs/MCP_SERVER.md) | Complete MCP reference: 56 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
+| [**Configuration**](docs/CONFIGURATION.md) | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets |
+| [**API Reference**](docs/API_REFERENCE.md) | Python API: Memoria class, VectorClient, GraphClient, types |
+| [**Architecture**](docs/ARCHITECTURE.md) | 8-layer deep dive, data flow, module map, recall pipeline |
 
 ## License
 
