@@ -1523,3 +1523,87 @@ class Memoria:
             return {"warmed": warmed}
         except Exception as e:
             return {"error": str(e)}
+
+    # ------------------------------------------------------------------
+    # Webhook operations (v2.1)
+    # ------------------------------------------------------------------
+
+    def _get_webhook_registry(self):
+        """Return (or create) the webhook registry."""
+        if not hasattr(self, "_webhook_registry"):
+            from memoria.webhooks.registry import WebhookRegistry
+            self._webhook_registry = WebhookRegistry(
+                db_path=self._mem_dir / "webhooks.db"
+            )
+        return self._webhook_registry
+
+    def _get_webhook_dispatcher(self):
+        """Return (or create) the webhook dispatcher."""
+        if not hasattr(self, "_webhook_dispatcher"):
+            from memoria.webhooks.dispatcher import WebhookDispatcher
+            self._webhook_dispatcher = WebhookDispatcher(self._get_webhook_registry())
+        return self._webhook_dispatcher
+
+    def _get_webhook_bridge(self):
+        """Return (or create) the webhook bridge and start it."""
+        if not hasattr(self, "_webhook_bridge"):
+            from memoria.webhooks.bridge import WebhookBridge
+            self._webhook_bridge = WebhookBridge(self._get_webhook_dispatcher())
+            self._webhook_bridge.start()
+        return self._webhook_bridge
+
+    def webhook_register(
+        self,
+        url: str,
+        *,
+        events: list[str] | None = None,
+        secret: str = "",
+        description: str = "",
+    ) -> dict:
+        """Register a new webhook endpoint.
+
+        Args:
+            url: The HTTP(S) URL to receive POST notifications.
+            events: List of event types to subscribe to (default: all).
+            secret: Optional secret for HMAC-SHA256 signature verification.
+            description: Human-readable label.
+
+        Returns a dict with the created webhook details.
+        """
+        registry = self._get_webhook_registry()
+        wh = registry.register(
+            url, events=events, secret=secret, description=description
+        )
+        # Ensure bridge is running
+        self._get_webhook_bridge()
+        return {
+            "webhook_id": wh.webhook_id,
+            "url": wh.url,
+            "events": wh.events,
+            "active": wh.active,
+            "description": wh.description,
+            "created_at": wh.created_at,
+        }
+
+    def webhook_unregister(self, webhook_id: str) -> dict:
+        """Remove a webhook registration."""
+        registry = self._get_webhook_registry()
+        removed = registry.unregister(webhook_id)
+        return {"removed": removed, "webhook_id": webhook_id}
+
+    def webhook_list(self, *, active_only: bool = False) -> list[dict]:
+        """List all registered webhooks."""
+        registry = self._get_webhook_registry()
+        webhooks = registry.list_all(active_only=active_only)
+        return [
+            {
+                "webhook_id": wh.webhook_id,
+                "url": wh.url,
+                "events": wh.events,
+                "active": wh.active,
+                "consecutive_failures": wh.consecutive_failures,
+                "description": wh.description,
+                "created_at": wh.created_at,
+            }
+            for wh in webhooks
+        ]

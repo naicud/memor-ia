@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **62 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **65 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1413,6 +1413,77 @@ Returns: str (JSON)
     ],
     "redacted": "Contact me at [EMAIL_REDACTED] or call [PHONE_REDACTED]"
   }
+```
+
+---
+
+### 🔔 Webhooks (3 tools)
+
+| Tool | Description |
+|------|-------------|
+| `webhook_register` | Register a webhook URL to receive event notifications |
+| `webhook_unregister` | Remove a registered webhook by ID |
+| `webhook_list` | List all registered webhooks and their status |
+
+#### `webhook_register`
+
+Register a new webhook endpoint. Supports HMAC-SHA256 signature verification
+and event filtering.
+
+```
+Parameters:
+  url: str              — HTTP(S) URL to receive POST notifications (required)
+  events: str           — JSON array of event types (default: '["*"]')
+  secret: str           — Optional secret for signature verification (default: "")
+  description: str      — Human-readable label (default: "")
+
+Events: memory.created, memory.updated, memory.deleted, memory.promoted,
+        episode.started, episode.ended, churn.detected, anomaly.detected,
+        overload.detected (or "*" for all)
+
+Returns: str (JSON)
+  {
+    "webhook_id": "wh_abc123def456",
+    "url": "https://example.com/hook",
+    "events": ["memory.created", "memory.deleted"],
+    "active": true,
+    "description": "Slack notifier",
+    "created_at": "2024-01-15T10:30:00+00:00"
+  }
+```
+
+#### `webhook_unregister`
+
+Remove a registered webhook.
+
+```
+Parameters:
+  webhook_id: str       — The webhook ID to remove (required)
+
+Returns: str (JSON)
+  { "removed": true, "webhook_id": "wh_abc123def456" }
+```
+
+#### `webhook_list`
+
+List all registered webhooks with delivery status.
+
+```
+Parameters:
+  active_only: bool     — Only show active webhooks (default: false)
+
+Returns: str (JSON array)
+  [
+    {
+      "webhook_id": "wh_abc123def456",
+      "url": "https://example.com/hook",
+      "events": ["*"],
+      "active": true,
+      "consecutive_failures": 0,
+      "description": "Slack notifier",
+      "created_at": "2024-01-15T10:30:00+00:00"
+    }
+  ]
 ```
 
 ---

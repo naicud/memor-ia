@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 62 tools, 7 resources, and 5 prompts covering:
+Provides 65 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2139,6 +2139,63 @@ async def gdpr_scan_pii(content: str) -> str:
     try:
         m = _get_memoria()
         result = m.gdpr_scan_pii(content)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Webhook operations (v2.1)
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def webhook_register(
+    url: str,
+    events: str = '["*"]',
+    secret: str = "",
+    description: str = "",
+) -> str:
+    """Register a webhook endpoint to receive event notifications.
+
+    The webhook will receive HTTP POST requests with JSON payloads when
+    matching events occur. Supports HMAC-SHA256 signature verification.
+
+    Events: memory.created, memory.updated, memory.deleted, memory.promoted,
+    episode.started, episode.ended, churn.detected, anomaly.detected,
+    overload.detected (or "*" for all).
+    """
+    try:
+        import json as _json
+        event_list = _json.loads(events) if events else ["*"]
+        m = _get_memoria()
+        result = m.webhook_register(
+            url, events=event_list, secret=secret, description=description
+        )
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def webhook_unregister(webhook_id: str) -> str:
+    """Remove a registered webhook by its ID."""
+    try:
+        m = _get_memoria()
+        result = m.webhook_unregister(webhook_id)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def webhook_list(active_only: bool = False) -> str:
+    """List all registered webhooks and their status.
+
+    Set active_only=true to only show active webhooks.
+    """
+    try:
+        m = _get_memoria()
+        result = m.webhook_list(active_only=active_only)
         return json.dumps(result, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})
