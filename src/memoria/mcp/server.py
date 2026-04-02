@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 72 tools, 7 resources, and 5 prompts covering:
+Provides 77 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2366,6 +2366,84 @@ async def template_create(
         return json.dumps(result, indent=2)
     except json.JSONDecodeError:
         return json.dumps({"error": "Invalid JSON in 'fields' or 'tags' parameter"})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Real-time Streaming Tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def stream_subscribe(
+    channel_type: str = "sse",
+    channel_id: str = "",
+    event_types: str = "[]",
+    user_ids: str = "[]",
+    namespaces: str = "[]",
+) -> str:
+    """Create a streaming subscription for real-time memory events.
+
+    *channel_type*: ``sse`` or ``ws``.
+    *event_types*, *user_ids*, *namespaces*: JSON arrays for filtering.
+    Returns channel info with the channel_id for consuming events.
+    """
+    try:
+        et = json.loads(event_types) if event_types else []
+        ui = json.loads(user_ids) if user_ids else []
+        ns = json.loads(namespaces) if namespaces else []
+        result = _get_memoria().stream_subscribe(
+            channel_type=channel_type,
+            channel_id=channel_id or None,
+            event_types=et or None,
+            user_ids=ui or None,
+            namespaces=ns or None,
+        )
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def stream_unsubscribe(channel_id: str) -> str:
+    """Close a streaming channel by ID."""
+    try:
+        result = _get_memoria().stream_unsubscribe(channel_id)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def stream_list() -> str:
+    """List all active streaming channels with their filters and stats."""
+    try:
+        channels = _get_memoria().stream_list_channels()
+        return json.dumps(channels, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def stream_broadcast(event_type: str, data: str = "{}") -> str:
+    """Manually broadcast an event to all streaming channels.
+
+    *data* should be a JSON string.
+    """
+    try:
+        parsed_data = json.loads(data) if data else {}
+        result = _get_memoria().stream_broadcast(event_type, parsed_data)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def stream_stats() -> str:
+    """Return streaming manager statistics (channel counts, events dispatched)."""
+    try:
+        result = _get_memoria().stream_stats()
+        return json.dumps(result, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})
 

@@ -2016,3 +2016,72 @@ class Memoria:
             "fields": len(field_specs),
             "category": category,
         }
+
+    # ------------------------------------------------------------------
+    # Real-time Streaming
+    # ------------------------------------------------------------------
+
+    def _get_stream_manager(self):
+        """Return (or create) the streaming manager, attached to the event bus."""
+        if not hasattr(self, "_stream_manager"):
+            from memoria.comms.bus import get_message_bus
+            from memoria.streaming.manager import StreamManager
+            self._stream_manager = StreamManager()
+            self._stream_manager.attach_to_bus(get_message_bus())
+        return self._stream_manager
+
+    def stream_subscribe(
+        self,
+        *,
+        channel_type: str = "sse",
+        channel_id: str | None = None,
+        event_types: list[str] | None = None,
+        user_ids: list[str] | None = None,
+        namespaces: list[str] | None = None,
+    ) -> dict:
+        """Create a new streaming subscription (SSE or WebSocket).
+
+        Returns channel info including the ``channel_id`` for consuming events.
+        """
+        from memoria.streaming.filters import EventFilter
+
+        ef = EventFilter.from_params(
+            event_types=event_types,
+            user_ids=user_ids,
+            namespaces=namespaces,
+        )
+        mgr = self._get_stream_manager()
+
+        if channel_type == "ws":
+            ch = mgr.create_ws_channel(channel_id=channel_id, event_filter=ef)
+        else:
+            ch = mgr.create_sse_channel(channel_id=channel_id, event_filter=ef)
+
+        return ch.info()
+
+    def stream_unsubscribe(self, channel_id: str) -> dict:
+        """Close a streaming channel by ID."""
+        mgr = self._get_stream_manager()
+        closed = mgr.close_channel(channel_id)
+        return {
+            "status": "closed" if closed else "not_found",
+            "channel_id": channel_id,
+        }
+
+    def stream_list_channels(self) -> list[dict]:
+        """List all active streaming channels."""
+        return self._get_stream_manager().list_channels()
+
+    def stream_broadcast(self, event_type: str, data: dict) -> dict:
+        """Manually broadcast an event to all streaming channels."""
+        mgr = self._get_stream_manager()
+        count = mgr.broadcast(event_type, data)
+        return {
+            "status": "broadcast",
+            "event_type": event_type,
+            "channels_notified": count,
+        }
+
+    def stream_stats(self) -> dict:
+        """Return streaming manager statistics."""
+        return self._get_stream_manager().stats()

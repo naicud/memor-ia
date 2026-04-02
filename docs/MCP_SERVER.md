@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **72 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **77 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1750,4 +1750,80 @@ Parameters:
   offset: int           — Skip first N episodes for pagination (default: 0)
 
 Use: "What happened in my last few sessions?"
+```
+
+---
+
+## Real-time Streaming Tools
+
+### `stream_subscribe`
+
+Create a streaming subscription for real-time memory events.
+
+```
+Parameters:
+  channel_type: str     — "sse" or "ws" (default: "sse")
+  channel_id: str       — Optional custom channel ID
+  event_types: str      — JSON array of event types to filter (default: "[]" = all)
+  user_ids: str         — JSON array of user IDs to filter (default: "[]" = all)
+  namespaces: str       — JSON array of namespaces to filter (default: "[]" = all)
+
+Returns: Channel info with channel_id, type, filter configuration.
+
+Use: "Subscribe to memory.updated events for user alice"
+→ stream_subscribe(channel_type="sse", event_types='["memory.updated"]', user_ids='["alice"]')
+```
+
+### `stream_unsubscribe`
+
+Close a streaming channel by ID.
+
+```
+Parameters:
+  channel_id: str       — ID of the channel to close
+
+Returns: { "status": "closed" | "not_found", "channel_id": "..." }
+
+Use: "Stop listening to channel abc123"
+→ stream_unsubscribe(channel_id="abc123")
+```
+
+### `stream_list`
+
+List all active streaming channels with their filters and stats.
+
+```
+Parameters: (none)
+
+Returns: Array of channel info objects with type, filter, event_count, queue_size.
+
+Use: "What streaming channels are active?"
+```
+
+### `stream_broadcast`
+
+Manually broadcast an event to all active streaming channels.
+
+```
+Parameters:
+  event_type: str       — Event type name (e.g., "custom.notification")
+  data: str             — JSON string payload (default: "{}")
+
+Returns: { "status": "broadcast", "event_type": "...", "channels_notified": N }
+
+Use: "Send a test event to all listeners"
+→ stream_broadcast(event_type="test.ping", data='{"message": "hello"}')
+```
+
+### `stream_stats`
+
+Return streaming manager statistics.
+
+```
+Parameters: (none)
+
+Returns: { "sse_channels": N, "ws_channels": N, "total_channels": N,
+           "total_events_dispatched": N, "bus_attached": true|false }
+
+Use: "How many streaming channels are active?"
 ```

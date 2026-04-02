@@ -997,7 +997,7 @@ class TestAllToolsDiscovery:
             )
             conv.turns.append(turn)
 
-            assert len(tools) == 72, f"Expected 72 tools, got {len(tools)}"
+            assert len(tools) == 77, f"Expected 77 tools, got {len(tools)}"
             CONVERSATIONS.append(conv)
 
         finally:
