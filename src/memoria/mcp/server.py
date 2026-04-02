@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 87 tools, 7 resources, and 5 prompts covering:
+Provides 97 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2579,6 +2579,151 @@ async def plugin_stats() -> str:
     try:
         result = _get_memoria().plugin_stats()
         return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Web Dashboard Tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def start_dashboard(host: str = "127.0.0.1", port: int = 8080) -> str:
+    """Start the Memoria web dashboard server.
+
+    Returns the URL where the dashboard is accessible.
+    """
+    try:
+        result = _get_memoria().start_dashboard(host=host, port=port)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def stop_dashboard() -> str:
+    """Stop the Memoria web dashboard server."""
+    try:
+        result = _get_memoria().stop_dashboard()
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def dashboard_status() -> str:
+    """Get the status of the Memoria web dashboard (running, URL, uptime)."""
+    try:
+        result = _get_memoria().dashboard_status()
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def dashboard_config() -> str:
+    """Get dashboard configuration (host, port, running state)."""
+    try:
+        result = _get_memoria().dashboard_config()
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def dashboard_url() -> str:
+    """Get the dashboard URL for the running server."""
+    try:
+        url = _get_memoria().dashboard_url()
+        return json.dumps({"url": url})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Federation Tools
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def federation_connect(endpoint: str, instance_id: str = "",
+                             public_key: str = "",
+                             shared_namespaces: str = "",
+                             direction: str = "bidirectional") -> str:
+    """Connect to a federation peer for cross-instance memory sharing.
+
+    Args:
+        endpoint: URL of the peer's federation endpoint
+        instance_id: Optional peer instance identifier
+        public_key: Optional public key for trust verification
+        shared_namespaces: Comma-separated list of namespaces to share
+        direction: Sync direction (bidirectional, push, pull)
+    """
+    try:
+        ns_list = [n.strip() for n in shared_namespaces.split(",") if n.strip()] if shared_namespaces else None
+        result = _get_memoria().federation_connect(
+            endpoint=endpoint,
+            instance_id=instance_id or None,
+            public_key=public_key,
+            shared_namespaces=ns_list,
+            direction=direction,
+        )
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def federation_disconnect(peer_id: str) -> str:
+    """Disconnect from a federation peer."""
+    try:
+        result = _get_memoria().federation_disconnect(peer_id)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def federation_sync(peer_id: str, namespace: str = "general") -> str:
+    """Sync memories with a federation peer for a given namespace.
+
+    Returns sync result with counts of sent/received/conflicted memories.
+    """
+    try:
+        result = _get_memoria().federation_sync(peer_id=peer_id, namespace=namespace)
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def federation_status() -> str:
+    """Get federation status (peers, trust, sync engine state)."""
+    try:
+        result = _get_memoria().federation_status()
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def federation_trust(instance_id: str, public_key: str = "",
+                           action: str = "add",
+                           trust_level: str = "standard") -> str:
+    """Manage federation trust (add/revoke peers).
+
+    Args:
+        instance_id: The peer instance ID
+        public_key: Public key for the peer (required for 'add')
+        action: 'add' or 'revoke'
+        trust_level: Trust level (untrusted, standard, elevated, full)
+    """
+    try:
+        if action == "revoke":
+            result = _get_memoria().federation_trust_revoke(instance_id)
+        else:
+            result = _get_memoria().federation_trust_add(
+                instance_id, public_key, trust_level)
+        return json.dumps(result, indent=2, default=str)
     except Exception as e:
         return json.dumps({"error": str(e)})
 

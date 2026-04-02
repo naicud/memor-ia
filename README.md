@@ -310,7 +310,7 @@ python3 examples/05_full_pipeline.py     # All layers end-to-end
 
 ## MCP Server
 
-MEMORIA exposes **87 tools**, **7 resources**, and **5 prompts** via [Model Context Protocol](https://modelcontextprotocol.io/) for integration with Claude Desktop, Cursor, VS Code, and any MCP-compatible client.
+MEMORIA exposes **97 tools**, **7 resources**, and **5 prompts** via [Model Context Protocol](https://modelcontextprotocol.io/) for integration with Claude Desktop, Cursor, VS Code, and any MCP-compatible client.
 
 > 📖 **Full reference:** [docs/MCP_SERVER.md](docs/MCP_SERVER.md) — complete tool signatures, parameters, examples, client configs, and Docker deployment.
 
@@ -785,7 +785,7 @@ docker compose up -d
 }
 ```
 
-> 📖 **Full MCP reference with all 87 tools:** [docs/MCP_SERVER.md](docs/MCP_SERVER.md)
+> 📖 **Full MCP reference with all 97 tools:** [docs/MCP_SERVER.md](docs/MCP_SERVER.md)
 
 ---
 
@@ -800,7 +800,7 @@ Comprehensive documentation in the [`docs/`](docs/) directory:
 | [**Product Overview**](docs/BUSINESS.md)       | Business overview, 8 use cases, market position, competitive landscape, licensing                                            |
 | [**Data Architecture**](docs/DATA_GUIDE.md)    | Data flow diagrams, storage format, real data examples                                                                       |
 | [**E2E Test Report**](docs/E2E_USER_REPORT.md) | Auto-generated report with real MCP request/response data                                                                    |
-| [**MCP Server Guide**](docs/MCP_SERVER.md)     | Complete MCP reference: 87 tools, 6 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
+| [**MCP Server Guide**](docs/MCP_SERVER.md)     | Complete MCP reference: 97 tools, 6 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
 | [**Configuration**](docs/CONFIGURATION.md)     | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets                                                |
 | [**API Reference**](docs/API_REFERENCE.md)     | Python API: Memoria class, VectorClient, GraphClient, types                                                                  |
 | [**Architecture**](docs/ARCHITECTURE.md)       | 8-layer deep dive, data flow, module map, recall pipeline                                                                    |

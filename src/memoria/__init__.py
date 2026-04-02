@@ -2266,3 +2266,152 @@ class Memoria:
     def plugin_stats(self) -> dict:
         """Return plugin system statistics."""
         return self._get_plugin_registry().stats()
+
+    # ------------------------------------------------------------------
+    # Web Dashboard
+    # ------------------------------------------------------------------
+
+    def _get_dashboard_server(self):
+        """Return (or create) the dashboard server."""
+        if not hasattr(self, "_dashboard_server"):
+            from memoria.dashboard.server import DashboardServer
+            self._dashboard_server = DashboardServer(self)
+        return self._dashboard_server
+
+    def start_dashboard(self, host: str = "127.0.0.1", port: int = 8080) -> dict:
+        """Start the web dashboard server."""
+        from memoria.dashboard.server import DashboardServer
+        if not hasattr(self, "_dashboard_server"):
+            self._dashboard_server = DashboardServer(self, host=host, port=port)
+        return self._dashboard_server.start()
+
+    def stop_dashboard(self) -> dict:
+        """Stop the web dashboard server."""
+        return self._get_dashboard_server().stop()
+
+    def dashboard_status(self) -> dict:
+        """Get dashboard server status."""
+        return self._get_dashboard_server().status()
+
+    def dashboard_url(self) -> str:
+        """Get the dashboard URL."""
+        return self._get_dashboard_server().url
+
+    def dashboard_config(self) -> dict:
+        """Get dashboard configuration."""
+        server = self._get_dashboard_server()
+        return {
+            "host": server._host,
+            "port": server._port,
+            "running": server.is_running,
+            "url": server.url,
+        }
+
+    # ------------------------------------------------------------------
+    # Federation Protocol
+    # ------------------------------------------------------------------
+
+    def _get_federation_protocol(self):
+        """Return (or create) the federation protocol."""
+        if not hasattr(self, "_federation_protocol"):
+            from memoria.federation.protocol import FederationProtocol
+            self._federation_protocol = FederationProtocol()
+        return self._federation_protocol
+
+    def _get_trust_registry(self):
+        """Return (or create) the trust registry."""
+        if not hasattr(self, "_trust_registry"):
+            from memoria.federation.trust import TrustRegistry
+            self._trust_registry = TrustRegistry()
+        return self._trust_registry
+
+    def _get_sync_engine(self):
+        """Return (or create) the sync engine."""
+        if not hasattr(self, "_sync_engine"):
+            from memoria.federation.sync import SyncEngine
+            from memoria.federation.conflict import ConflictResolver
+            protocol = self._get_federation_protocol()
+            self._sync_engine = SyncEngine(
+                instance_id=protocol.instance_id,
+                resolver=ConflictResolver(),
+            )
+        return self._sync_engine
+
+    def federation_connect(self, endpoint: str, instance_id: str | None = None,
+                           public_key: str = "",
+                           shared_namespaces: list[str] | None = None,
+                           direction: str = "bidirectional") -> dict:
+        """Connect to a federation peer."""
+        protocol = self._get_federation_protocol()
+        peer = protocol.connect(
+            endpoint=endpoint,
+            instance_id=instance_id,
+            public_key=public_key,
+            shared_namespaces=shared_namespaces,
+            direction=direction,
+        )
+        if public_key:
+            trust = self._get_trust_registry()
+            trust.add_trust(peer.instance_id, public_key,
+                            allowed_namespaces=shared_namespaces)
+        return peer.to_dict()
+
+    def federation_disconnect(self, peer_id: str) -> dict:
+        """Disconnect from a federation peer."""
+        protocol = self._get_federation_protocol()
+        ok = protocol.disconnect(peer_id)
+        return {"status": "disconnected" if ok else "not_found", "peer_id": peer_id}
+
+    def federation_sync(self, peer_id: str, namespace: str = "general",
+                        remote_memories: list[dict] | None = None) -> dict:
+        """Sync memories with a federation peer."""
+        engine = self._get_sync_engine()
+        protocol = self._get_federation_protocol()
+        peer = protocol.get_peer(peer_id)
+        if not peer:
+            return {"error": f"Unknown peer: {peer_id}"}
+
+        if remote_memories:
+            if peer.direction == "bidirectional":
+                result, to_push = engine.sync_bidirectional(
+                    namespace, remote_memories, peer_id)
+                return {**result.to_dict(), "outgoing_memories": len(to_push)}
+            else:
+                result = engine.receive_pull(namespace, remote_memories, peer_id)
+                return result.to_dict()
+        else:
+            to_push = engine.prepare_push(namespace)
+            return {
+                "direction": "push",
+                "namespace": namespace,
+                "memories_prepared": len(to_push),
+                "data": to_push,
+            }
+
+    def federation_status(self) -> dict:
+        """Get federation status."""
+        protocol = self._get_federation_protocol()
+        trust = self._get_trust_registry()
+        engine = self._get_sync_engine()
+        return {
+            "protocol": protocol.status(),
+            "trust": trust.status(),
+            "sync": engine.status(),
+        }
+
+    def federation_list_peers(self) -> list[dict]:
+        """List all federation peers."""
+        return self._get_federation_protocol().list_peers()
+
+    def federation_trust_add(self, instance_id: str, public_key: str,
+                             trust_level: str = "standard",
+                             allowed_namespaces: list[str] | None = None) -> dict:
+        """Add a trust entry for a federation peer."""
+        entry = self._get_trust_registry().add_trust(
+            instance_id, public_key, trust_level, allowed_namespaces)
+        return entry.to_dict()
+
+    def federation_trust_revoke(self, instance_id: str) -> dict:
+        """Revoke trust for a federation peer."""
+        ok = self._get_trust_registry().revoke_trust(instance_id)
+        return {"status": "revoked" if ok else "not_found", "instance_id": instance_id}

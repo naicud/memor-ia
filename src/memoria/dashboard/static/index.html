@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoria Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+  <nav class="bg-gray-800 border-b border-gray-700 px-6 py-3 flex items-center gap-6">
+    <div class="text-xl font-bold text-purple-400">🧠 Memoria</div>
+    <a href="#/" class="nav-link hover:text-purple-300" data-page="overview">Overview</a>
+    <a href="#/memories" class="nav-link hover:text-purple-300" data-page="memories">Memories</a>
+    <a href="#/graph" class="nav-link hover:text-purple-300" data-page="graph">Graph</a>
+    <a href="#/audit" class="nav-link hover:text-purple-300" data-page="audit">Audit</a>
+    <a href="#/settings" class="nav-link hover:text-purple-300" data-page="settings">Settings</a>
+    <div class="ml-auto text-sm text-gray-500" id="status-badge">connecting…</div>
+  </nav>
+
+  <main id="app" class="p-6 max-w-7xl mx-auto"></main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
