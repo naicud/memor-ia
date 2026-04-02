@@ -1,0 +1,404 @@
+# MEMORIA 🧠
+
+**Proactive Memory Framework for AI Agents**
+
+> Inspired by [Mem0](https://github.com/mem0ai/mem0) — extended with agent orchestration, proactive intelligence, and dream consolidation.
+
+## Install
+
+```bash
+pip install -e .
+# With graph support (FalkorDB):
+pip install -e ".[graph]"
+# Full install (all optional deps):
+pip install -e ".[full]"
+```
+
+## Quick Start
+
+```python
+from memoria import Memoria
+
+m = Memoria()
+
+# Store memories
+m.add("User prefers TypeScript for frontend", user_id="daniel")
+m.add("Working on React dashboard project", user_id="daniel")
+
+# Hybrid search (keyword + vector + graph → RRF fusion)
+results = m.search("language preferences", user_id="daniel")
+
+# Proactive suggestions
+suggestions = m.suggest(context="starting a new web project", user_id="daniel")
+
+# User profiling
+profile = m.profile(user_id="daniel")
+
+# Cross-database insights
+insights = m.insights(user_id="daniel")
+```
+
+## Architecture (8 Layers, 20 Subsystems)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Layer 8: Cross-Product Intelligence                    │
+│  product tracking │ behavioral fusion │ habit intel     │
+│  contextual engine │ business intelligence              │
+├─────────────────────────────────────────────────────────┤
+│  Layer 7: Emotional Intelligence                        │
+│  emotion analysis │ empathy triggers │ fatigue detection │
+├─────────────────────────────────────────────────────────┤
+│  Layer 6: Behavioral Prediction                         │
+│  action prediction │ anomaly detection │ timing │ diff. │
+├─────────────────────────────────────────────────────────┤
+│  Layer 5: Multi-Agent & Sharing                         │
+│  broadcasting │ team coherence │ DNA sync │ coordinator │
+├─────────────────────────────────────────────────────────┤
+│  Layer 4: Cognitive Services                            │
+│  user DNA │ dream engine │ preferences │ resurrection   │
+├─────────────────────────────────────────────────────────┤
+│  Layer 3: Proactive Intelligence Engine                 │
+│  profiler │ analyzer │ suggestions │ triggers │ episodic│
+├─────────────────────────────────────────────────────────┤
+│  Layer 2: Hybrid Recall & Storage                       │
+│  keyword + vector + graph → RRF │ procedural │ self-edit│
+│  FalkorDB/InMemory │ SQLite-vec │ Markdown              │
+├─────────────────────────────────────────────────────────┤
+│  Layer 1: Core Services                                 │
+│  identity │ comms │ context │ consolidation │ ACL       │
+└─────────────────────────────────────────────────────────┘
+```
+
+## Features
+
+### Core
+- 📁 File-based persistent memory (Markdown + YAML frontmatter)
+- 🎭 Agent identity & context isolation (contextvars)
+- 🔗 Inter-agent communication (Mailbox, MessageBus, Permissions)
+- 📦 Context management (token window, compaction, prompt building)
+- 💤 Dream consolidation system (5-gate auto-trigger)
+- 🎯 Agent orchestration (teams, spawn, fork)
+
+### Storage
+- 🔮 Knowledge graph (FalkorDB or zero-dep InMemoryGraph fallback)
+- 🧲 Semantic vector search (sqlite-vec or pure Python cosine fallback)
+- 📝 Entity extraction (regex-based, no LLM dependency)
+- 📊 Temporal tracking (trending concepts, confidence decay)
+
+### Intelligence
+- 🧠 Proactive suggestion engine with cooldowns
+- 📈 Pattern detection (repetition, sequence, temporal)
+- 👤 Client profiling (expertise map, working patterns)
+- ⚡ Event-driven triggers (MessageBus integration)
+- 💡 Cross-database insight generation
+
+### Recall
+- 🔄 Hybrid recall pipeline (3 strategies in parallel)
+- 🏆 Reciprocal Rank Fusion (RRF) for result merging
+- 🎯 Context filtering and deduplication
+- 🔌 Pluggable strategy architecture
+- 🔌 MCP Server (Claude Desktop, Cursor integration)
+
+### Episodic & Procedural
+- 📖 Episodic memory (session timelines, event recording, temporal search)
+- ⚙️ Procedural memory (workflow recording, pattern extraction, step suggestions)
+- ✏️ Memory self-editing (importance scoring, budget management)
+
+### User DNA & Cognitive
+- 🧬 User DNA (behavioral fingerprinting, coding style, communication profile)
+- 💤 Dream Engine (6-phase consolidation cycles, memory replay, insight synthesis)
+- 🎛️ Preference Engine (structured preference learning, conflict resolution, confidence evolution)
+- 🔄 Context Resurrection (session snapshots, thread tracking, perfect resumption)
+
+### Multi-Agent & Prediction
+- 📡 Multi-Agent Sharing (memory broadcasting, team coherence, DNA sync)
+- 🔮 Behavioral Prediction (Markov chain action prediction, anomaly detection, timing optimization)
+- 💜 Emotional Intelligence (12-emotion analysis, empathy triggers, fatigue/burnout detection)
+
+### Cross-Product Intelligence
+- 🏢 Product Ecosystem Intelligence (product tracking, usage profiling, adoption analysis)
+- 🔀 Cross-Domain Behavioral Fusion (behavior correlation, workflow detection, churn prediction)
+- 🔄 Habit & Routine Intelligence (habit tracking, routine optimization, disruption alerts)
+- 🎯 Contextual Intelligence Engine (situation awareness, intent inference, proactive assistance)
+- 💰 Business Intelligence Memory (revenue signals, segment classification, lifecycle tracking)
+
+### Defensive Intelligence
+- 🛡️ Adversarial Memory Protection (poison detection, hallucination guards, consistency verification, tamper proofing)
+- 🧩 Cognitive Load Management (load tracking, overload prevention, complexity adaptation, focus optimization)
+
+## Key Differentiators vs Mem0
+
+| Feature | Mem0 | MEMORIA |
+|---------|------|---------|
+| Memory storage | ✅ | ✅ |
+| Vector search | ✅ | ✅ |
+| Knowledge graph | ✅ | ✅ |
+| Agent orchestration | ❌ | ✅ |
+| Proactive suggestions | ❌ | ✅ |
+| Dream consolidation | ❌ | ✅ |
+| Communication layer | ❌ | ✅ |
+| Context management | ❌ | ✅ |
+| Zero-config default | ❌ | ✅ |
+| MCP Server | ❌ | ✅ |
+| Behavioral fingerprinting (User DNA) | ❌ | ✅ |
+| Dream-like consolidation cycles | ❌ | ✅ |
+| Cross-session resurrection | ❌ | ✅ |
+| Multi-agent memory sharing | ❌ | ✅ |
+| Behavioral prediction | ❌ | ✅ |
+| Emotional intelligence | ❌ | ✅ |
+| Episodic & procedural memory | ❌ | ✅ |
+| Memory self-editing | ❌ | ✅ |
+| Cross-product behavioral intelligence | ❌ | ✅ |
+| Adversarial memory protection | ❌ | ✅ |
+| Cognitive load management | ❌ | ✅ |
+
+## Feature Matrix (20 Subsystems)
+
+| Subsystem | Key Capabilities | Module |
+|-----------|-----------------|--------|
+| Core Memory | CRUD, hybrid search, RRF fusion | `memoria.core` |
+| Knowledge Graph | Entity extraction, relation mapping | `memoria.graph` |
+| Proactive Intelligence | Suggestions, profiling, insights | `memoria.intelligence` |
+| Tiered Storage | Working/recall/archival tiers, ACL | `memoria.tiered` |
+| Episodic Memory | Session timelines, event recording | `memoria.episodic` |
+| Procedural Memory | Workflow patterns, step suggestions | `memoria.procedural` |
+| User DNA | Behavioral fingerprinting, digital twin | `memoria.user_dna` |
+| Dream Engine | 6-phase cognitive consolidation | `memoria.dream` |
+| Preference Engine | Preference learning, conflict resolution | `memoria.preferences` |
+| Context Resurrection | Session snapshots, perfect resumption | `memoria.resurrection` |
+| Multi-Agent Sharing | Broadcasting, team coherence, DNA sync | `memoria.sharing` |
+| Behavioral Prediction | Action prediction, anomaly detection | `memoria.prediction` |
+| Emotional Intelligence | 12-emotion analysis, empathy, fatigue | `memoria.emotional` |
+| Product Intelligence | Product tracking, usage profiling, adoption | `memoria.product_intel` |
+| Behavioral Fusion | Cross-product correlation, workflow detection | `memoria.fusion` |
+| Habit Intelligence | Habit tracking, routine optimization, anchors | `memoria.habits` |
+| Contextual Intelligence | Situation awareness, intent inference, proactive | `memoria.contextual` |
+| Business Intelligence | Revenue signals, segmentation, lifecycle, value | `memoria.biz_intel` |
+| Adversarial Protection | Poison detection, hallucination guards, tamper proof | `memoria.adversarial` |
+| Cognitive Load | Load tracking, overload prevention, focus optimization | `memoria.cognitive` |
+
+## Examples
+
+```bash
+python3 examples/01_basic_memory.py      # CRUD operations
+python3 examples/02_knowledge_graph.py   # Graph building & queries
+python3 examples/03_semantic_search.py   # Vector similarity search
+python3 examples/04_proactive_agent.py   # Profiling & suggestions
+python3 examples/05_full_pipeline.py     # All layers end-to-end
+```
+
+## MCP Server
+
+MEMORIA includes a Model Context Protocol (MCP) server for integration
+with LLM clients like Claude Desktop, Cursor, and any MCP-compatible tool.
+
+### Quick Start
+
+```bash
+# Install with MCP support
+pip install -e ".[mcp]"
+
+# Run the server
+python -m memoria.mcp.server
+
+# Or install in Claude Desktop
+fastmcp install claude-desktop src/memoria/mcp/server.py
+```
+
+### Available Tools (56)
+
+#### Core CRUD (7)
+
+| Tool | Description |
+|------|-------------|
+| `memoria_add` | Store a new memory |
+| `memoria_search` | Hybrid search (keyword + vector + graph) |
+| `memoria_get` | Retrieve a memory by ID |
+| `memoria_delete` | Delete a memory |
+| `memoria_suggest` | Generate proactive suggestions |
+| `memoria_profile` | Get user profile |
+| `memoria_insights` | Generate cross-database insights |
+
+#### Tiered & ACL (5)
+
+| Tool | Description |
+|------|-------------|
+| `memoria_add_to_tier` | Store memory in a specific tier |
+| `memoria_search_tiers` | Search across memory tiers |
+| `memoria_grant_access` | Grant access to a namespace |
+| `memoria_check_access` | Check access permissions |
+| `memoria_enrich` | Enrich memory with graph data |
+
+#### Sync & Stats (2)
+
+| Tool | Description |
+|------|-------------|
+| `memoria_sync` | Synchronize memories across instances |
+| `memoria_stats` | Get memory statistics |
+
+#### Episodic Memory (5)
+
+| Tool | Description |
+|------|-------------|
+| `episodic_start` | Start an episodic session |
+| `episodic_end` | End an episodic session |
+| `episodic_record` | Record an event in the current episode |
+| `episodic_timeline` | View episode timeline |
+| `episodic_search` | Search episodic memories |
+
+#### Procedural Memory (4)
+
+| Tool | Description |
+|------|-------------|
+| `procedural_record` | Record a procedural step |
+| `procedural_suggest` | Get workflow step suggestions |
+| `procedural_workflows` | List recorded workflows |
+| `procedural_add_workflow` | Add a complete workflow |
+
+#### Importance & Self-Edit (3)
+
+| Tool | Description |
+|------|-------------|
+| `importance_score` | Score memory importance |
+| `self_edit` | Self-edit memory content |
+| `memory_budget` | Manage memory budget |
+
+#### User DNA (2)
+
+| Tool | Description |
+|------|-------------|
+| `user_dna_snapshot` | Get user behavioral fingerprint |
+| `user_dna_collect` | Collect behavioral data passively |
+
+#### Dream Engine (2)
+
+| Tool | Description |
+|------|-------------|
+| `dream_consolidate` | Run dream consolidation cycle |
+| `dream_journal` | View dream journal entries |
+
+#### Preferences (2)
+
+| Tool | Description |
+|------|-------------|
+| `preference_query` | Query user preferences |
+| `preference_teach` | Teach a new preference |
+
+#### Resurrection (2)
+
+| Tool | Description |
+|------|-------------|
+| `session_snapshot` | Capture session snapshot |
+| `session_resume` | Resume from a previous session |
+
+#### Sharing (2)
+
+| Tool | Description |
+|------|-------------|
+| `team_share_memory` | Share memory with team agents |
+| `team_coherence_check` | Check team memory coherence |
+
+#### Prediction (2)
+
+| Tool | Description |
+|------|-------------|
+| `predict_next_action` | Predict next user action |
+| `estimate_difficulty` | Estimate task difficulty |
+
+#### Emotional (2)
+
+| Tool | Description |
+|------|-------------|
+| `emotion_analyze` | Analyze emotional state |
+| `emotion_fatigue_check` | Check for fatigue/burnout |
+
+#### Product Intelligence (2)
+
+| Tool | Description |
+|------|-------------|
+| `product_track` | Track product usage and adoption |
+| `product_graph` | View product ecosystem graph |
+
+#### Behavioral Fusion (2)
+
+| Tool | Description |
+|------|-------------|
+| `fusion_correlate` | Correlate cross-product behaviors |
+| `fusion_detect_workflow` | Detect cross-product workflows |
+
+#### Habit Intelligence (2)
+
+| Tool | Description |
+|------|-------------|
+| `habit_track` | Track user habits and routines |
+| `habit_optimize` | Get routine optimization suggestions |
+
+#### Contextual Intelligence (2)
+
+| Tool | Description |
+|------|-------------|
+| `context_situation` | Assess current user situation |
+| `context_infer_intent` | Infer user intent from context |
+
+#### Business Intelligence (2)
+
+| Tool | Description |
+|------|-------------|
+| `biz_revenue_signals` | Detect revenue opportunity signals |
+| `biz_segment_classify` | Classify user into business segments |
+
+#### Adversarial Protection (3)
+
+| Tool | Description |
+|------|-------------|
+| `adversarial_detect_poison` | Detect memory poisoning attempts |
+| `adversarial_verify_consistency` | Verify memory consistency and integrity |
+| `adversarial_guard_hallucination` | Guard against hallucination in memories |
+
+#### Cognitive Load (3)
+
+| Tool | Description |
+|------|-------------|
+| `cognitive_track_load` | Track cognitive load levels |
+| `cognitive_prevent_overload` | Prevent cognitive overload |
+| `cognitive_optimize_focus` | Optimize focus and reduce complexity |
+
+### Resources (7)
+
+| URI | Description |
+|-----|-------------|
+| `memoria://memories` | List all stored memories |
+| `memoria://config` | Current configuration |
+| `memoria://profile/{user_id}` | User profile data |
+| `memoria://stats` | Memory statistics |
+| `memoria://episodic/timeline` | Episodic session timeline |
+| `memoria://procedural/patterns` | Procedural workflow patterns |
+| `memoria://budget` | Memory budget status |
+
+### Prompts (5)
+
+| Prompt | Description |
+|--------|-------------|
+| `recall_context` | Inject relevant memories as context |
+| `suggest_next` | Generate proactive suggestions prompt |
+| `deep_recall` | Deep multi-strategy memory recall |
+| `consolidation_report` | Dream consolidation summary |
+| `episodic_recap` | Episodic session recap |
+
+## Tests
+
+```bash
+python3 -m pytest tests/ -q    # 3258 tests, ~3s
+```
+
+## Documentation
+
+Architecture documentation with Mermaid diagrams is available in the companion `docs/` directory. Key documents:
+
+- **MEMORIA Framework Architecture** — 36 Mermaid diagrams covering 8 layers and 20 subsystems
+- **MCP Server Reference** — 56 tools, 7 resources, 5 prompts with usage examples
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.

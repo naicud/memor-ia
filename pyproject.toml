@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "memoria"
+version = "0.1.0"
+description = "Proactive memory framework for AI agents — inspired by Mem0, with agent orchestration, proactive engine, and dream consolidation"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+keywords = ["ai", "memory", "agents", "mcp", "proactive", "knowledge-graph", "vector-search"]
+
+[project.urls]
+Homepage = "https://github.com/nicusornaicu/memoria"
+Repository = "https://github.com/nicusornaicu/memoria"
+Issues = "https://github.com/nicusornaicu/memoria/issues"
+Documentation = "https://github.com/nicusornaicu/memoria#readme"
+
+[project.optional-dependencies]
+graph = ["falkordb>=1.0,<2.0"]
+vector = ["sqlite-vec>=0.1.1"]
+mcp = ["fastmcp>=3.0,<4.0"]
+test = ["pytest>=7.0", "pytest-asyncio>=0.20.0"]
+dev = ["ruff>=0.4.0", "mypy>=1.0"]
+full = ["memoria[graph,vector,mcp]"]
+all = ["memoria[full,test,dev]"]
+
+[project.scripts]
+memoria-mcp = "memoria.mcp.server:_cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/memoria"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
