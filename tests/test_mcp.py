@@ -32,14 +32,14 @@ class TestMCPTools(unittest.TestCase):
         self.tmpdir = tempfile.mkdtemp()
         # Reset the global memoria instance for each test
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
         srv._PROJECT_DIR = self.tmpdir
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
 
     def test_memoria_add(self):
         from memoria.mcp.server import memoria_add
@@ -217,14 +217,14 @@ class TestMCPResources(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
         srv._PROJECT_DIR = self.tmpdir
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
 
     def test_list_memories_empty(self):
         from memoria.mcp.server import list_memories
@@ -258,7 +258,7 @@ class TestMCPResources(unittest.TestCase):
         self.assertIn("project_dir", result)
         self.assertIn("memory_dir", result)
         self.assertIn("version", result)
-        self.assertEqual(result["version"], "2.0.0")
+        self.assertEqual(result["version"], "3.0.0")
         self.assertIn("backends", result)
         self.assertIn("features", result)
 
@@ -299,14 +299,14 @@ class TestMCPPrompts(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
         srv._PROJECT_DIR = self.tmpdir
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
 
     def test_recall_context_empty(self):
         from memoria.mcp.server import recall_context
@@ -359,14 +359,14 @@ class TestMCPServerIntegration(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
         srv._PROJECT_DIR = self.tmpdir
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
 
     def test_full_workflow(self):
         """Complete workflow: add → search → recall → suggest → profile."""
@@ -406,7 +406,7 @@ class TestMCPServerIntegration(unittest.TestCase):
 
         # 6. Config
         config = json.loads(get_config())
-        self.assertEqual(config["version"], "2.0.0")
+        self.assertEqual(config["version"], "3.0.0")
 
     def test_multi_user_isolation(self):
         """Verify memories can be scoped per user."""
@@ -472,14 +472,14 @@ class TestMCPCLI(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
         srv._PROJECT_DIR = self.tmpdir
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         import memoria.mcp.server as srv
-        srv._memoria_instance = None
+        srv._reset_singletons()
 
     def test_cli_function_exists(self):
         from memoria.mcp.server import _cli

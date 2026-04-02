@@ -10,7 +10,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 _tmp = tempfile.mkdtemp(prefix="mem_pag_")
-os.environ.setdefault("MEMORIA_DATA_DIR", _tmp)
+_orig_data_dir = os.environ.get("MEMORIA_DATA_DIR")
+os.environ["MEMORIA_DATA_DIR"] = _tmp
 
 from memoria import Memoria  # noqa: E402
 from memoria.namespace.store import SharedMemoryStore  # noqa: E402
@@ -23,6 +24,12 @@ from memoria.recall.strategies import (  # noqa: E402
 )
 from memoria.vector.client import VectorClient, VectorRecord  # noqa: E402
 from memoria.vector.search import SemanticSearch  # noqa: E402
+
+# Restore env immediately after imports so we don't leak to other test modules
+if _orig_data_dir is None:
+    os.environ.pop("MEMORIA_DATA_DIR", None)
+else:
+    os.environ["MEMORIA_DATA_DIR"] = _orig_data_dir
 
 
 def _make_record(rid: str, content: str, dim: int = 32, **meta) -> VectorRecord:
@@ -261,8 +268,15 @@ class TestSharedMemoryStorePagination:
 class TestMemoriaPagination:
     def setup_method(self):
         self.tmp = tempfile.mkdtemp(prefix="mem_int_pag_")
+        self._prev_data_dir = os.environ.get("MEMORIA_DATA_DIR")
         os.environ["MEMORIA_DATA_DIR"] = self.tmp
         self.m = Memoria(project_dir=self.tmp)
+
+    def teardown_method(self):
+        if self._prev_data_dir is None:
+            os.environ.pop("MEMORIA_DATA_DIR", None)
+        else:
+            os.environ["MEMORIA_DATA_DIR"] = self._prev_data_dir
 
     def test_search_accepts_offset(self):
         results = self.m.search("test query", limit=5, offset=0)
@@ -308,7 +322,14 @@ class TestPaginationBackwardCompat:
 
     def test_memoria_search_default_offset(self):
         tmp = tempfile.mkdtemp(prefix="bc_mem_pag_")
+        prev = os.environ.get("MEMORIA_DATA_DIR")
         os.environ["MEMORIA_DATA_DIR"] = tmp
-        m = Memoria(project_dir=tmp)
-        results = m.search("test", limit=5)
-        assert isinstance(results, list)
+        try:
+            m = Memoria(project_dir=tmp)
+            results = m.search("test", limit=5)
+            assert isinstance(results, list)
+        finally:
+            if prev is None:
+                os.environ.pop("MEMORIA_DATA_DIR", None)
+            else:
+                os.environ["MEMORIA_DATA_DIR"] = prev

@@ -634,7 +634,7 @@ class TestMCPResources:
         result = json.loads(get_config())
         assert "project_dir" in result
         assert "memory_dir" in result
-        assert result["version"] == "2.0.0"
+        assert result["version"] == "3.0.0"
         assert "backends" in result
         assert "features" in result
 

@@ -69,6 +69,13 @@ _overload_prevention = None
 _focus_optimizer = None
 
 
+
+def _get_version():
+    """Get the current MEMORIA version."""
+    from memoria import __version__
+    return __version__
+
+
 def _get_memoria():
     """Lazy-initialize the Memoria instance.
 
@@ -1285,7 +1292,7 @@ def get_config() -> str:
     config = {
         "project_dir": str(m._cwd),
         "memory_dir": str(m._mem_dir),
-        "version": "2.0.0",
+        "version": _get_version(),
         "backends": {
             "graph": type(m._config.get("knowledge_graph")).__name__
             if m._config.get("knowledge_graph")

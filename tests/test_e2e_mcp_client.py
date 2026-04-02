@@ -688,7 +688,7 @@ class TestProductIntelligence:
                 "product_id": "memoria-mcp",
                 "name": "MEMORIA MCP Server",
                 "category": "analytics",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "features": "memory,search,graph,episodic",
             })
 

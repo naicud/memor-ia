@@ -1,6 +1,6 @@
 """MEMORIA — Proactive Memory Framework for AI Agents."""
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 
 from memoria.core.paths import (
     ensure_memory_dir_exists,
@@ -2328,8 +2328,8 @@ class Memoria:
     def _get_sync_engine(self):
         """Return (or create) the sync engine."""
         if not hasattr(self, "_sync_engine"):
-            from memoria.federation.sync import SyncEngine
             from memoria.federation.conflict import ConflictResolver
+            from memoria.federation.sync import SyncEngine
             protocol = self._get_federation_protocol()
             self._sync_engine = SyncEngine(
                 instance_id=protocol.instance_id,

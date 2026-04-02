@@ -606,7 +606,7 @@ class TestMemoriaV2API:
 
     def test_version_is_2(self):
         from memoria import __version__
-        assert __version__ == "2.0.0"
+        assert __version__ == "3.0.0"
 
 
 # ===================================================================
