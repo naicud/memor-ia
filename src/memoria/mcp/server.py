@@ -99,8 +99,8 @@ def _get_memoria():
         vector_db = os.environ.get("MEMORIA_VECTOR_DB")
 
         graph_client = GraphClient(
-            host=graph_host,
-            port=graph_port if graph_host else None,
+            host=graph_host or "localhost",
+            port=graph_port,
         )
         kg = KnowledgeGraph(client=graph_client)
         embedder = TFIDFEmbedder(dimension=dim)

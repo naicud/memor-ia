@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
@@ -188,11 +189,11 @@ class GraphClient:
                 "pip install 'memoria[graph]'  or  pip install falkordb"
             )
 
+        _default_port = int(os.environ.get("MEMORIA_GRAPH_PORT", "6379"))
         if host:
-            self._db = _FalkorDB(host=host, port=port or 6379)
+            self._db = _FalkorDB(host=host, port=port or _default_port)
         else:
-            _path = str(db_path or Path.home() / ".memoria" / "graph.db")
-            self._db = _FalkorDB(host="localhost", port=6379)
+            self._db = _FalkorDB(host="localhost", port=port or _default_port)
 
     # -- public API ---------------------------------------------------------
 
