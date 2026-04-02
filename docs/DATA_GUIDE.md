@@ -68,7 +68,7 @@ Uses FalkorDB for graph, SQLite+sqlite-vec for vectors.
 | `description` | string | Full description (first ~120 chars) |
 | `type` | enum | `user`, `project`, `system` |
 
-**Storage path:** `~/.claude/projects/<project-hash>/memory/<id>.md`
+**Storage path:** `~/.memoria/projects/<project-hash>/memory/<id>.md`
 
 ### Example: 5 Memories Created
 
@@ -300,7 +300,7 @@ Valid preference categories:
 {
   "core": {
     "total_memories": 5,
-    "memory_dir": "~/.claude/projects/<hash>/memory"
+    "memory_dir": "~/.memoria/projects/<hash>/memory"
   },
   "episodic": {
     "total_episodes": 1,

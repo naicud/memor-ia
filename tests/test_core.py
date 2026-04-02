@@ -17,7 +17,7 @@ from memoria.core.paths import (
     ensure_memory_dir_exists,
     get_auto_mem_entrypoint,
     get_auto_mem_path,
-    get_claude_config_home,
+    get_memoria_home,
     get_daily_log_path,
     get_project_dir,
     get_session_dir,
@@ -72,23 +72,29 @@ from memoria.core.transcript import (
 # =========================================================================
 
 
-class TestGetClaudeConfigHome:
-    def test_default_is_home_dot_claude(self):
+class TestGetMemoriaHome:
+    def test_default_is_home_dot_memoria(self):
         with mock.patch.dict(os.environ, {}, clear=True):
-            os.environ.pop("CLAUDE_CODE_CONFIG_DIR", None)
-            result = get_claude_config_home()
-            assert result == Path.home() / ".claude"
+            os.environ.pop("MEMORIA_DATA_DIR", None)
+            result = get_memoria_home()
+            assert result == Path.home() / ".memoria"
 
     def test_override_via_env(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
-            assert get_claude_config_home() == tmp_path
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
+            assert get_memoria_home() == tmp_path
 
 
 class TestGetProjectDir:
-    def test_returns_projects_subdir(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+    def test_returns_data_dir_when_env_set(self, tmp_path):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_project_dir("/some/project")
-            assert str(result).startswith(str(tmp_path / "projects"))
+            assert result == tmp_path
+
+    def test_returns_projects_subdir_without_env(self):
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("MEMORIA_DATA_DIR", None)
+            result = get_project_dir("/some/project")
+            assert "projects" in str(result)
 
     def test_sanitized_name_is_deterministic(self):
         a = _sanitize_path("/my/project")
@@ -103,33 +109,33 @@ class TestGetProjectDir:
 
 class TestAutoMemPaths:
     def test_get_auto_mem_path(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_auto_mem_path("/proj")
             assert result.name == AUTO_MEM_DIRNAME
 
     def test_get_auto_mem_entrypoint(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_auto_mem_entrypoint("/proj")
             assert result.name == AUTO_MEM_ENTRYPOINT_NAME
 
     def test_get_session_dir(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_session_dir("/proj")
-            assert "projects" in str(result)
+            assert result == tmp_path
 
     def test_get_transcript_path(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_transcript_path("/proj", "sess-123")
             assert result.name == "sess-123.jsonl"
 
     def test_get_session_memory_path(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_session_memory_path("sess-456")
             assert result.name == "sess-456.md"
             assert ".session_memory" in str(result)
 
     def test_get_daily_log_path(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = get_daily_log_path("/proj")
             assert result.suffix == ".md"
             assert "logs" in str(result)
@@ -137,7 +143,7 @@ class TestAutoMemPaths:
 
 class TestIsAutoMemPath:
     def test_valid_subpath(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             cwd = "/proj"
             mem_dir = ensure_memory_dir_exists(cwd)
             test_file = mem_dir / "test.md"
@@ -145,11 +151,11 @@ class TestIsAutoMemPath:
             assert is_auto_mem_path(str(test_file), cwd) is True
 
     def test_outside_path(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             assert is_auto_mem_path("/etc/passwd", "/proj") is False
 
     def test_traversal_attempt(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             cwd = "/proj"
             mem_dir = ensure_memory_dir_exists(cwd)
             bad_path = str(mem_dir / ".." / ".." / "etc" / "passwd")
@@ -184,12 +190,12 @@ class TestIsAutoMemoryEnabled:
 
 class TestEnsureMemoryDirExists:
     def test_creates_directory(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             result = ensure_memory_dir_exists("/proj")
             assert result.is_dir()
 
     def test_idempotent(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             a = ensure_memory_dir_exists("/proj")
             b = ensure_memory_dir_exists("/proj")
             assert a == b
@@ -298,14 +304,14 @@ class TestReadWriteMemoryFile:
 
 class TestEntrypoint:
     def test_read_nonexistent(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             raw, trunc = read_entrypoint("/proj")
             assert raw == ""
             assert trunc.line_count == 0
             assert not trunc.was_line_truncated
 
     def test_write_and_read(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             update_entrypoint("/proj", "# Memory Index\n\n- item 1\n")
             raw, trunc = read_entrypoint("/proj")
             assert "Memory Index" in raw
@@ -334,7 +340,7 @@ class TestTruncateEntrypoint:
 
 class TestCreateDeleteMemoryFile:
     def test_create_and_delete(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             path = create_memory_file("/proj", "Test Note", MemoryType.USER, "A user note", "content")
             assert path.exists()
             assert path.suffix == ".md"
@@ -348,7 +354,7 @@ class TestCreateDeleteMemoryFile:
             assert delete_memory_file(path) is False
 
     def test_list_memory_files(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             create_memory_file("/proj", "one", MemoryType.USER)
             create_memory_file("/proj", "two", MemoryType.FEEDBACK)
             files = list_memory_files("/proj")
@@ -469,7 +475,7 @@ class TestFindRelevantMemories:
 
 class TestSessionTranscript:
     def test_create_session(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             session = create_session("/proj", "test-session")
             try:
                 assert session.session_id == "test-session"
@@ -478,7 +484,7 @@ class TestSessionTranscript:
                 session.close()
 
     def test_append_and_read(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             session = create_session("/proj", "test-rw")
             try:
                 append_message(session, {"role": "user", "content": "hello"})
@@ -492,7 +498,7 @@ class TestSessionTranscript:
             assert msgs[1]["content"] == "hi"
 
     def test_context_manager(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             with create_session("/proj", "ctx") as session:
                 append_message(session, {"role": "user", "content": "test"})
             # File handle should be closed
@@ -502,7 +508,7 @@ class TestSessionTranscript:
         assert read_transcript(tmp_path / "missing.jsonl") == []
 
     def test_read_head_and_tail(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             with create_session("/proj", "ht") as session:
                 for i in range(50):
                     append_message(session, {"idx": i})
@@ -514,7 +520,7 @@ class TestSessionTranscript:
             assert tail[-1]["idx"] == 49
 
     def test_read_head_and_tail_short(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             with create_session("/proj", "short") as session:
                 for i in range(3):
                     append_message(session, {"idx": i})
@@ -526,11 +532,11 @@ class TestSessionTranscript:
 
 class TestListSessions:
     def test_list_empty(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             assert list_sessions("/proj") == []
 
     def test_list_sessions(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             with create_session("/proj", "s1") as s1:
                 append_message(s1, {"m": 1})
             with create_session("/proj", "s2") as s2:
@@ -543,7 +549,7 @@ class TestListSessions:
             assert "s2" in ids
 
     def test_list_sessions_touched_since(self, tmp_path):
-        with mock.patch.dict(os.environ, {"CLAUDE_CODE_CONFIG_DIR": str(tmp_path)}):
+        with mock.patch.dict(os.environ, {"MEMORIA_DATA_DIR": str(tmp_path)}):
             before = time.time()
             with create_session("/proj", "recent") as s:
                 append_message(s, {"m": 1})

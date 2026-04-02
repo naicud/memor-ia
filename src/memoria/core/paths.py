@@ -1,4 +1,9 @@
-"""Memory path resolution — where memory files live."""
+"""Memory path resolution — where memory files live.
+
+Priority order for data directory:
+1. MEMORIA_DATA_DIR env var  → dedicated memor-ia directory (direct, no hash)
+2. Default → ~/.memoria/projects/{sanitized-cwd}/
+"""
 
 from __future__ import annotations
 
@@ -11,30 +16,36 @@ from pathlib import Path
 # Constants
 AUTO_MEM_DIRNAME = "memory"
 AUTO_MEM_ENTRYPOINT_NAME = "MEMORY.md"
-CLAUDE_CONFIG_DIR = ".claude"
+MEMORIA_HOME_DIR = ".memoria"
 
 
-def get_claude_config_home() -> Path:
-    """~/.claude/ or CLAUDE_CODE_CONFIG_DIR override."""
-    override = os.environ.get("CLAUDE_CODE_CONFIG_DIR")
+def get_memoria_home() -> Path:
+    """~/.memoria/ or MEMORIA_DATA_DIR override."""
+    override = os.environ.get("MEMORIA_DATA_DIR")
     if override:
         return Path(override)
-    return Path.home() / CLAUDE_CONFIG_DIR
+    return Path.home() / MEMORIA_HOME_DIR
 
 
 def get_project_dir(cwd: str) -> Path:
-    """~/.claude/projects/{sanitized-cwd}/"""
+    """Resolve the project data directory.
+
+    If MEMORIA_DATA_DIR is set, returns it directly (no hash indirection).
+    Otherwise: ~/.memoria/projects/{sanitized-cwd}/
+    """
+    if os.environ.get("MEMORIA_DATA_DIR"):
+        return Path(os.environ["MEMORIA_DATA_DIR"])
     sanitized = _sanitize_path(cwd)
-    return get_claude_config_home() / "projects" / sanitized
+    return get_memoria_home() / "projects" / sanitized
 
 
 def get_auto_mem_path(cwd: str) -> Path:
-    """~/.claude/projects/{cwd}/memory/"""
+    """<project_dir>/memory/"""
     return get_project_dir(cwd) / AUTO_MEM_DIRNAME
 
 
 def get_auto_mem_entrypoint(cwd: str) -> Path:
-    """~/.claude/projects/{cwd}/memory/MEMORY.md"""
+    """<project_dir>/memory/MEMORY.md"""
     return get_auto_mem_path(cwd) / AUTO_MEM_ENTRYPOINT_NAME
 
 
@@ -49,8 +60,8 @@ def get_transcript_path(cwd: str, session_id: str) -> Path:
 
 
 def get_session_memory_path(session_id: str) -> Path:
-    """~/.claude/.session_memory/{session_id}.md"""
-    return get_claude_config_home() / ".session_memory" / f"{session_id}.md"
+    """~/.memoria/.session_memory/{session_id}.md"""
+    return get_memoria_home() / ".session_memory" / f"{session_id}.md"
 
 
 def get_daily_log_path(cwd: str) -> Path:

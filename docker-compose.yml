@@ -10,7 +10,7 @@ services:
       - MEMORIA_GRAPH_HOST=falkordb
       - MEMORIA_GRAPH_PORT=6379
       - MEMORIA_VECTOR_DB=/app/data/vectors.db
-      - MEMORIA_PROJECT_DIR=/app/data
+      - MEMORIA_DATA_DIR=/app/data
     volumes:
       - memoria-data:/app/data
     depends_on:

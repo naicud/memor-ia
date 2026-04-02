@@ -42,7 +42,7 @@ from fastmcp import FastMCP
 # Global state & lazy singletons
 # ---------------------------------------------------------------------------
 
-_PROJECT_DIR = os.environ.get("MEMORIA_PROJECT_DIR", os.getcwd())
+_PROJECT_DIR = os.environ.get("MEMORIA_DATA_DIR") or os.environ.get("MEMORIA_PROJECT_DIR", os.getcwd())
 _memoria_instance = None
 _episodic_instance = None
 _procedural_instance = None

@@ -5,7 +5,7 @@ __version__ = "2.0.0"
 from memoria.core.paths import (
     ensure_memory_dir_exists,
     get_auto_mem_path,
-    get_claude_config_home,
+    get_memoria_home,
     get_project_dir,
 )
 from memoria.core.recall import find_relevant_memories

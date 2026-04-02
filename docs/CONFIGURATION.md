@@ -83,7 +83,7 @@ MEMORIA uses a layered storage architecture. Every backend has a **zero-dependen
 Memories are stored as Markdown files with YAML frontmatter:
 
 ```
-~/.claude/projects/{project_hash}/memory/
+~/.memoria/projects/{project_hash}/memory/
 ├── user/
 │   ├── 2024-01-15_preferences.md
 │   └── 2024-01-16_workflow.md
@@ -217,7 +217,7 @@ export MEMORIA_EMBEDDING_DIM=64    # minimal
 │  Core Store │  Vector Store  │       Graph Store         │
 │  (Markdown) │  (SQLite)      │  (InMemory / FalkorDB)   │
 ├─────────────┼───────────────┼───────────────────────────┤
-│  ~/.claude/ │  SQLite DB     │  Dict / Redis:6379       │
+│  ~/.memoria/ │  SQLite DB     │  Dict / Redis:6379       │
 │  /memory/   │  (in-mem or    │                           │
 │  *.md files │   persistent)  │                           │
 └─────────────┴───────────────┴───────────────────────────┘

@@ -251,8 +251,9 @@ def kill_dream_task(task_id: str) -> None:
             import os
 
             from memoria.consolidation.lock import rollback_consolidation_lock
+            from memoria.core.paths import get_memoria_home
 
-            lock_dir = os.path.expanduser("~/.claude")
+            lock_dir = str(get_memoria_home())
             rollback_consolidation_lock(lock_dir, prior_mtime)
         except Exception:
             logger.exception("Failed to rollback consolidation lock for %s", task_id)

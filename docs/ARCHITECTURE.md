@@ -94,7 +94,7 @@ Memory File (Markdown)
 └── Content Body (Markdown text)
 ```
 
-Files live in: `~/.claude/projects/{project_hash}/memory/{type}/`
+Files live in: `~/.memoria/projects/{project_hash}/memory/{type}/`
 
 ---
 
