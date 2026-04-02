@@ -5,7 +5,7 @@
 > Inspired by [Mem0](https://github.com/mem0ai/mem0) — extended with agent orchestration, proactive intelligence, and dream consolidation.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: BSL 1.1](https://img.shields.io/badge/License-BSL_1.1-orange.svg)](LICENSE)
 [![MCP Tools: 56](https://img.shields.io/badge/MCP_Tools-56-purple.svg)](docs/MCP_SERVER.md)
 [![Tests: 4000+](https://img.shields.io/badge/Tests-4000%2B-brightgreen.svg)](#tests)
 
@@ -498,6 +498,9 @@ Comprehensive documentation in the [`docs/`](docs/) directory:
 
 | Document | Description |
 |----------|-------------|
+| [**Product Overview**](docs/BUSINESS.md) | Business overview, market position, use cases, licensing |
+| [**Data Architecture**](docs/DATA_GUIDE.md) | Data flow diagrams, storage format, real data examples |
+| [**E2E Test Report**](docs/E2E_USER_REPORT.md) | Auto-generated report with real MCP request/response data |
 | [**MCP Server Guide**](docs/MCP_SERVER.md) | Complete MCP reference: 56 tools, 7 resources, 5 prompts, client config (Claude Desktop, Cursor, VS Code), Docker deployment |
 | [**Configuration**](docs/CONFIGURATION.md) | Environment variables, backend setup (FalkorDB, SQLite-vec), Makefile targets |
 | [**API Reference**](docs/API_REFERENCE.md) | Python API: Memoria class, VectorClient, GraphClient, types |
@@ -505,4 +508,8 @@ Comprehensive documentation in the [`docs/`](docs/) directory:
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+Business Source License 1.1 — see [LICENSE](LICENSE) for details.
+
+- **Free** for non-commercial use, development, testing, research, and personal projects
+- **Commercial/production** use requires written authorization from the Licensor
+- Converts to **Apache 2.0** on March 22, 2030
