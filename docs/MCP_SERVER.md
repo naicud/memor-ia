@@ -2,7 +2,7 @@
 
 Complete guide to using MEMORIA as a [Model Context Protocol](https://modelcontextprotocol.io/) server.
 
-MEMORIA exposes **65 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
+MEMORIA exposes **67 tools**, **6 resources**, and **5 prompts** via [FastMCP 3.0+](https://github.com/jlowin/fastmcp), supporting **stdio**, **HTTP**, **WebSocket**, and **SSE** transports.
 
 ---
 
@@ -1484,6 +1484,53 @@ Returns: str (JSON array)
       "created_at": "2024-01-15T10:30:00+00:00"
     }
   ]
+```
+
+### 🧠 Intelligence — Summarization (2 tools)
+
+| Tool | Description |
+|------|-------------|
+| `memoria_summarize` | Summarize a text using the configured LLM provider |
+| `memoria_summarize_all` | Summarize stored memories for a namespace |
+
+#### `memoria_summarize`
+
+Summarize text content using the configured LLM provider (Ollama, OpenAI, Anthropic, or `none` fallback).
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `content` | string | Yes | The text to summarize |
+| `max_tokens` | integer | No | Maximum summary length in tokens (default: 200) |
+
+**Returns:** Object with `summary`, `key_facts`, `compression_ratio`, `original_length`, `summary_length`, `chunks_processed`, `provider`.
+
+**Example:**
+```json
+{
+  "content": "A very long article about machine learning that needs summarizing...",
+  "max_tokens": 150
+}
+```
+
+#### `memoria_summarize_all`
+
+Summarize all memories stored in a given namespace.
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `namespace` | string | No | Namespace to summarize (default: "default") |
+
+**Returns:** Object with `summarized` (count), `skipped` (count), and `results` (list of summaries).
+
+**Example:**
+```json
+{
+  "namespace": "project_notes"
+}
 ```
 
 ---

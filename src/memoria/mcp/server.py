@@ -3,7 +3,7 @@
 Exposes MEMORIA's full memory management capabilities as MCP tools, resources,
 and prompts for integration with LLM clients (Claude Desktop, Cursor, etc.).
 
-Provides 65 tools, 7 resources, and 5 prompts covering:
+Provides 67 tools, 7 resources, and 5 prompts covering:
 - Core CRUD with hybrid recall (keyword + vector + graph)
 - Tiered storage (working / recall / archival)
 - Episodic memory (sessions, events, timelines)
@@ -2196,6 +2196,48 @@ async def webhook_list(active_only: bool = False) -> str:
     try:
         m = _get_memoria()
         result = m.webhook_list(active_only=active_only)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+# ---------------------------------------------------------------------------
+# Summarization (v2.2)
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+async def memoria_summarize(content: str, max_tokens: int = 200) -> str:
+    """Summarize text using the configured LLM provider.
+
+    Uses the provider set via MEMORIA_LLM_PROVIDER env var (default: none).
+    Providers: none (truncation), ollama, openai, anthropic.
+    """
+    try:
+        m = _get_memoria()
+        result = m.summarize(content, max_tokens=max_tokens)
+        return json.dumps(result, indent=2)
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+
+@mcp.tool()
+async def memoria_summarize_all(
+    namespace: str = "",
+    user_id: str = "",
+    limit: int = 10,
+) -> str:
+    """Summarize stored memories that exceed the length threshold.
+
+    Fetches memories from the store and summarizes verbose ones.
+    Returns a report with original/summary lengths and compression ratios.
+    """
+    try:
+        m = _get_memoria()
+        result = m.summarize_memories(
+            namespace=namespace or None,
+            user_id=user_id or None,
+            limit=limit,
+        )
         return json.dumps(result, indent=2)
     except Exception as e:
         return json.dumps({"error": str(e)})

@@ -1607,3 +1607,122 @@ class Memoria:
             }
             for wh in webhooks
         ]
+
+    # ------------------------------------------------------------------
+    # Summarization (v2.2)
+    # ------------------------------------------------------------------
+
+    def _get_summarizer(self):
+        """Return (or create) the Summarizer."""
+        if not hasattr(self, "_summarizer"):
+            import os
+
+            from memoria.intelligence.providers.base import create_provider
+            from memoria.intelligence.summarizer import Summarizer
+
+            provider = create_provider(
+                provider=self._config.get("llm_provider"),
+                model=self._config.get("llm_model"),
+                api_key=self._config.get("llm_api_key"),
+            )
+            threshold = int(
+                self._config.get(
+                    "summarize_threshold",
+                    os.environ.get("MEMORIA_SUMMARIZE_THRESHOLD", "500"),
+                )
+            )
+            self._summarizer = Summarizer(provider, threshold=threshold)
+        return self._summarizer
+
+    def summarize(self, content: str, *, max_tokens: int = 200) -> dict:
+        """Summarize text using the configured LLM provider.
+
+        Returns a dict with summary, key_facts, compression_ratio, etc.
+        """
+        import asyncio
+        summarizer = self._get_summarizer()
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+
+        if loop and loop.is_running():
+            import concurrent.futures
+            with concurrent.futures.ThreadPoolExecutor() as pool:
+                result = pool.submit(
+                    asyncio.run, summarizer.summarize(content, max_tokens=max_tokens)
+                ).result()
+        else:
+            result = asyncio.run(summarizer.summarize(content, max_tokens=max_tokens))
+
+        return {
+            "summary": result.summary,
+            "key_facts": result.key_facts,
+            "original_length": result.original_length,
+            "summary_length": result.summary_length,
+            "compression_ratio": round(result.compression_ratio, 3),
+            "chunks_processed": result.chunks_processed,
+            "provider": result.provider,
+        }
+
+    def summarize_memories(
+        self, *, namespace: str | None = None, user_id: str | None = None, limit: int = 10
+    ) -> dict:
+        """Summarize stored memories matching the given filters.
+
+        This fetches memories from the namespace store and summarizes
+        those exceeding the configured character threshold.
+        """
+        import asyncio
+
+        summarizer = self._get_summarizer()
+        results: list[dict] = []
+        skipped = 0
+
+        try:
+            store = self._get_namespace_store()
+            query = "SELECT id, content FROM memories WHERE 1=1"
+            params: list = []
+            if namespace:
+                query += " AND namespace = ?"
+                params.append(namespace)
+            if user_id:
+                query += " AND user_id = ?"
+                params.append(user_id)
+            query += " ORDER BY created_at DESC LIMIT ?"
+            params.append(limit)
+
+            rows = store._conn.execute(query, params).fetchall()
+            for row in rows:
+                mid, content = row[0], row[1]
+                if not summarizer.should_summarize(content):
+                    skipped += 1
+                    continue
+                try:
+                    loop = asyncio.get_running_loop()
+                except RuntimeError:
+                    loop = None
+
+                if loop and loop.is_running():
+                    import concurrent.futures
+                    with concurrent.futures.ThreadPoolExecutor() as pool:
+                        sr = pool.submit(asyncio.run, summarizer.summarize(content)).result()
+                else:
+                    sr = asyncio.run(summarizer.summarize(content))
+
+                results.append({
+                    "memory_id": mid,
+                    "original_length": sr.original_length,
+                    "summary_length": sr.summary_length,
+                    "compression_ratio": round(sr.compression_ratio, 3),
+                    "summary": sr.summary,
+                })
+        except Exception as e:
+            return {"error": str(e), "summarized": 0}
+
+        return {
+            "summarized": len(results),
+            "skipped": skipped,
+            "provider": summarizer.provider_name,
+            "results": results,
+        }
