@@ -21,26 +21,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-## Third-Party Acknowledgments
-
-dirty-vibe builds upon and integrates with the following open-source projects:
-
-### MCP Servers
-
-| Project | Repository | Description |
-|---------|-----------|-------------|
-| **GitNexus** | [abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus) | Code graph and analysis MCP server (11 tools) |
-| **Graphify** | [safishamsi/graphify](https://github.com/safishamsi/graphify) | Knowledge graph from meetings and documents MCP server (7 tools) |
-| **Context7** | [upstash/context7](https://github.com/upstash/context7) | Library documentation MCP server (2 tools) |
-| **Vibe Kanban** | [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) | Kanban board and coding agents MCP server (30 tools) |
-
-### Storage Engines (configurable)
-
-| Project | Repository | Description |
-|---------|-----------|-------------|
-| **LadybugDB** | [LadybugDB/ladybug](https://github.com/LadybugDB/ladybug) | Embedded columnar graph database |
-| **FalkorDB** | [FalkorDB/FalkorDB](https://github.com/FalkorDB/FalkorDB) | High-performance graph database |
-| **SQLite** | [sqlite/sqlite](https://github.com/sqlite/sqlite) | Embedded relational database (used by dirty-vibe cross-links) |
-
-Each project is governed by its own license. Please refer to the respective
-repositories for their licensing terms.
