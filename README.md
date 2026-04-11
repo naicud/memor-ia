@@ -5,7 +5,7 @@
 > Inspired by [Mem0](https://github.com/mem0ai/mem0) — extended with agent orchestration, proactive intelligence, and dream consolidation.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](LICENSE)](LICENSE)
+[![License: MIT](#BLANK)](LICENSE)
 [![MCP Tools: 97](https://img.shields.io/badge/MCP_Tools-97-purple.svg)](docs/MCP_SERVER.md)
 [![Tests: 4700+](https://img.shields.io/badge/Tests-4700%2B-brightgreen.svg)](#tests)
 
