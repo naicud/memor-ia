@@ -1,57 +1,46 @@
-Business Source License 1.1
+MIT License
 
-License text copyright (c) 2017 MariaDB Corporation Ab, All Rights Reserved.
-"Business Source License" is a trademark of MariaDB Corporation Ab.
+Copyright (c) 2026 Daniel Nicusor Naicu
 
-Parameters
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Licensor:             Daniel Nicusor Naicu
-Licensed Work:        memor-ia
-                      Copyright (c) 2024-2026 Daniel Nicusor Naicu
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Additional Use Grant: You may use the Licensed Work for non-commercial and
-                      non-production purposes (e.g., development, testing,
-                      research, and personal projects) free of charge. Any
-                      commercial or production use requires prior written
-                      authorization from the Licensor.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-Change Date:          2030-03-22
-Change License:       Apache License, Version 2.0
 
-Terms
+## Third-Party Acknowledgments
 
-The Licensor hereby grants you the right to copy, modify, create derivative
-works, redistribute, and make non-production use of the Licensed Work. The
-Licensor may make an Additional Use Grant, above, permitting limited
-production use.
+dirty-vibe builds upon and integrates with the following open-source projects:
 
-Effective on the Change Date, or the fourth anniversary of the first publicly
-available distribution of a specific version of the Licensed Work under this
-License, whichever comes first, the Licensor hereby grants you the rights
-provided under the Change License, and this Business Source License will
-terminate as to that version.
+### MCP Servers
 
-If your use of the Licensed Work does not comply with the requirements
-currently in effect as described in this License, you must purchase a
-commercial license from the Licensor, its affiliated entities, or authorized
-resellers, or you must refrain from using the Licensed Work.
+| Project | Repository | Description |
+|---------|-----------|-------------|
+| **GitNexus** | [abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus) | Code graph and analysis MCP server (11 tools) |
+| **Graphify** | [safishamsi/graphify](https://github.com/safishamsi/graphify) | Knowledge graph from meetings and documents MCP server (7 tools) |
+| **Context7** | [upstash/context7](https://github.com/upstash/context7) | Library documentation MCP server (2 tools) |
+| **Vibe Kanban** | [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) | Kanban board and coding agents MCP server (30 tools) |
 
-All copies of the original and modified Licensed Work, and derivative works of
-the Licensed Work, are subject to this License. This License applies
-separately for each version of the Licensed Work and the Change Date may vary
-for each version of the Licensed Work.
+### Storage Engines (configurable)
 
-Any copy of the Licensed Work must prominently display this License with the
-Notice. Any distribution of the Licensed Work must include this License with
-the Notice.
+| Project | Repository | Description |
+|---------|-----------|-------------|
+| **LadybugDB** | [LadybugDB/ladybug](https://github.com/LadybugDB/ladybug) | Embedded columnar graph database |
+| **FalkorDB** | [FalkorDB/FalkorDB](https://github.com/FalkorDB/FalkorDB) | High-performance graph database |
+| **SQLite** | [sqlite/sqlite](https://github.com/sqlite/sqlite) | Embedded relational database (used by dirty-vibe cross-links) |
 
-You must not remove or alter any copyright, trademark, or patent notice, any
-license or the Notice.
-
-Notice
-
-Licensed Work:    memor-ia
-Licensor:         Daniel Nicusor Naicu
-Licensed under:   Business Source License 1.1
-
-Any use of the Licensed Work is subject to the Business Source License 1.1.
+Each project is governed by its own license. Please refer to the respective
+repositories for their licensing terms.
